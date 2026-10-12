@@ -2,7 +2,8 @@
 
 Interactive prototype for Terraform Registry Artifact Ownership Control.
 
-Original prototype: [box-id-63586789.figma.site](https://box-id-63586789.figma.site/)
+- **Live Site**: [https://sanchitasaxena.github.io/ownership-control/](https://sanchitasaxena.github.io/ownership-control/)
+- **Original Figma Site**: [https://box-id-63586789.figma.site/](https://box-id-63586789.figma.site/)
 
 ## Overview
 
