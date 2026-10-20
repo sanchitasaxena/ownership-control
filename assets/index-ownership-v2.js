@@ -268,7 +268,7 @@ React keys must be passed directly to JSX without using spread:
 }function oe({children:e}){return(0,x.jsxDEV)(`div`,{className:`mb-5 flex flex-wrap items-center gap-2 text-[13px] text-[#656a76] underline decoration-[#c2c4ca]`,children:e},void 0,!1,{fileName:S,lineNumber:131,columnNumber:10},this)
 }function E({children:e,className:t=``}){return(0,x.jsxDEV)(`div`,{className:`menu ${t}`,children:e},void 0,!1,{fileName:S,lineNumber:135,columnNumber:10},this)
 }function D({children:e,danger:t=!1,onClick:n}){return(0,x.jsxDEV)(`button`,{className:`menu-item ${t?`text-[#c11111]`:``}`,onClick:n,type:`button`,children:e},void 0,!1,{fileName:S,lineNumber:139,columnNumber:10},this)
-}function se({setScreen:e,overlay:t,setOverlay:n,selected:r,setSelected:i,artifacts,kind,setKind,openArtifact,openTeamSettings,assignOwner}){let[c,l]=(0,b.useState)(``),[u,d]=(0,b.useState)(``),[f,p]=(0,b.useState)(null),m=artifacts.filter(item=>(item.kind||`module`)===kind&&(!c||(c===`None`?!item.owner:item.owner===c))),h=r.length>0;return(0,x.jsxDEV)(x.Fragment,{children:[(0,x.jsxDEV)(oe,{children:[(0,x.jsxDEV)(`button`,{children:`CoolCorp`},void 0,!1,{fileName:S,lineNumber:168,columnNumber:15},this)
+}function se({setScreen:e,overlay:t,setOverlay:n,selected:r,setSelected:i,artifacts,kind,setKind,openArtifact,assignOwner}){let[c,l]=(0,b.useState)(``),[u,d]=(0,b.useState)(``),[f,p]=(0,b.useState)(null),m=artifacts.filter(item=>(item.kind||`module`)===kind&&(!c||(c===`None`?!item.owner:item.owner===c))),h=r.length>0;return(0,x.jsxDEV)(x.Fragment,{children:[(0,x.jsxDEV)(oe,{children:[(0,x.jsxDEV)(`button`,{children:`CoolCorp`},void 0,!1,{fileName:S,lineNumber:168,columnNumber:15},this)
 ,(0,x.jsxDEV)(`span`,{children:`/`},void 0,!1,{fileName:S,lineNumber:168,columnNumber:40},this)
 ,(0,x.jsxDEV)(`button`,{children:`Registry`},void 0,!1,{fileName:S,lineNumber:168,columnNumber:54},this)
 ,(0,x.jsxDEV)(`span`,{children:`/`},void 0,!1,{fileName:S,lineNumber:168,columnNumber:79},this)
@@ -369,7 +369,6 @@ React keys must be passed directly to JSX without using spread:
 ,`Enabled`]},void 0,!0,{fileName:S,lineNumber:242,columnNumber:38},this)
 },void 0,!1,{fileName:S,lineNumber:242,columnNumber:19},this)
 ,(0,x.jsxDEV)(`td`,{children:[(0,x.jsxDEV)(`button`,{className:`underline decoration-dotted`,onClick:()=>openArtifact(t),children:t.owner||(t.defaultOwner?`Organization owners group`:`None`)},void 0,!1,{fileName:S,lineNumber:243,columnNumber:23},this)
-,t.owner&&b.createElement(`button`,{"aria-label":`Open ${t.owner} team settings`,title:`Open ${t.owner} team settings`,className:`ml-2 inline-flex align-middle text-[#656a76]`,onClick:()=>openTeamSettings(t.owner)},b.createElement(C,{src:`ab804.svg`}))
 ]},void 0,!0,{fileName:S,lineNumber:243,columnNumber:19},this)
 ,(0,x.jsxDEV)(`td`,{className:`relative`,children:[(0,x.jsxDEV)(w,{ariaLabel:kind===`module`?`Module actions`:`Provider actions`,className:`!px-2`,onClick:()=>{p(f===t.id?null:t.id),n(null)},children:(0,x.jsxDEV)(C,{className:`size-3`,src:`1abde.svg`},void 0,!1,{fileName:S,lineNumber:244,columnNumber:187},this)
 },void 0,!1,{fileName:S,lineNumber:244,columnNumber:44},this)
@@ -396,7 +395,7 @@ React keys must be passed directly to JSX without using spread:
 ]},void 0,!0,{fileName:S,lineNumber:231,columnNumber:11},this)
 },void 0,!1,{fileName:S,lineNumber:230,columnNumber:9},this)
 ]},void 0,!0,{fileName:S,lineNumber:187,columnNumber:7},this)
-,t===`owner`&&(0,x.jsxDEV)(ce,{owner:artifacts.find(item=>item.id===r[0])?.owner||``,close:()=>n(null),save:owner=>assignOwner(r,owner)},void 0,!1,{fileName:S,lineNumber:257,columnNumber:31},this)
+,t===`owner`&&(0,x.jsxDEV)(ce,{owner:artifacts.find(item=>item.id===r[0])?.owner||``,close:()=>n(null),save:(owner,showDetails)=>assignOwner(r,owner,showDetails)},void 0,!1,{fileName:S,lineNumber:257,columnNumber:31},this)
 ]},void 0,!0)}
 function ce({owner,close:n,save}){const[e,t]=b.useState(owner),r=()=>save(e);return(0,x.jsxDEV)(`div`,{className:`overlay`,onMouseDown:n,children:(0,x.jsxDEV)(`div`,{"aria-modal":`true`,"aria-label":`Assign owner`,className:`modal`,onMouseDown:e=>e.stopPropagation(),role:`dialog`,children:[(0,x.jsxDEV)(`div`,{className:`flex items-center justify-between border-b border-[#d8d9dc] px-6 py-4`,children:[(0,x.jsxDEV)(`h2`,{children:`Assign owner`},void 0,!1,{fileName:S,lineNumber:266,columnNumber:96},this)
 ,(0,x.jsxDEV)(`button`,{onClick:n,children:`×`},void 0,!1,{fileName:S,lineNumber:266,columnNumber:117},this)
@@ -411,10 +410,9 @@ function ce({owner,close:n,save}){const[e,t]=b.useState(owner),r=()=>save(e);ret
 ,(0,x.jsxDEV)(`select`,{"aria-label":`Select an owner`,className:`field mt-2`,onChange:e=>t(e.target.value),value:e,children:[``,...ownerTeams].map(e=>(0,x.jsxDEV)(`option`,{value:e,children:e||`None`},e,!1,{fileName:S,lineNumber:270,columnNumber:160},this)
 )},void 0,!1,{fileName:S,lineNumber:270,columnNumber:13},this)
 ]},void 0,!0,{fileName:S,lineNumber:269,columnNumber:11},this)
-,e&&b.createElement(OwnerPermissionsNotice,{team:e})
 ]},void 0,!0,{fileName:S,lineNumber:267,columnNumber:9},this)
 ,(0,x.jsxDEV)(`div`,{className:`flex gap-3 border-t border-[#d8d9dc] px-6 py-4`,children:[(0,x.jsxDEV)(w,{primary:!0,onClick:r,children:`Save`},void 0,!1,{fileName:S,lineNumber:273,columnNumber:73},this)
-,(0,x.jsxDEV)(w,{onClick:()=>t(``),children:`Remove owner`},void 0,!1,{fileName:S,lineNumber:273,columnNumber:117},this)
+,(0,x.jsxDEV)(w,{onClick:()=>save(``,true),children:`Remove owner`},void 0,!1,{fileName:S,lineNumber:273,columnNumber:117},this)
 ,(0,x.jsxDEV)(`button`,{className:`ml-auto text-[#1060ff]`,onClick:n,children:`Cancel`},void 0,!1,{fileName:S,lineNumber:273,columnNumber:175},this)
 ]},void 0,!0,{fileName:S,lineNumber:273,columnNumber:9},this)
 ]},void 0,!0,{fileName:S,lineNumber:265,columnNumber:7},this)
@@ -471,7 +469,7 @@ function le({owner:e,artifact,assignOwner,overlay:n,setOverlay:r,setScreen:i}){
 ,(0,x.jsxDEV)(`span`,{className:`meta`,children:[(0,x.jsxDEV)(C,{src:`19d0d.svg`},void 0,!1,{fileName:S,lineNumber:288,columnNumber:435},this)
 ,`Downloads 122`]},void 0,!0,{fileName:S,lineNumber:288,columnNumber:412},this)
 ,(0,x.jsxDEV)(`span`,{className:`meta`,children:[(0,x.jsxDEV)(C,{src:`5934e.svg`},void 0,!1,{fileName:S,lineNumber:288,columnNumber:506},this)
-,`Owner `,b.createElement(OwnerHistory,{artifact})
+,`Owner `,b.createElement(OwnerHistory,{artifact,onEdit:()=>r(`owner`)})
 ]},void 0,!0,{fileName:S,lineNumber:288,columnNumber:483},this)
 ]},void 0,!0,{fileName:S,lineNumber:288,columnNumber:7},this)
 ,(0,x.jsxDEV)(`h2`,{className:`mb-2`,children:`Module details`},void 0,!1,{fileName:S,lineNumber:289,columnNumber:7},this)
@@ -527,7 +525,7 @@ function le({owner:e,artifact,assignOwner,overlay:n,setOverlay:r,setScreen:i}){
 ,` to access this module.`]},void 0,!0,{fileName:S,lineNumber:294,columnNumber:431},this)
 ]},void 0,!0,{fileName:S,lineNumber:294,columnNumber:9},this)
 ]},void 0,!0,{fileName:S,lineNumber:292,columnNumber:7},this)
-,n===`owner`&&(0,x.jsxDEV)(ce,{owner:e,close:()=>r(null),save:owner=>assignOwner([artifact.id],owner)},void 0,!1,{fileName:S,lineNumber:296,columnNumber:31},this)
+,n===`owner`&&(0,x.jsxDEV)(ce,{owner:e,close:()=>r(null),save:(owner,showDetails)=>assignOwner([artifact.id],owner,showDetails)},void 0,!1,{fileName:S,lineNumber:296,columnNumber:31},this)
 ]},void 0,!0)}
 function ue({setScreen:e,setToast:t,team,permissions={},savePermissions}){let[n,r]=(0,b.useState)(permissions.project||`None`),[i,a]=(0,b.useState)(permissions.workspace||`None`),[o,s]=(0,b.useState)(permissions.team||`None`),[c,l]=(0,b.useState)(!!permissions.privateRegistry),[u,d]=(0,b.useState)(!!permissions.publicRegistry),[f,p]=(0,b.useState)(!!permissions.privateOwnership),[m,h]=(0,b.useState)(!!permissions.publicOwnership),[g,_]=(0,b.useState)(`Modules`),[v,y]=(0,b.useState)(`Modules`),[ee,te]=(0,b.useState)(permissions.options||{}),ne=c,re=u,ie=e=>te(t=>({...t,[e]:!t[e]})),T=[{label:`Project permissions`,value:n,setValue:r,options:[[`None`,`Does not grant members any explicit access to projects.`],[`View all projects`,`Allow this team to view all projects in this organization.`],[`Manage all projects`,`Grant the ability to view, edit, delete, and assign team access to all projects.`]]},{label:`Workspace permissions`,value:i,setValue:a,options:[[`None`,`Does not grant members any explicit access to workspaces.`],[`View all workspaces`,`Allow this team to view all workspaces in this organization.`],[`Manage all workspaces`,`Grant the ability to view, edit, delete, and assign team access to all workspaces.`]]}],ae=[[`Manage policies`,`Allow members to create, edit, read, list, and delete the organization’s policies.`],[`Manage policy overrides`,`Allow members to override soft-mandatory policy checks.`],[`Manage run tasks`,`Allow members to create, update, and delete run tasks for the organization.`],[`Manage version control settings`,`Allow members to manage the organization’s VCS providers and SSH keys.`],[`Manage agent pools`,`Allow members to create, update, and delete the organization’s agent pools.`]],E=e=>{let t=e===`Modules`?`modules`:e===`Providers`?`providers`:`stack component configurations`;return[[`Publish and manage ${t} for this team`,`Allow members to publish and manage ${t} assigned to this team.`],[`Publish and manage ${t} for the organization`,`Allow members to publish and manage all ${t} in the organization’s registry.`],[`Delete ${t} owned by this team`,`Allow members to delete ${t} assigned to this team.`],[`Delete any ${t} in the organization`,`Allow members to delete all ${t} in the organization’s registry.`]]},D=({id:e,label:t,helper:n})=>(0,x.jsxDEV)(`label`,{className:`permission-option`,children:[(0,x.jsxDEV)(`input`,{checked:!!ee[e],onChange:()=>ie(e),type:`checkbox`},void 0,!1,{fileName:S,lineNumber:354,columnNumber:42},this)
 ,(0,x.jsxDEV)(`span`,{children:[(0,x.jsxDEV)(`b`,{children:t},void 0,!1,{fileName:S,lineNumber:354,columnNumber:131},this)
@@ -708,7 +706,7 @@ function OwnerPermissionsNotice({team}) {
 function ownerLabel(artifact) {
   return artifact.owner||(artifact.defaultOwner?`Organization owners group`:`None`);
 }
-function OwnerHistory({artifact}) {
+function OwnerHistory({artifact,onEdit}) {
   const [position,setPosition]=b.useState(null);
   const trigger=b.useRef(null);
   const container=b.useRef(null);
@@ -782,7 +780,8 @@ function OwnerHistory({artifact}) {
               :`Assignment date unavailable`)));
       })),
       h(`span`,{className:`owner-history-footer`},
-        h(`span`,null,`${history.length} ${history.length===1?`event`:`events`}`))));
+        h(`span`,null,`${history.length} ${history.length===1?`event`:`events`}`),
+        h(w,{onClick:()=>{close();onEdit();}},`Edit`))));
 }
 function pe() {
   const [screen,setScreen]=b.useState(`library`);
@@ -814,7 +813,7 @@ function pe() {
       return {...current,[owner]:{...settings,options}};
     });
   };
-  const assignOwner=(ids,owner)=>{
+  const assignOwner=(ids,owner,showDetails=false)=>{
     const ownedArtifacts=artifacts.filter(artifact=>ids.includes(artifact.id)&&(artifact.owner!==owner||artifact.defaultOwner));
     const changedIds=new Set(ownedArtifacts.map(artifact=>artifact.id));
     const at=new Date().toISOString();
@@ -827,6 +826,10 @@ function pe() {
     setOverlay(null);
     setSelected([]);
     setToast(!ownedArtifacts.length?`Owner unchanged`:owner?{team:owner,message:`Owner assigned to ${owner}`}:`Owner removed`);
+    if (showDetails&&ids.length===1) {
+      setActiveId(ids[0]);
+      navigate(`artifact`);
+    }
   };
   const publish=artifact=>{
     const published={...artifact,defaultOwner:!artifact.owner,id:Math.max(...artifacts.map(item=>item.id))+1,
@@ -850,7 +853,7 @@ function pe() {
   };
   const h=b.createElement;
   return h(ae,{screen,setScreen:navigate},
-    screen===`library`&&h(se,{overlay,selected,setOverlay,setScreen:navigate,setSelected,artifacts,kind,setKind,openArtifact,openTeamSettings,assignOwner}),
+    screen===`library`&&h(se,{overlay,selected,setOverlay,setScreen:navigate,setSelected,artifacts,kind,setKind,openArtifact,assignOwner}),
     screen===`artifact`&&h(le,{overlay,owner:activeArtifact.owner,artifact:activeArtifact,setOverlay,setScreen:navigate,assignOwner}),
     screen===`team`&&h(ue,{key:team,team,permissions:permissions[team],setScreen:navigate,setToast,
       savePermissions:settings=>setPermissions(current=>({...current,[team]:settings}))}),
