@@ -538,34 +538,44 @@ const registrySection=(registry,fullAccess,setFullAccess,ownership,setOwnership,
     create(`legend`,{className:`mb-3 font-semibold`},`${registry===`private`?`Private`:`Public`} registry permissions`),
     create(`label`,{className:`permission-option registry-ownership-option`},
       create(`input`,{type:`checkbox`,checked:ownership,onChange:event=>setOwnership(event.target.checked)}),
-      create(`span`,null,create(`b`,null,`Manage registry ownership access`),
-        create(`small`,null,`Assign, change, or remove owner teams. Independent of registry management; does not change team permissions.`))),
+      create(`span`,null,create(`b`,null,`Assign ownership`),
+        create(`small`,null,`Assign, change, or remove owner teams. Does not change team permissions.`))),
     create(`div`,{className:`registry-full-access`},
       create(`label`,{className:`permission-option`},
         create(`input`,{type:`checkbox`,checked:fullAccess,onChange:event=>setFullAccess(event.target.checked)}),
         create(`span`,null,create(`b`,null,`Manage ${registry} registry`),
-          create(`small`,null,`Includes every artifact and tagging permission below. Does not include ownership assignment.`))),
+          create(`small`,null,`All artifact and tagging permissions below. Ownership assignment is separate.`))),
       create(`div`,{className:`registry-artifact-permissions`},
         create(`p`,{className:`registry-permissions-intro`},fullAccess
           ?`All permissions included. Turn off Manage ${registry} registry to customize.`
-          :`Or customize access by artifact type.`),
+          :`Or choose specific permissions:`),
         create(`div`,{className:`registry-artifact-options`},
           create(`div`,{className:`registry-permission-tabs`},types.map(type=>create(`button`,{
             key:type,type:`button`,className:`permission-tab ${tab===type?`active`:``}`,onClick:()=>setTab(type)},type))),
-          create(`div`,{className:`registry-scope-grid`},
-            [[`Owned by this team`,`Only ${tab.toLowerCase()} assigned to this team.`,[0,2]],
-              [`Entire organization`,`All ${tab.toLowerCase()}, including those without an owner.`,[1,3]]].map(([heading,helper,indices])=>
-              create(`fieldset`,{key:heading,className:`registry-scope`},
-                create(`legend`,null,heading),
-                create(`p`,{className:`registry-permissions-intro`},helper),
+          create(`div`,{className:`registry-permission-matrix`,role:`table`,"aria-label":`${registry} ${tab.toLowerCase()} permissions`},
+            create(`div`,{role:`row`,className:`registry-matrix-row registry-matrix-header`},
+              create(`span`,{role:`columnheader`},`Scope`),
+              create(`span`,{role:`columnheader`},`Publish & manage`,
+                create(`small`,{className:`registry-matrix-description`},`Publish and update ${tab.toLowerCase()}.`)),
+              create(`span`,{role:`columnheader`},`Delete`,
+                create(`small`,{className:`registry-matrix-description`},`Delete ${tab.toLowerCase()}.`))),
+            [[`Owned by this team`,[0,2]],[`Entire organization`,[1,3]]].map(([scope,indices])=>
+              create(`div`,{key:scope,role:`row`,className:`registry-matrix-row`},
+                create(`span`,{role:`rowheader`},scope,
+                  create(`small`,{className:`registry-matrix-description`},scope===`Owned by this team`
+                    ?`Only ${tab.toLowerCase()} assigned to this team.`
+                    :`All ${tab.toLowerCase()}, including those without an owner.`)),
                 indices.map(index=>{
-                  const [label]=E(tab)[index];
-                  return option(`${registry}-${tab}-${label}`,index<2?`Publish and manage`:`Delete`,``);
+                  const [label,helper]=E(tab)[index];
+                  const key=`${registry}-${tab}-${label}`;
+                  return create(`span`,{key,role:`cell`},
+                    create(`input`,{type:`checkbox`,"aria-label":`${registry} ${tab}: ${index<2?`Publish and manage`:`Delete`} - ${scope}`,
+                      "aria-description":registry===`public`?helper.replace(`organization’s registry`,`public registry`):helper,
+                      checked:fullAccess||!!ee[key],disabled:fullAccess,onChange:()=>ie(key)}));
                 }))))),
         create(`div`,{className:`registry-tagging`},
-          create(`h3`,{className:`registry-permissions-heading`},`Tagging permissions`),
-          option(`${registry}-environment-tags`,`Assign reserved and registry environment tags`,`Apply tags to artifact versions.`),
-          option(`${registry}-project-tags`,`Assign project tags`,`Apply tags to registry artifacts.`)))));
+          option(`${registry}-environment-tags`,`Assign reserved and registry environment tags`,`Apply registry environment tags to artifact versions.`),
+          option(`${registry}-project-tags`,`Assign project tags`,`Apply project tags to registry artifacts.`)))));
 };
 return(0,x.jsxDEV)(x.Fragment,{children:[(0,x.jsxDEV)(oe,{children:[(0,x.jsxDEV)(`button`,{children:`my-organization`},void 0,!1,{fileName:S,lineNumber:357,columnNumber:15},this)
 ,(0,x.jsxDEV)(`span`,{children:`/`},void 0,!1,{fileName:S,lineNumber:357,columnNumber:47},this)

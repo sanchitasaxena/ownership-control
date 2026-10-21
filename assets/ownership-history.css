@@ -35,19 +35,19 @@ table.bulk-table th:nth-child(8), table.bulk-table td:nth-child(8) { width: 105p
 .registry-permissions-section .permission-option { display: flex; align-items: flex-start; gap: 10px; margin: 0; padding: 12px 0; }
 .registry-permissions-section .permission-option input { flex: 0 0 auto; margin-top: 4px; }
 .registry-permissions-section .permission-option small { display: block; margin-top: 4px; color: #656a76; line-height: 20px; }
-.registry-ownership-option { border-bottom: 1px solid #d8d9dc; padding-bottom: 24px !important; }
-.registry-full-access { margin-top: 16px; }
-.registry-artifact-permissions { margin: 12px 0 0 24px; padding-left: 20px; border-left: 2px solid #eeeef0; }
+.registry-ownership-option { padding-bottom: 16px !important; }
+.registry-full-access { margin-top: 0; }
+.registry-artifact-permissions { margin-top: 12px; }
 .registry-artifact-permissions > .registry-permissions-intro { margin-bottom: 12px; }
 .registry-permission-tabs { display: flex; flex-wrap: wrap; border-bottom: 1px solid #d8d9dc; }
-.registry-scope-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 28px; padding: 24px 0; }
-.registry-scope { min-width: 0; }
-.registry-scope legend { font-size: 13px; font-weight: 600; }
-.registry-scope .registry-permissions-intro { min-height: 40px; margin: 6px 0 8px; }
-.registry-scope .permission-option { padding: 8px 0; }
-.registry-scope .permission-option small:empty { display: none; }
-.registry-tagging { padding-top: 20px; border-top: 1px solid #d8d9dc; }
-@media (max-width: 600px) { .registry-scope-grid { grid-template-columns: 1fr; gap: 24px; } .registry-artifact-permissions { margin-left: 8px; padding-left: 12px; } .registry-scope .registry-permissions-intro { min-height: 0; } }
+.registry-permission-matrix { margin: 12px 0 20px; font-size: 13px; }
+.registry-matrix-row { display: grid; grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr) minmax(0, .6fr); align-items: center; gap: 8px; min-height: 44px; border-bottom: 1px solid #eeeef0; }
+.registry-matrix-row > :not(:first-child) { text-align: center; }
+.registry-matrix-header { color: #656a76; font-size: 12px; }
+.registry-matrix-description { display: block; margin: 4px 0 8px; color: #656a76; font-size: 12px; line-height: 18px; font-weight: 400; }
+.registry-matrix-row input { width: 16px; height: 16px; vertical-align: middle; }
+.registry-tagging { padding-top: 4px; }
+.registry-tagging .permission-option small:empty { display: none; }
 .owner-history-trigger { display: inline-flex; align-items: center; gap: 6px; font-weight: 600; text-decoration: underline dotted; text-underline-offset: 4px; }
 .owner-history-chevron { color: #656a76; text-decoration: none; }
 .owner-history-card { position: fixed; z-index: 60; display: block; overflow-y: auto; border: 1px solid #d8d9dc; border-radius: 8px; background: #fff; color: #3b3d45; box-shadow: 0 8px 32px #3b3d4526; font-size: 13px; line-height: 20px; text-align: left; white-space: normal; overflow-wrap: anywhere; }
