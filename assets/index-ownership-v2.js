@@ -268,7 +268,11 @@ React keys must be passed directly to JSX without using spread:
 }function oe({children:e}){return(0,x.jsxDEV)(`div`,{className:`mb-5 flex flex-wrap items-center gap-2 text-[13px] text-[#656a76] underline decoration-[#c2c4ca]`,children:e},void 0,!1,{fileName:S,lineNumber:131,columnNumber:10},this)
 }function E({children:e,className:t=``}){return(0,x.jsxDEV)(`div`,{className:`menu ${t}`,children:e},void 0,!1,{fileName:S,lineNumber:135,columnNumber:10},this)
 }function D({children:e,danger:t=!1,onClick:n}){return(0,x.jsxDEV)(`button`,{className:`menu-item ${t?`text-[#c11111]`:``}`,onClick:n,type:`button`,children:e},void 0,!1,{fileName:S,lineNumber:139,columnNumber:10},this)
-}function se({setScreen:e,overlay:t,setOverlay:n,selected:r,setSelected:i,artifacts,kind,setKind,openArtifact,assignOwner,permissions}){let[c,l]=(0,b.useState)(``),[u,d]=(0,b.useState)(``),[f,p]=(0,b.useState)(null),m=artifacts.filter(item=>(item.kind||`module`)===kind&&(!c||(c===`None`?!item.owner:item.owner===c))),h=r.length>0;return(0,x.jsxDEV)(x.Fragment,{children:[(0,x.jsxDEV)(oe,{children:[(0,x.jsxDEV)(`button`,{children:`CoolCorp`},void 0,!1,{fileName:S,lineNumber:168,columnNumber:15},this)
+}function se({setScreen:e,overlay:t,setOverlay:n,selected:r,setSelected:i,artifacts,kind,setKind,openArtifact,assignOwner,permissions,canAssignOwnership,actingTeam}){
+let[c,l]=(0,b.useState)(``),[u,d]=(0,b.useState)(``),[f,p]=(0,b.useState)(null),[search,setSearch]=b.useState(``),[ownerSearch,setOwnerSearch]=b.useState(``);
+const access=artifact=>artifactOwnerAccess(permissions[actingTeam],artifact,artifact.owner===actingTeam);
+const m=artifacts.filter(item=>(item.kind||`module`)===kind&&(!c||(c===`Unowned`?!item.owner:item.owner===c))&&item.name.toLowerCase().includes(search.toLowerCase())),h=canAssignOwnership&&r.length>0;
+return(0,x.jsxDEV)(x.Fragment,{children:[(0,x.jsxDEV)(oe,{children:[(0,x.jsxDEV)(`button`,{children:`CoolCorp`},void 0,!1,{fileName:S,lineNumber:168,columnNumber:15},this)
 ,(0,x.jsxDEV)(`span`,{children:`/`},void 0,!1,{fileName:S,lineNumber:168,columnNumber:40},this)
 ,(0,x.jsxDEV)(`button`,{children:`Registry`},void 0,!1,{fileName:S,lineNumber:168,columnNumber:54},this)
 ,(0,x.jsxDEV)(`span`,{children:`/`},void 0,!1,{fileName:S,lineNumber:168,columnNumber:79},this)
@@ -297,20 +301,16 @@ React keys must be passed directly to JSX without using spread:
 ,` Filters `,(0,x.jsxDEV)(C,{className:`size-3 transition-transform ${t===`filters`?`rotate-180`:``}`,src:`6899e.svg`},void 0,!1,{fileName:S,lineNumber:190,columnNumber:175},this)
 ]},void 0,!0,{fileName:S,lineNumber:190,columnNumber:11},this)
 ,(0,x.jsxDEV)(`label`,{className:`flex h-8 min-w-56 flex-1 items-center gap-2 rounded border border-[#8c909c] px-2 sm:max-w-80`,children:[(0,x.jsxDEV)(C,{className:`text-[#656a76]`,src:`a58cc.svg`},void 0,!1,{fileName:S,lineNumber:192,columnNumber:13},this)
-,(0,x.jsxDEV)(`input`,{className:`w-full outline-none`,placeholder:`Search ${kind===`module`?`modules`:`providers`}`},void 0,!1,{fileName:S,lineNumber:192,columnNumber:68},this)
+,(0,x.jsxDEV)(`input`,{className:`w-full outline-none`,value:search,onChange:event=>setSearch(event.target.value),placeholder:`Search ${kind===`module`?`modules`:`providers`}`},void 0,!1,{fileName:S,lineNumber:192,columnNumber:68},this)
 ]},void 0,!0,{fileName:S,lineNumber:191,columnNumber:11},this)
-,h?(0,x.jsxDEV)(x.Fragment,{children:[(0,x.jsxDEV)(`button`,{className:`ml-auto text-sm text-[#1060ff]`,children:`Show selected`},void 0,!1,{fileName:S,lineNumber:196,columnNumber:15},this)
+,h?(0,x.jsxDEV)(x.Fragment,{children:[(0,x.jsxDEV)(`button`,{className:`ml-auto text-sm text-[#1060ff]`,onClick:()=>i([]),children:`Clear selection`},void 0,!1,{fileName:S,lineNumber:196,columnNumber:15},this)
 ,(0,x.jsxDEV)(`div`,{className:`relative`,children:[(0,x.jsxDEV)(w,{onClick:()=>n(t===`actions`?null:`actions`),children:[`Actions `,(0,x.jsxDEV)(C,{className:`size-3 transition-transform ${t===`actions`?`rotate-180`:``}`,src:`6899e.svg`},void 0,!1,{fileName:S,lineNumber:198,columnNumber:102},this)
 ]},void 0,!0,{fileName:S,lineNumber:198,columnNumber:17},this)
-,t===`actions`&&(0,x.jsxDEV)(E,{className:`right-0 top-9 w-56`,children:[(0,x.jsxDEV)(D,{children:[(0,x.jsxDEV)(C,{src:`cfc9e.svg`},void 0,!1,{fileName:S,lineNumber:201,columnNumber:31},this)
-,`Assign Tags`]},void 0,!0,{fileName:S,lineNumber:201,columnNumber:21},this)
-,(0,x.jsxDEV)(D,{onClick:()=>n(`owner`),children:[(0,x.jsxDEV)(C,{src:`4c97e.svg`},void 0,!1,{fileName:S,lineNumber:202,columnNumber:67},this)
-,`Assign Owner`]},void 0,!0,{fileName:S,lineNumber:202,columnNumber:21},this)
-,(0,x.jsxDEV)(D,{danger:!0,children:[(0,x.jsxDEV)(C,{src:`8a442.svg`},void 0,!1,{fileName:S,lineNumber:203,columnNumber:38},this)
-,`Delete selected ${kind===`module`?`modules`:`providers`}`]},void 0,!0,{fileName:S,lineNumber:203,columnNumber:21},this)
-]},void 0,!0,{fileName:S,lineNumber:200,columnNumber:19},this)
+,t===`actions`&&canAssignOwnership&&b.createElement(E,{className:`right-0 top-9 w-56`},
+  b.createElement(D,{onClick:()=>n(`owner`)},`Assign Owner`),
+  b.createElement(D,{onClick:()=>assignOwner(r,``)},`Clear ownership`))
 ]},void 0,!0,{fileName:S,lineNumber:197,columnNumber:15},this)
-]},void 0,!0):(0,x.jsxDEV)(w,{className:`ml-auto`,onClick:()=>i(m.map(item=>item.id)),children:`Bulk select ${kind===`module`?`modules`:`providers`}`},void 0,!1,{fileName:S,lineNumber:208,columnNumber:15},this)
+]},void 0,!0):canAssignOwnership&&(0,x.jsxDEV)(w,{className:`ml-auto`,onClick:()=>i(m.map(item=>item.id)),children:`Bulk select ${kind===`module`?`modules`:`providers`}`},void 0,!1,{fileName:S,lineNumber:208,columnNumber:15},this)
 ]},void 0,!0,{fileName:S,lineNumber:188,columnNumber:9},this)
 ,(0,x.jsxDEV)(`div`,{className:`min-h-8 border-b border-[#d8d9dc] px-2 py-1.5 text-[13px] text-[#656a76]`,children:c?(0,x.jsxDEV)(x.Fragment,{children:[(0,x.jsxDEV)(`button`,{className:`tag`,onClick:()=>l(``),children:[`× \xA0 Owner: `,(0,x.jsxDEV)(`b`,{children:c},void 0,!1,{fileName:S,lineNumber:211,columnNumber:93},this)
 ]},void 0,!0,{fileName:S,lineNumber:211,columnNumber:23},this)
@@ -322,10 +322,10 @@ React keys must be passed directly to JSX without using spread:
 ]},e,!0,{fileName:S,lineNumber:217,columnNumber:17},this)
 )},void 0,!1,{fileName:S,lineNumber:215,columnNumber:13},this)
 ,(0,x.jsxDEV)(`div`,{className:`w-1/2 p-3`,children:[(0,x.jsxDEV)(`label`,{className:`field mb-3 flex items-center gap-2 text-[#656a76]`,children:[(0,x.jsxDEV)(C,{src:`a58cc.svg`},void 0,!1,{fileName:S,lineNumber:221,columnNumber:84},this)
-,(0,x.jsxDEV)(`input`,{className:`w-full outline-none text-[#0c0c0e]`,placeholder:`Search within parameter`},void 0,!1,{fileName:S,lineNumber:221,columnNumber:112},this)
+,(0,x.jsxDEV)(`input`,{className:`w-full outline-none text-[#0c0c0e]`,value:ownerSearch,onChange:event=>setOwnerSearch(event.target.value),placeholder:`Search within parameter`},void 0,!1,{fileName:S,lineNumber:221,columnNumber:112},this)
 ]},void 0,!0,{fileName:S,lineNumber:221,columnNumber:15},this)
 ,(0,x.jsxDEV)(`button`,{className:`mb-3 text-[#1060ff]`,onClick:()=>d(``),children:`Clear selection`},void 0,!1,{fileName:S,lineNumber:222,columnNumber:15},this)
-,[`None`,...new Set(artifacts.map(item=>item.owner).filter(Boolean))].map(e=>(0,x.jsxDEV)(`label`,{className:`flex cursor-pointer gap-2 py-2`,children:[(0,x.jsxDEV)(`input`,{checked:u===e,name:`owner-filter`,onChange:()=>d(e),type:`radio`},void 0,!1,{fileName:S,lineNumber:224,columnNumber:78},this)
+,[`Unowned`,...new Set(artifacts.map(item=>item.owner).filter(Boolean))].filter(name=>name.toLowerCase().includes(ownerSearch.toLowerCase())).map(e=>(0,x.jsxDEV)(`label`,{className:`flex cursor-pointer gap-2 py-2`,children:[(0,x.jsxDEV)(`input`,{checked:u===e,name:`owner-filter`,onChange:()=>d(e),type:`radio`},void 0,!1,{fileName:S,lineNumber:224,columnNumber:78},this)
 ,e]},e,!0,{fileName:S,lineNumber:224,columnNumber:17},this)
 ),(0,x.jsxDEV)(`div`,{className:`mt-2 flex gap-2 border-t border-[#d8d9dc] pt-3`,children:[(0,x.jsxDEV)(w,{primary:!0,onClick:()=>{l(u),n(null)},children:`Apply filters`},void 0,!1,{fileName:S,lineNumber:226,columnNumber:79},this)
 ,(0,x.jsxDEV)(w,{onClick:()=>{d(``),l(``),n(null)},children:`Clear all filters`},void 0,!1,{fileName:S,lineNumber:226,columnNumber:181},this)
@@ -351,7 +351,7 @@ React keys must be passed directly to JSX without using spread:
 ,(0,x.jsxDEV)(`span`,{className:`tag`,children:[(0,x.jsxDEV)(C,{className:`size-3`,src:t.id%2?`66b79.svg`:`2d57d.svg`},void 0,!1,{fileName:S,lineNumber:237,columnNumber:262},this)
 ,t.id%2?`Tag based`:`Branch based`]},void 0,!0,{fileName:S,lineNumber:237,columnNumber:240},this)
 ]},void 0,!0,{fileName:S,lineNumber:237,columnNumber:19},this)
-,(0,x.jsxDEV)(`td`,{children:[`1.2.3`,(0,x.jsxDEV)(`small`,{children:t.kind?`Published just now`:`Published 3 days ago`},void 0,!1,{fileName:S,lineNumber:238,columnNumber:28},this)
+,(0,x.jsxDEV)(`td`,{children:[t.versions[0]||`No versions`,(0,x.jsxDEV)(`small`,{children:`Published 3 days ago`},void 0,!1,{fileName:S,lineNumber:238,columnNumber:28},this)
 ,t.hasStatus&&(0,x.jsxDEV)(`span`,{className:`tag`,children:[(0,x.jsxDEV)(C,{className:`size-3`,src:`ebe42.svg`},void 0,!1,{fileName:S,lineNumber:238,columnNumber:103},this)
 ,`Status`]},void 0,!0,{fileName:S,lineNumber:238,columnNumber:81},this)
 ]},void 0,!0,{fileName:S,lineNumber:238,columnNumber:19},this)
@@ -368,27 +368,13 @@ React keys must be passed directly to JSX without using spread:
 ,(0,x.jsxDEV)(`td`,{children:t.noCode&&(0,x.jsxDEV)(`span`,{className:`inline-flex items-center gap-2`,children:[(0,x.jsxDEV)(C,{src:`eb83f.svg`},void 0,!1,{fileName:S,lineNumber:242,columnNumber:87},this)
 ,`Enabled`]},void 0,!0,{fileName:S,lineNumber:242,columnNumber:38},this)
 },void 0,!1,{fileName:S,lineNumber:242,columnNumber:19},this)
-,(0,x.jsxDEV)(`td`,{children:[(0,x.jsxDEV)(`button`,{className:`underline decoration-dotted`,onClick:()=>openArtifact(t),children:t.owner||(t.defaultOwner?`Organization owners group`:`None`)},void 0,!1,{fileName:S,lineNumber:243,columnNumber:23},this)
+,(0,x.jsxDEV)(`td`,{children:[(0,x.jsxDEV)(`button`,{className:`underline decoration-dotted`,onClick:()=>openArtifact(t),children:ownerLabel(t)},void 0,!1,{fileName:S,lineNumber:243,columnNumber:23},this)
 ]},void 0,!0,{fileName:S,lineNumber:243,columnNumber:19},this)
-,(0,x.jsxDEV)(`td`,{className:`relative`,children:[(0,x.jsxDEV)(w,{ariaLabel:kind===`module`?`Module actions`:`Provider actions`,className:`!px-2`,onClick:()=>{p(f===t.id?null:t.id),n(null)},children:(0,x.jsxDEV)(C,{className:`size-3`,src:`1abde.svg`},void 0,!1,{fileName:S,lineNumber:244,columnNumber:187},this)
+,(0,x.jsxDEV)(`td`,{className:`relative`,children:[(canAssignOwnership||access(t).manage||access(t).remove)&&(0,x.jsxDEV)(w,{ariaLabel:kind===`module`?`Module actions`:`Provider actions`,className:`!px-2`,onClick:()=>{p(f===t.id?null:t.id),n(null)},children:(0,x.jsxDEV)(C,{className:`size-3`,src:`1abde.svg`},void 0,!1,{fileName:S,lineNumber:244,columnNumber:187},this)
 },void 0,!1,{fileName:S,lineNumber:244,columnNumber:44},this)
-,f===t.id&&(0,x.jsxDEV)(E,{className:`right-3 top-10 w-52`,children:[(0,x.jsxDEV)(D,{onClick:()=>{i([t.id]),p(null),n(`owner`)},children:[(0,x.jsxDEV)(C,{src:`4c97e.svg`},void 0,!1,{fileName:S,lineNumber:247,columnNumber:119},this)
-,`Manage owner`]},void 0,!0,{fileName:S,lineNumber:247,columnNumber:25},this)
-,(0,x.jsxDEV)(D,{children:[(0,x.jsxDEV)(C,{src:`ab804.svg`},void 0,!1,{fileName:S,lineNumber:247,columnNumber:180},this)
-,`Publish settings`]},void 0,!0,{fileName:S,lineNumber:247,columnNumber:170},this)
-,(0,x.jsxDEV)(D,{children:[(0,x.jsxDEV)(C,{src:`3c913.svg`},void 0,!1,{fileName:S,lineNumber:247,columnNumber:245},this)
-,`Test settings`]},void 0,!0,{fileName:S,lineNumber:247,columnNumber:235},this)
-,(0,x.jsxDEV)(D,{children:[(0,x.jsxDEV)(C,{src:`1fbf9.svg`},void 0,!1,{fileName:S,lineNumber:247,columnNumber:307},this)
-,`No-code settings`]},void 0,!0,{fileName:S,lineNumber:247,columnNumber:297},this)
-,(0,x.jsxDEV)(D,{children:[(0,x.jsxDEV)(C,{src:`cfc9e.svg`},void 0,!1,{fileName:S,lineNumber:247,columnNumber:372},this)
-,`Manage tags`]},void 0,!0,{fileName:S,lineNumber:247,columnNumber:362},this)
-,(0,x.jsxDEV)(D,{children:[(0,x.jsxDEV)(C,{src:`40c34.svg`},void 0,!1,{fileName:S,lineNumber:247,columnNumber:432},this)
-,`Design configuration`]},void 0,!0,{fileName:S,lineNumber:247,columnNumber:422},this)
-,(0,x.jsxDEV)(D,{children:[(0,x.jsxDEV)(C,{src:`0c376.svg`},void 0,!1,{fileName:S,lineNumber:247,columnNumber:501},this)
-,`Module versions`]},void 0,!0,{fileName:S,lineNumber:247,columnNumber:491},this)
-,(0,x.jsxDEV)(D,{danger:!0,children:[(0,x.jsxDEV)(C,{src:`8a442.svg`},void 0,!1,{fileName:S,lineNumber:247,columnNumber:572},this)
-,`Delete ${kind}`]},void 0,!0,{fileName:S,lineNumber:247,columnNumber:555},this)
-]},void 0,!0,{fileName:S,lineNumber:246,columnNumber:23},this)
+,f===t.id&&b.createElement(E,{className:`right-3 top-10 w-52`},
+  canAssignOwnership&&b.createElement(D,{onClick:()=>{i([t.id]);p(null);n(`owner`);}},`Manage owner`),
+  (access(t).manage||access(t).remove)&&b.createElement(D,{onClick:()=>openArtifact(t)},`Open artifact settings`))
 ]},void 0,!0,{fileName:S,lineNumber:244,columnNumber:19},this)
 ]},t.id,!0,{fileName:S,lineNumber:235,columnNumber:17},this)
 )},void 0,!1,{fileName:S,lineNumber:233,columnNumber:13},this)
@@ -408,16 +394,30 @@ function ce({owner,close:n,save,artifacts,permissions}){const[e,t]=b.useState(ow
 ,b.createElement(OwnerTeamPicker,{value:e,onChange:t,scenario:`assignment`,permissions,artifacts})
 ]},void 0,!0,{fileName:S,lineNumber:267,columnNumber:9},this)
 ,(0,x.jsxDEV)(`div`,{className:`flex gap-3 border-t border-[#d8d9dc] px-6 py-4`,children:[(0,x.jsxDEV)(w,{primary:!0,onClick:r,children:`Save`},void 0,!1,{fileName:S,lineNumber:273,columnNumber:73},this)
-,(0,x.jsxDEV)(w,{onClick:()=>save(``,true),children:`Remove owner`},void 0,!1,{fileName:S,lineNumber:273,columnNumber:117},this)
+,artifacts.some(artifact=>artifact.owner)&&(0,x.jsxDEV)(w,{onClick:()=>save(``,true),children:`Remove owner`},void 0,!1,{fileName:S,lineNumber:273,columnNumber:117},this)
 ,(0,x.jsxDEV)(`button`,{className:`ml-auto text-[#1060ff]`,onClick:n,children:`Cancel`},void 0,!1,{fileName:S,lineNumber:273,columnNumber:175},this)
 ]},void 0,!0,{fileName:S,lineNumber:273,columnNumber:9},this)
 ]},void 0,!0,{fileName:S,lineNumber:265,columnNumber:7},this)
 },void 0,!1,{fileName:S,lineNumber:264,columnNumber:5},this)
 }
-function le({owner:e,artifact,assignOwner,overlay:n,setOverlay:r,setScreen:i,setToast,permissions,viewerIsOwner,canAssignOwnership}){
+function OwnershipClearConfirmation({count,onCancel,onConfirm}) {
+  const h=b.createElement;
+  const cancel=b.useRef(null);
+  b.useEffect(()=>{cancel.current?.focus();},[]);
+  return h(`div`,{className:`overlay ownership-clear-overlay`,onMouseDown:onCancel},
+    h(`section`,{role:`dialog`,"aria-modal":true,"aria-label":`Remove ownership`,className:`modal`,
+      onMouseDown:event=>event.stopPropagation(),onKeyDown:event=>{if(event.key===`Escape`){event.stopPropagation();onCancel();}}},
+      h(`div`,{className:`px-6 py-4 border-b border-[#d8d9dc]`},h(`h2`,null,`Remove ownership?`)),
+      h(`div`,{className:`p-6`},`Remove the owner from ${count===1?`this artifact`:`${count} selected artifacts`}? The artifacts and their versions will become unowned. Only organization owners and globally authorized Registry managers will retain management access. Team permissions will not change.`),
+      h(`div`,{className:`flex gap-3 px-6 py-4 border-t border-[#d8d9dc]`},
+        h(`button`,{ref:cancel,type:`button`,className:`btn`,onClick:onCancel},`Cancel`),
+        h(w,{danger:true,onClick:onConfirm},`Remove ownership`))));
+}
+function le({owner:e,artifact,assignOwner,overlay:n,setOverlay:r,setScreen:i,setToast,permissions,viewerIsOwner,canAssignOwnership,viewerAccess,updateArtifact,deleteArtifact}){
   const [detailTab,setDetailTab]=b.useState(`Readme`);
   const [actionsOpen,setActionsOpen]=b.useState(false);
-  const [selectedVersion,setSelectedVersion]=b.useState(`1.2.3`);
+  const [selectedVersion,setSelectedVersion]=b.useState(artifact.versions[0]||``);
+  const [versionDialog,setVersionDialog]=b.useState(null);
   const h=b.createElement;
   const detailContent=detailTab===`Readme`
     ?h(b.Fragment,null,
@@ -441,7 +441,7 @@ function le({owner:e,artifact,assignOwner,overlay:n,setOverlay:r,setScreen:i,set
             ?h(`section`,null,h(`h2`,null,`Submodules`),h(`p`,{className:`mt-4`},`No submodules are available for this version.`))
             :h(`section`,null,h(`h2`,null,`Examples`),h(`p`,{className:`mt-4`},`No examples are available for this version.`));
   const copyConfiguration=()=>{
-    const config=`module "aws-rd" {\n  source  = "terraform-aws-modules/rds/aws"\n  version = "1.12.1"\n}`;
+    const config=`module "aws-rd" {\n  source  = "terraform-aws-modules/rds/aws"\n  version = "${selectedVersion}"\n}`;
     if(!navigator.clipboard?.writeText){
           setToast(`Clipboard access is unavailable. Select and copy the configuration manually.`);
           return;
@@ -468,25 +468,12 @@ function le({owner:e,artifact,assignOwner,overlay:n,setOverlay:r,setScreen:i,set
 ]},void 0,!0,{fileName:S,lineNumber:284,columnNumber:14},this)
 ,(0,x.jsxDEV)(`p`,{className:`mt-2 text-[#656a76]`,children:`Module works with Terraform and can do 1 2 3 4 5.`},void 0,!1,{fileName:S,lineNumber:284,columnNumber:174},this)
 ]},void 0,!0,{fileName:S,lineNumber:284,columnNumber:9},this)
-,(0,x.jsxDEV)(w,{onClick:()=>r(n===`row`?null:`row`),children:[`Manage `,(0,x.jsxDEV)(C,{className:`size-3 transition-transform ${n===`row`?`rotate-180`:``}`,src:`6899e.svg`},void 0,!1,{fileName:S,lineNumber:285,columnNumber:85},this)
+,(canAssignOwnership||viewerAccess.manage||viewerAccess.remove)&&(0,x.jsxDEV)(w,{onClick:()=>r(n===`row`?null:`row`),children:[`Manage `,(0,x.jsxDEV)(C,{className:`size-3 transition-transform ${n===`row`?`rotate-180`:``}`,src:`6899e.svg`},void 0,!1,{fileName:S,lineNumber:285,columnNumber:85},this)
 ]},void 0,!0,{fileName:S,lineNumber:285,columnNumber:9},this)
-,n===`row`&&(0,x.jsxDEV)(E,{className:`right-0 top-10 w-52`,children:[canAssignOwnership&&(0,x.jsxDEV)(D,{onClick:()=>r(`owner`),children:[(0,x.jsxDEV)(C,{src:`4c97e.svg`},void 0,!1,{fileName:S,lineNumber:286,columnNumber:115},this)
-,`Manage owner`]},void 0,!0,{fileName:S,lineNumber:286,columnNumber:69},this)
-,(0,x.jsxDEV)(D,{children:[(0,x.jsxDEV)(C,{src:`ab804.svg`},void 0,!1,{fileName:S,lineNumber:286,columnNumber:176},this)
-,`Publish settings`]},void 0,!0,{fileName:S,lineNumber:286,columnNumber:166},this)
-,(0,x.jsxDEV)(D,{children:[(0,x.jsxDEV)(C,{src:`3c913.svg`},void 0,!1,{fileName:S,lineNumber:286,columnNumber:241},this)
-,`Test settings`]},void 0,!0,{fileName:S,lineNumber:286,columnNumber:231},this)
-,(0,x.jsxDEV)(D,{children:[(0,x.jsxDEV)(C,{src:`1fbf9.svg`},void 0,!1,{fileName:S,lineNumber:286,columnNumber:303},this)
-,`No-code settings`]},void 0,!0,{fileName:S,lineNumber:286,columnNumber:293},this)
-,(0,x.jsxDEV)(D,{children:[(0,x.jsxDEV)(C,{src:`cfc9e.svg`},void 0,!1,{fileName:S,lineNumber:286,columnNumber:368},this)
-,`Manage tags`]},void 0,!0,{fileName:S,lineNumber:286,columnNumber:358},this)
-,(0,x.jsxDEV)(D,{children:[(0,x.jsxDEV)(C,{src:`40c34.svg`},void 0,!1,{fileName:S,lineNumber:286,columnNumber:428},this)
-,`Design configuration`]},void 0,!0,{fileName:S,lineNumber:286,columnNumber:418},this)
-,(0,x.jsxDEV)(D,{children:[(0,x.jsxDEV)(C,{src:`0c376.svg`},void 0,!1,{fileName:S,lineNumber:286,columnNumber:497},this)
-,`Module versions`]},void 0,!0,{fileName:S,lineNumber:286,columnNumber:487},this)
-,(0,x.jsxDEV)(D,{danger:!0,children:[(0,x.jsxDEV)(C,{src:`8a442.svg`},void 0,!1,{fileName:S,lineNumber:286,columnNumber:568},this)
-,`Delete module`]},void 0,!0,{fileName:S,lineNumber:286,columnNumber:551},this)
-]},void 0,!0,{fileName:S,lineNumber:286,columnNumber:31},this)
+,n===`row`&&h(E,{className:`right-0 top-10 w-64`},
+  canAssignOwnership&&h(D,{onClick:()=>r(`owner`)},h(C,{src:`4c97e.svg`}),`Manage owner`),
+  viewerAccess.manage&&h(D,{onClick:()=>{r(null);setToast(`Publishing settings are not connected in this static prototype.`);}},`Publish settings`),
+  viewerAccess.remove&&h(D,{danger:true,onClick:()=>{r(null);setVersionDialog(`delete-artifact`);}},`Delete module`))
 ]},void 0,!0,{fileName:S,lineNumber:283,columnNumber:7},this)
 ,(0,x.jsxDEV)(`div`,{className:`mb-7 flex flex-wrap gap-x-6 gap-y-2 text-sm text-[#656a76]`,children:[(0,x.jsxDEV)(`span`,{className:`meta`,children:[(0,x.jsxDEV)(C,{src:`b927e.svg`},void 0,!1,{fileName:S,lineNumber:288,columnNumber:106},this)
 ,`Published by `,(0,x.jsxDEV)(`a`,{className:`text-[#1060ff]`,children:`hashicorp ↗`},void 0,!1,{fileName:S,lineNumber:288,columnNumber:147},this)
@@ -507,17 +494,13 @@ function le({owner:e,artifact,assignOwner,overlay:n,setOverlay:r,setScreen:i,set
 ,(0,x.jsxDEV)(`h2`,{className:`mb-2`,children:`Module details`},void 0,!1,{fileName:S,lineNumber:289,columnNumber:7},this)
 ,(0,x.jsxDEV)(`p`,{className:`mb-4 text-sm text-[#656a76]`,children:`See submodules, examples, the ReadMe and other information for a particular module version.`},void 0,!1,{fileName:S,lineNumber:289,columnNumber:47},this)
 ,(0,x.jsxDEV)(`div`,{className:`mb-7 flex flex-wrap items-end gap-2`,children:[(0,x.jsxDEV)(`label`,{className:`min-w-64 flex-1`,children:[(0,x.jsxDEV)(`b`,{children:`Select version`},void 0,!1,{fileName:S,lineNumber:290,columnNumber:95},this)
-,(0,x.jsxDEV)(`select`,{className:`field mt-2`,value:selectedVersion,onChange:event=>setSelectedVersion(event.target.value),children:[
-  (0,x.jsxDEV)(`option`,{key:`1.2.3`,value:`1.2.3`,children:`1.2.3 (latest)`},void 0,!1,{fileName:S,lineNumber:290,columnNumber:147},this)
-, (0,x.jsxDEV)(`option`,{key:`1.2.2`,value:`1.2.2`,children:`1.2.2`},void 0,!1,{fileName:S,lineNumber:290,columnNumber:147},this)
-, (0,x.jsxDEV)(`option`,{key:`1.2.1`,value:`1.2.1`,children:`1.2.1`},void 0,!1,{fileName:S,lineNumber:290,columnNumber:147},this)
-]},void 0,!1,{fileName:S,lineNumber:290,columnNumber:116},this)
+,h(`select`,{className:`field mt-2`,value:selectedVersion,disabled:!artifact.versions.length,onChange:event=>{setSelectedVersion(event.target.value);setActionsOpen(false);}},
+  artifact.versions.length?artifact.versions.map((version,index)=>h(`option`,{key:version,value:version},`${version}${index===0?` (latest)`:``}`)):h(`option`,{value:``},`No published versions`))
 ]},void 0,!0,{fileName:S,lineNumber:290,columnNumber:60},this)
-, (0,x.jsxDEV)(`div`,{className:`relative`,children:[(0,x.jsxDEV)(`button`,{type:`button`,className:`btn`,onClick:()=>setActionsOpen(value=>!value),"aria-expanded":actionsOpen,children:[`Actions `,(0,x.jsxDEV)(C,{className:`size-3`,src:`6899e.svg`},void 0,!1,{fileName:S,lineNumber:290,columnNumber:180},this)]},void 0,!0,{fileName:S,lineNumber:290,columnNumber:160},this)
-,actionsOpen&&(0,x.jsxDEV)(E,{className:`right-0 top-9 z-20 w-52`,children:[
-  (0,x.jsxDEV)(D,{key:`manage-environment-tags`,onClick:()=>{setActionsOpen(false);setToast(`Manage environment tags for version ${selectedVersion}.`)},children:[(0,x.jsxDEV)(`span`,{"aria-hidden":true,className:`version-action-gear`,children:`⚙`},void 0,!1,{fileName:S,lineNumber:290,columnNumber:220},this),`Manage environment tags`]},void 0,!0,{fileName:S,lineNumber:290,columnNumber:200},this)
-,  (0,x.jsxDEV)(D,{key:`delete-version`,danger:!0,onClick:()=>{setActionsOpen(false);setToast(`Delete version ${selectedVersion}.`)},children:`Delete version ${selectedVersion}`},void 0,!1,{fileName:S,lineNumber:290,columnNumber:280},this)
-]},void 0,!0,{fileName:S,lineNumber:290,columnNumber:210},this)
+,selectedVersion&&(viewerAccess.tags||viewerAccess.remove)&&(0,x.jsxDEV)(`div`,{className:`relative`,children:[(0,x.jsxDEV)(`button`,{type:`button`,className:`btn`,onClick:()=>setActionsOpen(value=>!value),"aria-expanded":actionsOpen,children:[`Actions `,(0,x.jsxDEV)(C,{className:`size-3`,src:`6899e.svg`},void 0,!1,{fileName:S,lineNumber:290,columnNumber:180},this)]},void 0,!0,{fileName:S,lineNumber:290,columnNumber:160},this)
+,actionsOpen&&h(E,{className:`right-0 top-9 z-20 w-64`},
+  viewerAccess.tags&&h(D,{onClick:()=>{setActionsOpen(false);setVersionDialog(`tags`);}},h(`span`,{"aria-hidden":true,className:`version-action-gear`},`\u2699`),`Manage environment tags`),
+  viewerAccess.remove&&h(D,{danger:true,onClick:()=>{setActionsOpen(false);setVersionDialog(`delete`);}},`Delete version ${selectedVersion}`))
 ]},void 0,!0,{fileName:S,lineNumber:290,columnNumber:150},this)
 ,(0,x.jsxDEV)(w,{onClick:()=>setDetailTab(`Submodules`),children:[`Submodules `,(0,x.jsxDEV)(C,{className:`size-3`,src:`6899e.svg`},void 0,!1,{fileName:S,lineNumber:290,columnNumber:214},this)
 ]},void 0,!0,{fileName:S,lineNumber:290,columnNumber:195},this)
@@ -527,7 +510,7 @@ function le({owner:e,artifact,assignOwner,overlay:n,setOverlay:r,setScreen:i,set
 ,`Provision no-code workspace`]},void 0,!0,{fileName:S,lineNumber:290,columnNumber:343},this)
 ]},void 0,!0,{fileName:S,lineNumber:290,columnNumber:7},this)
 ,(0,x.jsxDEV)(`div`,{className:`mb-8 grid gap-5 rounded border border-[#d8d9dc] p-5 sm:grid-cols-4`,children:[(0,x.jsxDEV)(`div`,{children:[(0,x.jsxDEV)(`b`,{children:`Environment tags`},void 0,!1,{fileName:S,lineNumber:291,columnNumber:96},this)
-,(0,x.jsxDEV)(`small`,{children:`10 assigned`},void 0,!1,{fileName:S,lineNumber:291,columnNumber:119},this)
+,h(`small`,null,`${(artifact.versionTags[selectedVersion]||[]).length} assigned`)
 ]},void 0,!0,{fileName:S,lineNumber:291,columnNumber:91},this)
 ,(0,x.jsxDEV)(`div`,{children:[(0,x.jsxDEV)(`b`,{children:`Version downloads`},void 0,!1,{fileName:S,lineNumber:291,columnNumber:156},this)
 ,(0,x.jsxDEV)(`small`,{className:`mt-1 inline-flex items-center gap-2`,children:[(0,x.jsxDEV)(C,{className:`size-4`,src:`304aa.svg`},void 0,!1,{fileName:S,lineNumber:291,columnNumber:180},this),`123`]},void 0,!0,{fileName:S,lineNumber:291,columnNumber:180},this)
@@ -560,7 +543,7 @@ function le({owner:e,artifact,assignOwner,overlay:n,setOverlay:r,setScreen:i,set
 ,(0,x.jsxDEV)(`p`,{className:`my-4`,children:`Copy and paste into your Terraform configuration and set values for the input variables.`},void 0,!1,{fileName:S,lineNumber:294,columnNumber:148},this)
 ,(0,x.jsxDEV)(`pre`,{children:`module "aws-rd" {
   source  = "terraform-aws-modules/rds/aws"
-  version = "1.12.1"
+  version = "${selectedVersion}"
 }`},void 0,!1,{fileName:S,lineNumber:294,columnNumber:260},this)
 ,(0,x.jsxDEV)(`button`,{className:`my-4 text-[#1060ff]`,onClick:copyConfiguration,children:`Copy configuration ⧉`},void 0,!1,{fileName:S,lineNumber:294,columnNumber:362},this)
 ,(0,x.jsxDEV)(`p`,{children:[`When running Terraform on CLI, you must `,(0,x.jsxDEV)(`a`,{className:`text-[#1060ff]`,children:`configure credentials`},void 0,!1,{fileName:S,lineNumber:294,columnNumber:474},this)
@@ -568,7 +551,37 @@ function le({owner:e,artifact,assignOwner,overlay:n,setOverlay:r,setScreen:i,set
 ]},void 0,!0,{fileName:S,lineNumber:294,columnNumber:9},this)
 ]},void 0,!0,{fileName:S,lineNumber:292,columnNumber:7},this)
 ,n===`owner`&&(0,x.jsxDEV)(ce,{owner:e,artifacts:[artifact],permissions,close:()=>r(null),save:(owner,showDetails)=>assignOwner([artifact.id],owner,showDetails)},void 0,!1,{fileName:S,lineNumber:296,columnNumber:31},this)
+,versionDialog&&h(VersionActionDialog,{action:versionDialog,version:selectedVersion,tags:artifact.versionTags[selectedVersion]||[],onCancel:()=>setVersionDialog(null),
+  onSave:tags=>{
+    if(!viewerAccess.tags){setToast(`You do not have permission to manage environment tags.`);return;}
+    updateArtifact({...artifact,versionTags:{...artifact.versionTags,[selectedVersion]:tags}});
+    setVersionDialog(null);setToast(`Environment tags updated for ${selectedVersion}.`);
+  },onDelete:()=>{
+    if(!viewerAccess.remove){setToast(`You do not have permission to delete this version or artifact.`);return;}
+    if(versionDialog===`delete-artifact`){deleteArtifact(artifact.id);return;}
+    const versions=artifact.versions.filter(version=>version!==selectedVersion);
+    updateArtifact({...artifact,versions});
+    setToast(`Version ${selectedVersion} deleted.`);setSelectedVersion(versions[0]||``);setVersionDialog(null);
+  }})
 ]},void 0,!0)}
+function VersionActionDialog({action,version,tags,onCancel,onSave,onDelete}) {
+  const h=b.createElement;
+  const [draft,setDraft]=b.useState(tags.join(`, `));
+  const cancel=b.useRef(null);
+  const title=action===`tags`?`Manage environment tags`:action===`delete-artifact`?`Delete module?`:`Delete version ${version}?`;
+  b.useEffect(()=>{cancel.current?.focus();},[]);
+  return h(`div`,{className:`overlay`,onMouseDown:onCancel},
+    h(`section`,{className:`modal`,role:`dialog`,"aria-modal":true,"aria-label":title,onMouseDown:event=>event.stopPropagation(),
+      onKeyDown:event=>{if(event.key===`Escape`)onCancel();}},
+      h(`div`,{className:`px-6 py-4 border-b border-[#d8d9dc]`},h(`h2`,null,title)),
+      h(`div`,{className:`p-6`},action===`tags`
+        ?h(`label`,null,`Environment tags for ${version}`,h(`input`,{className:`field mt-2`,value:draft,onChange:event=>setDraft(event.target.value)}),h(`small`,null,`Separate tag names with commas. Existing tag permissions apply independently of ownership.`))
+        :`This removes ${action===`delete-artifact`?`the module and all of its versions`:`version ${version}`} from this prototype. This does not change the owner team's permissions.`),
+      h(`div`,{className:`flex gap-3 px-6 py-4 border-t border-[#d8d9dc]`},
+        h(`button`,{ref:cancel,type:`button`,className:`btn`,onClick:onCancel},`Cancel`),
+        action===`tags`?h(w,{primary:true,onClick:()=>onSave([...new Set(draft.split(`,`).map(tag=>tag.trim()).filter(Boolean))])},`Save tags`)
+          :h(w,{danger:true,onClick:onDelete},action===`delete-artifact`?`Delete module`:`Delete version ${version}`))));
+}
 function ue({setScreen:e,setToast:t,team,permissions={},savePermissions}){let[n,r]=(0,b.useState)(permissions.project||`None`),[i,a]=(0,b.useState)(permissions.workspace||`None`),[o,s]=(0,b.useState)(permissions.team||`None`),[c,l]=(0,b.useState)(!!permissions.privateRegistry),[u,d]=(0,b.useState)(!!permissions.publicRegistry),[f,p]=(0,b.useState)(!!permissions.privateOwnership),[m,h]=(0,b.useState)(!!permissions.publicOwnership),[g,_]=(0,b.useState)(`Modules`),[v,y]=(0,b.useState)(`Modules`),[ee,te]=(0,b.useState)(permissions.options||{}),ne=c,re=u,ie=e=>te(t=>({...t,[e]:!t[e]})),T=[{label:`Project permissions`,value:n,setValue:r,options:[[`None`,`Does not grant members any explicit access to projects.`],[`View all projects`,`Allow this team to view all projects in this organization.`],[`Manage all projects`,`Grant the ability to view, edit, delete, and assign team access to all projects.`]]},{label:`Workspace permissions`,value:i,setValue:a,options:[[`None`,`Does not grant members any explicit access to workspaces.`],[`View all workspaces`,`Allow this team to view all workspaces in this organization.`],[`Manage all workspaces`,`Grant the ability to view, edit, delete, and assign team access to all workspaces.`]]}],ae=[[`Manage policies`,`Allow members to create, edit, read, list, and delete the organization’s policies.`],[`Manage policy overrides`,`Allow members to override soft-mandatory policy checks.`],[`Manage run tasks`,`Allow members to create, update, and delete run tasks for the organization.`],[`Manage version control settings`,`Allow members to manage the organization’s VCS providers and SSH keys.`],[`Manage agent pools`,`Allow members to create, update, and delete the organization’s agent pools.`]],E=e=>{let t=e===`Modules`?`modules`:e===`Providers`?`providers`:`stack component configurations`;return[[`Publish and manage ${t} for this team`,`Allow members to publish and manage ${t} assigned to this team.`],[`Publish and manage ${t} for the organization`,`Allow members to publish and manage all ${t} in the organization’s registry.`],[`Delete ${t} owned by this team`,`Allow members to delete ${t} assigned to this team.`],[`Delete any ${t} in the organization`,`Allow members to delete all ${t} in the organization’s registry.`]]},D=({id:e,label:t,helper:n})=>(0,x.jsxDEV)(`label`,{className:`permission-option`,children:[(0,x.jsxDEV)(`input`,{checked:!!ee[e],onChange:()=>ie(e),type:`checkbox`},void 0,!1,{fileName:S,lineNumber:354,columnNumber:42},this)
 ,(0,x.jsxDEV)(`span`,{children:[(0,x.jsxDEV)(`b`,{children:t},void 0,!1,{fileName:S,lineNumber:354,columnNumber:131},this)
 ,(0,x.jsxDEV)(`small`,{children:n},void 0,!1,{fileName:S,lineNumber:354,columnNumber:145},this)
@@ -664,7 +677,7 @@ return(0,x.jsxDEV)(x.Fragment,{children:[(0,x.jsxDEV)(oe,{children:[(0,x.jsxDEV)
 ,(0,x.jsxDEV)(`hr`,{className:`border-[#d8d9dc]`},void 0,!1,{fileName:S,lineNumber:364,columnNumber:7},this)
 ,registrySection(`private`,c,l,f,p,g,_,[`Modules`,`Providers`,`Stack Component Configurations`])
 ,(0,x.jsxDEV)(`hr`,{className:`border-[#d8d9dc]`},void 0,!1,{fileName:S,lineNumber:374,columnNumber:7},this)
-,registrySection(`public`,u,d,m,h,v,y,[`Modules`,`Providers`])
+,(0,b.createElement)(`p`,{className:`text-sm text-[#656a76]`},`Ownership applies to private modules, providers, and stack component configurations. Public namespaces and curated public artifacts are outside this proposal.`)
 ,(0,x.jsxDEV)(`div`,{className:`flex gap-3 border-t border-[#d8d9dc] pt-6`,children:[(0,x.jsxDEV)(w,{primary:!0,onClick:()=>{savePermissions({project:n,workspace:i,team:o,privateRegistry:c,publicRegistry:u,privateOwnership:f,publicOwnership:m,options:ee}),t(`Permissions saved for ${team}`),e(`library`)},children:`Save permissions`},void 0,!1,{fileName:S,lineNumber:384,columnNumber:66},this)
 ,(0,x.jsxDEV)(w,{onClick:()=>e(`library`),children:`Cancel`},void 0,!1,{fileName:S,lineNumber:384,columnNumber:211},this)
 ]},void 0,!0,{fileName:S,lineNumber:384,columnNumber:7},this)
@@ -680,7 +693,11 @@ function de(){return(0,x.jsxDEV)(`div`,{className:`mb-14 mt-7 grid grid-cols-3 b
 ,`Configure settings`]},void 0,!0,{fileName:S,lineNumber:390,columnNumber:309},this)
 ]},void 0,!0,{fileName:S,lineNumber:390,columnNumber:10},this)
 }
-function fe({kind:e,setScreen:t,publish,publishingScenario,permissions}){let[r,i]=(0,b.useState)(``),s=e===`module`;const[name,setName]=b.useState(s?`rds-aurora`:`aws-rds-aurora-coolcorp`),[target,setTarget]=b.useState(`aws`),[noCode,setNoCode]=b.useState(!1);return(0,x.jsxDEV)(x.Fragment,{children:[(0,x.jsxDEV)(oe,{children:[(0,x.jsxDEV)(`button`,{children:`CoolCorp`},void 0,!1,{fileName:S,lineNumber:399,columnNumber:15},this)
+function fe({kind:e,setScreen:t,publish,publishingScenario,permissions}){
+const eligible=eligiblePublishingTeams(permissions,publishingScenario);
+let[r,i]=(0,b.useState)(publishingScenario!==`any`&&eligible.length===1?eligible[0]:``),s=e===`module`;
+const canPublish=publishingScenario===`any`?(!r||eligible.includes(r)):eligible.includes(r);
+const[name,setName]=b.useState(s?`rds-aurora`:`aws-rds-aurora-coolcorp`),[target,setTarget]=b.useState(`aws`),[noCode,setNoCode]=b.useState(!1);return(0,x.jsxDEV)(x.Fragment,{children:[(0,x.jsxDEV)(oe,{children:[(0,x.jsxDEV)(`button`,{children:`CoolCorp`},void 0,!1,{fileName:S,lineNumber:399,columnNumber:15},this)
 ,(0,x.jsxDEV)(`span`,{children:`/`},void 0,!1,{fileName:S,lineNumber:399,columnNumber:40},this)
 ,(0,x.jsxDEV)(`button`,{children:`Registry`},void 0,!1,{fileName:S,lineNumber:399,columnNumber:54},this)
 ,(0,x.jsxDEV)(`span`,{children:`/`},void 0,!1,{fileName:S,lineNumber:399,columnNumber:79},this)
@@ -713,9 +730,9 @@ function fe({kind:e,setScreen:t,publish,publishingScenario,permissions}){let[r,i
 ]},void 0,!0,{fileName:S,lineNumber:402,columnNumber:541},this)
 ,b.createElement(OwnerTeamPicker,{value:r,onChange:i,scenario:publishingScenario,permissions})
 ,s&&(0,x.jsxDEV)(`div`,{className:`my-7`,children:[(0,x.jsxDEV)(`h2`,{children:`No-code provisioning`},void 0,!1,{fileName:S,lineNumber:404,columnNumber:42},this)
-,(0,x.jsxDEV)(`label`,{className:`mt-5 flex gap-4`,children:[(0,x.jsxDEV)(`input`,{type:`checkbox`,checked:noCode,onChange:event=>setNoCode(event.target.checked)},void 0,!1,{fileName:S,lineNumber:404,columnNumber:106},this)
+,(0,x.jsxDEV)(`label`,{className:`mt-5 flex gap-4`,children:[(0,x.jsxDEV)(`input`,{type:`checkbox`,disabled:publishingScenario!==`any`,checked:noCode,onChange:event=>setNoCode(event.target.checked)},void 0,!1,{fileName:S,lineNumber:404,columnNumber:106},this)
 ,(0,x.jsxDEV)(`span`,{children:[(0,x.jsxDEV)(`b`,{children:`Add Module to no-code provision allowlist`},void 0,!1,{fileName:S,lineNumber:404,columnNumber:137},this)
-,(0,x.jsxDEV)(`small`,{children:`No-code provisioning allows your organization members to provision resources defined by this module with the click of a button.`},void 0,!1,{fileName:S,lineNumber:404,columnNumber:185},this)
+,(0,x.jsxDEV)(`small`,{children:`No-code provisioning uses existing permissions; ownership does not grant access. This control is enabled only in the global-manager publishing scenario.`},void 0,!1,{fileName:S,lineNumber:404,columnNumber:185},this)
 ]},void 0,!0,{fileName:S,lineNumber:404,columnNumber:131},this)
 ]},void 0,!0,{fileName:S,lineNumber:404,columnNumber:71},this)
 ]},void 0,!0,{fileName:S,lineNumber:404,columnNumber:20},this)
@@ -730,31 +747,43 @@ function fe({kind:e,setScreen:t,publish,publishingScenario,permissions}){let[r,i
 ,(0,x.jsxDEV)(`span`,{className:`meta p-4`,children:[(0,x.jsxDEV)(re,{src:`30790.svg`},void 0,!1,{fileName:S,lineNumber:405,columnNumber:484},this)
 ,`Tag (prefix: sg/)`]},void 0,!0,{fileName:S,lineNumber:405,columnNumber:457},this)
 ]},void 0,!0,{fileName:S,lineNumber:405,columnNumber:110},this)
-,b.createElement(`p`,{className:`mt-3`},b.createElement(`b`,null,`Owner: `),r||`Default (Organization owners group)`)
-]},void 0,!0):(0,x.jsxDEV)(`div`,{className:`space-y-2 rounded border border-[#d8d9dc] p-5 text-[#656a76]`,children:[[`Name`,name||`aws-rds-aurora`],[`VCS Provider`,`Github`],[`Repository`,`hashi/aws-rds-aurora`],[`Owner`,r||`Default (Organization owners group)`]].map(([e,t])=>(0,x.jsxDEV)(`div`,{className:`grid grid-cols-[125px_1fr] gap-6`,children:[(0,x.jsxDEV)(`b`,{className:`text-right`,children:e},void 0,!1,{fileName:S,lineNumber:405,columnNumber:870},this)
+,b.createElement(`p`,{className:`mt-3`},b.createElement(`b`,null,`Owner: `),r||`Unowned`)
+]},void 0,!0):(0,x.jsxDEV)(`div`,{className:`space-y-2 rounded border border-[#d8d9dc] p-5 text-[#656a76]`,children:[[`Name`,name||`aws-rds-aurora`],[`VCS Provider`,`Github`],[`Repository`,`hashi/aws-rds-aurora`],[`Owner`,r||`Unowned`]].map(([e,t])=>(0,x.jsxDEV)(`div`,{className:`grid grid-cols-[125px_1fr] gap-6`,children:[(0,x.jsxDEV)(`b`,{className:`text-right`,children:e},void 0,!1,{fileName:S,lineNumber:405,columnNumber:870},this)
 ,(0,x.jsxDEV)(`span`,{children:t},void 0,!1,{fileName:S,lineNumber:405,columnNumber:905},this)
 ]},e,!0,{fileName:S,lineNumber:405,columnNumber:810},this)
 )},void 0,!1,{fileName:S,lineNumber:405,columnNumber:544},this)
 ,(0,x.jsxDEV)(`div`,{className:`mt-8 flex items-center`,children:[(0,x.jsxDEV)(`button`,{className:`text-[#1060ff]`,onClick:()=>t(`library`),children:`‹ \xA0 Previous`},void 0,!1,{fileName:S,lineNumber:406,columnNumber:49},this)
 ,(0,x.jsxDEV)(`div`,{className:`ml-auto flex gap-4`,children:[(0,x.jsxDEV)(w,{onClick:()=>t(`library`),children:`Cancel`},void 0,!1,{fileName:S,lineNumber:406,columnNumber:183},this)
-,(0,x.jsxDEV)(w,{primary:!0,disabled:s&&(!name.trim()||!target.trim()),onClick:()=>publish({kind:e,name:name.trim()||`aws-rds-aurora`,owner:r,provider:s?target.trim():`provider`,registry:`Private`,downloads:0,noCode:s&&noCode,hasStatus:!1}),children:`Publish`},void 0,!1,{fileName:S,lineNumber:406,columnNumber:243},this)
+,!canPublish&&b.createElement(`p`,{role:`alert`,className:`owner-permission-alert`},`Publication requires an eligible owner team with manage-owned permission.`)
+,(0,x.jsxDEV)(w,{primary:!0,disabled:!canPublish||(s&&(!name.trim()||!target.trim())),onClick:()=>publish({kind:e,name:name.trim()||`aws-rds-aurora`,owner:r,provider:s?target.trim():`provider`,registry:`Private`,downloads:0,noCode:s&&noCode,hasStatus:!1}),children:`Publish`},void 0,!1,{fileName:S,lineNumber:406,columnNumber:243},this)
 ]},void 0,!0,{fileName:S,lineNumber:406,columnNumber:147},this)
 ]},void 0,!0,{fileName:S,lineNumber:406,columnNumber:9},this)
 ]},void 0,!0,{fileName:S,lineNumber:401,columnNumber:7},this)
 ]},void 0,!0)}
-const ownerTeams=[...new Set([...ne.map(artifact=>artifact.owner),...te])];
+const ownerTeams=[...new Set([...ne.map(artifact=>artifact.owner),...te,`Owners`])];
 const publishingMemberTeams=[`Core`,`AppEng`];
-function artifactOwnerAccess(settings={},artifact={kind:`module`,registry:`Private`}) {
+function artifactOwnerAccess(settings={},artifact={kind:`module`,registry:`Private`},isMember=true) {
   const options=settings.options||{};
   const registry=artifact.registry===`Public`?`public`:`private`;
-  const type=artifact.kind===`provider`?`Providers`:`Modules`;
+  const type=artifact.kind===`provider`?`Providers`:artifact.kind===`stack`?`Stack Component Configurations`:`Modules`;
   const plural=type.toLowerCase();
   const full=settings[`${registry}Registry`];
   return {
     scope:`${registry} ${plural}`,
-    manage:!!(full||options[`${registry}-${type}-Publish and manage ${plural} for this team`]||options[`${registry}-${type}-Publish and manage ${plural} for the organization`]),
-    remove:!!(full||options[`${registry}-${type}-Delete ${plural} owned by this team`]||options[`${registry}-${type}-Delete any ${plural} in the organization`])
+    manage:!!(full||options[`${registry}-${type}-Publish and manage ${plural} for the organization`]||(isMember&&options[`${registry}-${type}-Publish and manage ${plural} for this team`])),
+    remove:!!(full||options[`${registry}-${type}-Delete any ${plural} in the organization`]||(isMember&&options[`${registry}-${type}-Delete ${plural} owned by this team`]))
   };
+}
+function activeOwnerTeams(permissions) {
+  return ownerTeams.filter(name=>!permissions[name]?.deleted);
+}
+function permissionContactTeams(permissions) {
+  return activeOwnerTeams(permissions).filter(name=>name===`Owners`||permissions[name]?.team===`Manage organization access`);
+}
+function eligiblePublishingTeams(permissions,scenario) {
+  if(scenario===`any`)return activeOwnerTeams(permissions);
+  const memberships=scenario===`blocked`?[`Interns`]:publishingMemberTeams;
+  return memberships.filter(name=>!permissions[name]?.deleted&&artifactOwnerAccess(permissions[name]).manage);
 }
 function OwnerTeamPicker({value,onChange,scenario,permissions,artifacts=[{kind:`module`,registry:`Private`}]}) {
   const [query,setQuery]=b.useState(``);
@@ -765,17 +794,18 @@ function OwnerTeamPicker({value,onChange,scenario,permissions,artifacts=[{kind:`
   const trigger=b.useRef(null);
   const search=b.useRef(null);
   const h=b.createElement;
-  const teams=scenario===`mine`?publishingMemberTeams:ownerTeams;
-  const contacts=ownerTeams.filter(name=>[`Manage teams`,`Manage organization access`].includes(permissions[name]?.team));
+  const teams=scenario===`assignment`?activeOwnerTeams(permissions):eligiblePublishingTeams(permissions,scenario);
+  const contacts=permissionContactTeams(permissions);
   const contact=contacts.length?contacts.join(` or `):`an organization owner`;
   const accessFor=team=>[...new Map(artifacts.map(artifact=>{
     const access=artifactOwnerAccess(permissions[team],artifact);
     return [access.scope,access];
   })).values()];
   const access=accessFor(value);
-  const emptyLabel=scenario===`assignment`?`None`:`Default (Organization owners group)`;
+  const emptyLabel=scenario===`mine`||scenario===`blocked`?`Select an eligible team`:`Unowned`;
   const filtered=teams.filter(name=>name.toLowerCase().includes(query.toLowerCase()));
-  const choices=[``,...filtered];
+  const optional=scenario===`assignment`||scenario===`any`;
+  const choices=optional?[``,...filtered]:filtered;
   const close=()=>{setOpen(false);setQuery(``);};
   const updateDropdownPosition=()=>{
     const rect=trigger.current?.getBoundingClientRect();
@@ -810,15 +840,16 @@ function OwnerTeamPicker({value,onChange,scenario,permissions,artifacts=[{kind:`
     else if(event.key===`ArrowDown`||event.key===`ArrowUp`){
       event.preventDefault();
       if(!open){setOpen(true);setActive(0);}
-      else setActive(index=>(index+(event.key===`ArrowDown`?1:-1)+choices.length)%choices.length);
-    }else if(event.key===`Enter`&&open){event.preventDefault();choose(choices[active]||``);}
+      else if(choices.length)setActive(index=>(index+(event.key===`ArrowDown`?1:-1)+choices.length)%choices.length);
+    }else if(event.key===`Enter`&&open){event.preventDefault();if(choices[active]!==undefined)choose(choices[active]);}
   };
   b.useEffect(()=>{if(open)document.getElementById(`${id}-option-${active}`)?.scrollIntoView({block:`nearest`});},[open,active,id]);
   return h(`section`,{className:`owner-picker`,"aria-labelledby":id,
     onBlur:event=>{if(!event.currentTarget.contains(event.relatedTarget))close();}},
-    h(`h3`,{id,className:`registry-permissions-heading`},scenario===`assignment`?`Select an owner`:`Select an owner (Optional)`),
+    h(`h3`,{id,className:`registry-permissions-heading`},scenario===`any`?`Select an owner (Optional)`:`Select an owner`),
     h(`p`,{className:`registry-permissions-intro`},scenario===`mine`
-      ?`Choose one of your teams. Assigning ownership does not change permissions.`
+      ?`Choose a team you belong to with permission to manage owned modules. Ownership is required to publish.`
+      :scenario===`blocked`?`You do not belong to a team with permission to manage owned modules. Contact an organization owner to request access.`
       :`Choose a team. Assigning ownership does not change permissions.`),
     h(`div`,{className:`owner-superselect`},
       h(`button`,{ref:trigger,type:`button`,className:`owner-superselect-trigger`,"aria-labelledby":`${id} ${id}-value`,
@@ -831,23 +862,23 @@ function OwnerTeamPicker({value,onChange,scenario,permissions,artifacts=[{kind:`
         "aria-activedescendant":`${id}-option-${active}`,placeholder:`Search teams`,value:query,
         onKeyDown:keyboard,onChange:event=>{setQuery(event.target.value);setActive(0);}}),
       h(`div`,{id:`${id}-options`,role:`listbox`,"aria-labelledby":id,className:`owner-picker-options`},
-        h(`div`,{id:`${id}-option-0`,role:`option`,"aria-selected":!value,className:active===0?`is-active`:undefined,
+        optional&&h(`div`,{id:`${id}-option-0`,role:`option`,"aria-selected":!value,className:active===0?`is-active`:undefined,
           onMouseDown:event=>event.preventDefault(),onClick:()=>choose(``)},emptyLabel),
         filtered.map((name,index)=>{
-          return h(`div`,{key:name,id:`${id}-option-${index+1}`,role:`option`,"aria-selected":value===name,
-            className:active===index+1?`is-active`:undefined,onMouseDown:event=>event.preventDefault(),onClick:()=>choose(name)},
+          return h(`div`,{key:name,id:`${id}-option-${index+(optional?1:0)}`,role:`option`,"aria-selected":value===name,
+          className:active===index+(optional?1:0)?`is-active`:undefined,onMouseDown:event=>event.preventDefault(),onClick:()=>choose(name)},
             h(`span`,{className:`owner-option-name`},
               h(`span`,{className:`owner-option-identity`},name,
-                publishingMemberTeams.includes(name)&&h(`span`,{className:`owner-option-membership`},`Your team`)),
+                scenario===`mine`&&publishingMemberTeams.includes(name)&&h(`span`,{className:`owner-option-membership`},`Your team`)),
               ));
         }),
-        !filtered.length&&h(`p`,{role:`status`},`No matching teams. Try another search.`)))) ,
+        !filtered.length&&h(`p`,{role:`status`},teams.length?`No matching teams. Try another search.`:`No eligible owner teams.`)))) ,
     value&&!open&&access.some(entry=>!entry.manage)&&h(`div`,{className:`owner-permission-alert`,role:`alert`},
       h(C,{src:`helios-alert-triangle-16.svg`,className:`size-5 owner-permission-alert-icon`}),
       h(`p`,null,`Contact ${contact} to grant ${value} the missing management permissions.`)));
 }
 function ownerLabel(artifact) {
-  return artifact.owner||(artifact.defaultOwner?`Organization owners group`:`None`);
+  return artifact.owner||`Unowned`;
 }
 function OwnerHistory({artifact,onEdit,onRemove,canAssignOwnership=true,viewerIsOwner=false}) {
   const [position,setPosition]=b.useState(null);
@@ -909,21 +940,21 @@ function OwnerHistory({artifact,onEdit,onRemove,canAssignOwnership=true,viewerIs
         h(`strong`,null,ownerLabel(artifact))),
       h(`ol`,{className:`owner-history-events`},history.map((entry,index)=>{
         const initial=entry.from===undefined;
-        const removed=entry.to===`None`;
+        const removed=entry.to===`Unowned`;
         return h(`li`,{key:index,className:`owner-history-event`},
           h(`span`,{className:`owner-history-event-body`},
-            h(`span`,{className:`owner-history-event-heading`},entry.action===`Owner set at publishing`?`Owner assigned during publishing`:removed?`Owner removed`:initial||entry.from===`None`?`Owner assigned`:`Owner reassigned`),
+            h(`span`,{className:`owner-history-event-heading`},entry.action===`Owner when prototype opened`?`Initial ownership state`:entry.action===`Owner set at publishing`?`Owner assigned during publishing`:removed?`Owner removed`:initial||entry.from===`Unowned`?`Owner assigned`:`Owner reassigned`),
             h(`span`,{className:`owner-history-transfer`},
               !initial&&h(b.Fragment,null,h(`span`,{className:`owner-history-team previous`},entry.from),
                 h(`span`,{"aria-label":`to`,className:`owner-history-arrow`},`\u2192`)),
               h(`span`,{className:`owner-history-team`},entry.to)),
             h(`span`,{className:`owner-history-event-meta`},entry.at
-              ?h(b.Fragment,null,h(`span`,null,`Assigned by ${entry.actor||`You`}`),h(`span`,{"aria-hidden":true},`\u00b7`),
+              ?h(b.Fragment,null,h(`span`,null,`${removed?`Removed`:`Assigned`} by ${entry.actor||`You`}`),h(`span`,{"aria-hidden":true},`\u00b7`),
                 h(`time`,{dateTime:entry.at},new Date(entry.at).toLocaleString(undefined,{month:`short`,day:`numeric`,hour:`numeric`,minute:`2-digit`})))
               :`Assignment date unavailable`)));
       }))));
 }
-function PrototypeNavigation({screen,team,navigate,openTeamSettings,publishingScenario,setPublishingScenario,viewerIsOwner,setViewerIsOwner,canAssignOwnership,setCanAssignOwnership}) {
+function PrototypeNavigation({screen,team,navigate,openTeamSettings,publishingScenario,setPublishingScenario,viewerIsOwner,setViewerIsOwner,canAssignOwnership,setCanAssignOwnership,viewerTeam,setViewerTeam,permissions,ownerTeam}) {
   const [open,setOpen]=b.useState(false);
   const dock=b.useRef(null);
   const h=b.createElement;
@@ -950,14 +981,19 @@ function PrototypeNavigation({screen,team,navigate,openTeamSettings,publishingSc
       h(`label`,null,`Workflow`,
         h(`select`,{value:screen===`add-module`?`publish-${publishingScenario}`:screen,onChange:chooseWorkflow},
           h(`option`,{value:`library`},`Private library`),
+          h(`option`,{value:`rollout`},`Rollout - existing artifacts unowned`),
           h(`option`,{value:`artifact`},`Module details & owner assignment`),
-          h(`option`,{value:`publish-any`},`Publish a module - any team`),
-          h(`option`,{value:`publish-mine`},`Publish a module - my teams only`),
+          h(`option`,{value:`publish-any`},`Publish - global Registry manager`),
+          h(`option`,{value:`publish-mine`},`Publish - eligible member teams`),
+          h(`option`,{value:`publish-blocked`},`Publish - no eligible team`),
           h(`option`,{value:`team`},`Team settings`))),
+      h(`label`,null,`Viewer team`,
+        h(`select`,{value:viewerTeam,onChange:event=>{setViewerTeam(event.target.value);setViewerIsOwner(event.target.value===ownerTeam);}},
+          activeOwnerTeams(permissions).map(name=>h(`option`,{key:name,value:name},name)))),
       screen===`team`&&h(`label`,null,`Team`,
         h(`select`,{value:team,onChange:event=>{openTeamSettings(event.target.value);setOpen(false);}},
-          ownerTeams.map(name=>h(`option`,{key:name,value:name},name)))),
-      screen===`artifact`&&h(`fieldset`,{className:`workflow-preview-modes`},
+          activeOwnerTeams(permissions).map(name=>h(`option`,{key:name,value:name},name)))),
+      (screen===`artifact`||screen===`library`)&&h(`fieldset`,{className:`workflow-preview-modes`},
         h(`legend`,null,`Artifact page preview`),
         h(`label`,null,`Viewing as`,
           h(`select`,{value:viewerIsOwner?`owner`:`non-owner`,onChange:event=>setViewerIsOwner(event.target.value===`owner`)},
@@ -965,8 +1001,9 @@ function PrototypeNavigation({screen,team,navigate,openTeamSettings,publishingSc
             h(`option`,{value:`owner`},`Owner team`))),
         h(`label`,null,`Ownership assignment`,
           h(`select`,{value:canAssignOwnership?`allowed`:`not-allowed`,onChange:event=>setCanAssignOwnership(event.target.value===`allowed`)},
-            h(`option`,{value:`allowed`},`Can assign ownership`),
-            h(`option`,{value:`not-allowed`},`Cannot assign ownership`))))),
+            h(`option`,{value:`allowed`},`Use team ownership permission`),
+            h(`option`,{value:`not-allowed`},`Cannot assign ownership`))),
+        h(`p`,null,`Owner access also requires the team’s manage-owned or delete-owned permission. Change saved permissions in Team settings.`))),
     h(`button`,{type:`button`,className:`workflow-dock-trigger`,"aria-expanded":open,
       "aria-controls":open?`prototype-workflows-menu`:undefined,onClick:()=>setOpen(value=>!value)},
       open?`Close workflows`:`Prototype workflows`,
@@ -976,43 +1013,64 @@ function pe() {
   const [screen,setScreen]=b.useState(`library`);
   const [overlay,setOverlay]=b.useState(null);
   const [selected,setSelected]=b.useState([]);
-  const [artifacts,setArtifacts]=b.useState(()=>ne.map(artifact=>({...artifact,
-    ownershipHistory:[{to:ownerLabel(artifact),action:`Owner when prototype opened`}]})));
+  const [artifacts,setArtifacts]=b.useState(()=>ne.map((artifact,index)=>{
+    const item={...artifact,kind:`module`,registry:`Private`,versions:[`1.2.3`,`1.2.2`,`1.2.1`],versionTags:{},owner:index===0?`Core`:index===2||index===7?``:artifact.owner};
+    return {...item,ownershipHistory:[{to:ownerLabel(item),action:`Owner when prototype opened`}]};
+  }));
   const [activeId,setActiveId]=b.useState(1);
   const [kind,setKind]=b.useState(`module`);
   const [publishingScenario,setPublishingScenario]=b.useState(`any`);
-  const [viewerIsOwner,setViewerIsOwner]=b.useState(false);
+  const [viewerIsOwner,setViewerIsOwner]=b.useState(true);
   const [canAssignOwnership,setCanAssignOwnership]=b.useState(true);
+  const [viewerTeam,setViewerTeam]=b.useState(`Core`);
   const [team,setTeam]=b.useState(`Core`);
   const [permissions,setPermissions]=b.useState({
-    Core:{options:{[`private-Modules-Publish and manage modules for this team`]:true}},
-    Platform:{team:`Manage organization access`,privateRegistry:true}
+    Core:{privateOwnership:true,options:{[`private-Modules-Publish and manage modules for this team`]:true,[`private-Modules-Delete modules owned by this team`]:true,[`private-environment-tags`]:true}},
+    Platform:{team:`Manage organization access`,privateRegistry:true,privateOwnership:true},
+    Owners:{team:`Manage organization access`,privateRegistry:true,privateOwnership:true},
+    Infra:{team:`Manage teams`}
   });
   const [toast,setToast]=b.useState(null);
   const [ownerNotice,setOwnerNotice]=b.useState(null);
-  const activeArtifact=artifacts.find(artifact=>artifact.id===activeId);
+  const [pendingClear,setPendingClear]=b.useState(null);
+  const [pendingTeamDelete,setPendingTeamDelete]=b.useState(null);
+  const activeArtifact=artifacts.find(artifact=>artifact.id===activeId)||artifacts[0];
+  const actingTeam=viewerIsOwner&&activeArtifact?.owner?activeArtifact.owner:viewerTeam===activeArtifact?.owner
+    ?activeOwnerTeams(permissions).find(name=>name!==activeArtifact.owner):viewerTeam;
+  const canAdministerOwnership=canAssignOwnership&&!!permissions[actingTeam]?.privateOwnership;
+  const canEditTeamPermissions=permissions[actingTeam]?.team===`Manage organization access`;
+  const canDeleteTeams=[`Manage teams`,`Manage organization access`].includes(permissions[actingTeam]?.team);
+  const viewerAccess=artifactOwnerAccess(permissions[actingTeam],activeArtifact,activeArtifact?.owner===actingTeam);
+  viewerAccess.tags=!!(permissions[actingTeam]?.privateRegistry||permissions[actingTeam]?.options?.[`private-environment-tags`]);
   const navigate=next=>{
+    if(next===`rollout`){
+      setArtifacts(current=>current.map(artifact=>({...artifact,owner:``,ownershipHistory:[{to:`Unowned`,action:`Owner when prototype opened`}]})));
+      setSelected([]);setOwnerNotice(null);setToast(null);setScreen(`library`);setOverlay(null);return;
+    }
+    if(next===`artifact`&&!artifacts.length){setToast(`No artifacts remain. Publish a module to view its details.`);return;}
     setOverlay(null);
     if (next===`add-module`||next===`add-provider`) setToast(null);
     setScreen(next);
   };
-  const assignOwner=(ids,owner,showDetails=false)=>{
-    const ownedArtifacts=artifacts.filter(artifact=>ids.includes(artifact.id)&&(artifact.owner!==owner||artifact.defaultOwner));
+  const commitOwnership=(ids,owner,showDetails=false)=>{
+    if(!canAdministerOwnership){setToast(`You do not have permission to manage ownership.`);return;}
+    if(owner&&!activeOwnerTeams(permissions).includes(owner)){setToast(`Select an active team in this organization.`);return;}
+    const ownedArtifacts=artifacts.filter(artifact=>ids.includes(artifact.id)&&artifact.owner!==owner);
     const changedIds=new Set(ownedArtifacts.map(artifact=>artifact.id));
+    if(changedIds.has(activeId)||(showDetails&&ids.length===1)){setViewerTeam(actingTeam);setViewerIsOwner(owner===actingTeam);}
     const at=new Date().toISOString();
     setArtifacts(current=>current.map(artifact=>changedIds.has(artifact.id)?{
-      ...artifact,owner,defaultOwner:false,
-      ownershipHistory:[...artifact.ownershipHistory,{from:ownerLabel(artifact),to:owner||`None`,
-        action:owner?`Owner changed`:`Owner removed`,actor:team,at}]
+      ...artifact,owner,
+      ownershipHistory:[...artifact.ownershipHistory,{from:ownerLabel(artifact),to:owner||`Unowned`,
+        action:owner?`Owner changed`:`Owner removed`,actor:actingTeam,at}]
     }:artifact));
     setOverlay(null);
     setSelected([]);
     const needsManagementHelp=!!owner&&ownedArtifacts.some(artifact=>!artifactOwnerAccess(permissions[owner],artifact).manage);
     if(needsManagementHelp){
-      const contacts=ownerTeams.filter(name=>[`Manage teams`,`Manage organization access`].includes(permissions[name]?.team));
+      const contacts=permissionContactTeams(permissions);
       const contact=contacts.length?contacts.join(` or `):`an organization owner`;
-      const canManageTeamSettings=[`Manage teams`,`Manage organization access`].includes(permissions[team]?.team);
-      setOwnerNotice({owner,message:`Contact ${contact} to help grant ${owner} permission to manage this artifact.`,canManageTeamSettings});
+      setOwnerNotice({owner,message:`Contact ${contact} to help grant ${owner} permission to manage ${ownedArtifacts.length===1?`this artifact`:`these artifacts`}.`});
       setToast(null);
     }else{
       setOwnerNotice(null);
@@ -1023,9 +1081,23 @@ function pe() {
       navigate(`artifact`);
     }
   };
+  const assignOwner=(ids,owner,showDetails=false)=>{
+    if(!canAdministerOwnership){setToast(`You do not have permission to manage ownership.`);return;}
+    if(!owner&&artifacts.some(artifact=>ids.includes(artifact.id)&&artifact.owner)){
+      setPendingClear({ids,showDetails});
+      return;
+    }
+    commitOwnership(ids,owner,showDetails);
+  };
   const publish=artifact=>{
-    const published={...artifact,defaultOwner:!artifact.owner,id:Math.max(...artifacts.map(item=>item.id))+1,
-      ownershipHistory:[{to:artifact.owner||`Organization owners group`,action:`Owner set at publishing`,actor:team,at:new Date().toISOString()}]};
+    if(artifact.noCode&&publishingScenario!==`any`){setToast(`No-code provisioning requires its existing authorization, not ownership alone.`);return;}
+    const eligible=eligiblePublishingTeams(permissions,publishingScenario);
+    if((publishingScenario!==`any`&&!eligible.includes(artifact.owner))||(artifact.owner&&!eligible.includes(artifact.owner))){
+      setToast(`Publication denied. Choose an eligible team you belong to with manage-owned permission.`);
+      return;
+    }
+    const published={...artifact,versions:[`1.2.3`],versionTags:{},id:Math.max(0,...artifacts.map(item=>item.id))+1,
+      ownershipHistory:[{to:artifact.owner||`Unowned`,action:artifact.owner?`Owner set at publishing`:`Published unowned`,actor:publishingScenario===`any`?`Platform`:`Core`,at:new Date().toISOString()}]};
     setArtifacts(current=>[published,...current]);
     setKind(artifact.kind);
     setSelected([]);
@@ -1034,26 +1106,61 @@ function pe() {
     navigate(`library`);
   };
   const openArtifact=artifact=>{
+    setViewerTeam(actingTeam);
+    setViewerIsOwner(artifact.owner===actingTeam);
     setActiveId(artifact.id);
     navigate(`artifact`);
   };
   const openTeamSettings=owner=>{
     setTeam(owner);
     setToast(null);
+    setOwnerNotice(null);
     navigate(`team`);
+  };
+  const updateArtifact=updated=>setArtifacts(current=>current.map(artifact=>artifact.id===updated.id?updated:artifact));
+  const deleteArtifact=id=>{
+    const nextArtifact=artifacts.find(artifact=>artifact.id!==id);
+    setViewerTeam(actingTeam);
+    setViewerIsOwner(nextArtifact?.owner===actingTeam);
+    setArtifacts(current=>current.filter(artifact=>artifact.id!==id));
+    setActiveId(nextArtifact?.id||0);
+    setToast(`Module deleted.`);navigate(`library`);
+  };
+  const deleteTeam=()=>{
+    if(!canDeleteTeams){setToast(`You do not have permission to delete teams.`);return;}
+    const deletedTeam=pendingTeamDelete;
+    const at=new Date().toISOString();
+    setArtifacts(current=>current.map(artifact=>artifact.owner===deletedTeam?{...artifact,owner:``,
+      ownershipHistory:[...artifact.ownershipHistory,{from:deletedTeam,to:`Unowned`,action:`Owner team deleted`,actor:actingTeam,at}]}:artifact));
+    setPermissions(current=>({...current,[deletedTeam]:{deleted:true}}));
+    setTeam(`Core`);setPendingTeamDelete(null);setToast(`Team ${deletedTeam} deleted. Its artifacts are now unowned.`);navigate(`library`);
   };
   const h=b.createElement;
   return h(ae,{screen,setScreen:navigate},
     h(PrototypeNavigation,{screen,team,navigate,openTeamSettings,publishingScenario,setPublishingScenario,
-      viewerIsOwner,setViewerIsOwner,canAssignOwnership,setCanAssignOwnership}),
-    screen===`library`&&h(se,{overlay,selected,setOverlay,setScreen:navigate,setSelected,artifacts,kind,setKind,openArtifact,assignOwner,permissions}),
-    screen===`artifact`&&h(le,{overlay,owner:activeArtifact.owner,artifact:activeArtifact,setOverlay,setScreen:navigate,setToast,assignOwner,permissions,viewerIsOwner,canAssignOwnership}),
-    screen===`team`&&h(ue,{key:team,team,permissions:permissions[team],setScreen:navigate,setToast,
-      savePermissions:settings=>setPermissions(current=>({...current,[team]:settings}))}),
+      viewerIsOwner,setViewerIsOwner,canAssignOwnership,setCanAssignOwnership,viewerTeam:actingTeam,setViewerTeam,permissions,ownerTeam:activeArtifact?.owner}),
+    screen===`library`&&h(se,{overlay,selected,setOverlay,setScreen:navigate,setSelected,artifacts,kind,setKind,openArtifact,assignOwner,permissions,canAssignOwnership:canAdministerOwnership,actingTeam}),
+    screen===`artifact`&&h(le,{key:activeArtifact.id,overlay,owner:activeArtifact.owner,artifact:activeArtifact,setOverlay,setScreen:navigate,setToast,assignOwner,permissions,viewerIsOwner:activeArtifact.owner===actingTeam,canAssignOwnership:canAdministerOwnership,viewerAccess,updateArtifact,deleteArtifact}),
+    screen===`team`&&h(b.Fragment,null,
+      !canEditTeamPermissions&&h(`p`,{className:`owner-permission-alert`,role:`status`},`Read-only: only organization owners or teams with Manage organization access can update team permissions. Manage teams alone is insufficient.`),
+      team===`Owners`&&h(`p`,{className:`owner-permission-alert`,role:`status`},`The Owners team retains inherent organization access. Its permissions cannot be changed in this prototype.`),
+      h(`fieldset`,{disabled:!canEditTeamPermissions||team===`Owners`},h(ue,{key:team,team,permissions:permissions[team],setScreen:navigate,setToast,
+        savePermissions:settings=>{
+          if(!canEditTeamPermissions||team===`Owners`){setToast(`You do not have permission to update this team's access.`);return;}
+          setPermissions(current=>({...current,[team]:settings}));
+        }})),
+      canDeleteTeams&&team!==`Owners`&&team!==actingTeam&&h(w,{danger:true,onClick:()=>setPendingTeamDelete(team)},`Delete team`)),
     screen===`add-module`&&h(fe,{key:publishingScenario,kind:`module`,setScreen:navigate,publish,publishingScenario,permissions}),
+    pendingClear&&h(OwnershipClearConfirmation,{count:pendingClear.ids.length,onCancel:()=>setPendingClear(null),
+      onConfirm:()=>{commitOwnership(pendingClear.ids,``,pendingClear.showDetails);setPendingClear(null);}}),
+    pendingTeamDelete&&h(`div`,{className:`overlay ownership-clear-overlay`},
+      h(`section`,{className:`modal p-6`,role:`dialog`,"aria-modal":true,"aria-label":`Delete team ${pendingTeamDelete}`},
+        h(`h2`,null,`Delete team ${pendingTeamDelete}?`),
+        h(`p`,{className:`my-4`},`All artifacts owned by this team will become unowned. Ownership will not be transferred. This deletes the team only in the prototype.`),
+        h(`div`,{className:`flex gap-3`},h(w,{onClick:()=>setPendingTeamDelete(null)},`Cancel`),h(w,{danger:true,onClick:deleteTeam},`Delete team`)))),
     ownerNotice&&h(`div`,{className:`owner-assignment-followup`,role:`status`},
       h(`p`,null,ownerNotice.message),
-      ownerNotice.canManageTeamSettings&&h(`button`,{type:`button`,className:`owner-settings-cta`,
+      canEditTeamPermissions&&h(`button`,{type:`button`,className:`owner-settings-cta`,
         onClick:()=>openTeamSettings(ownerNotice.owner)},`Open ${ownerNotice.owner} team settings`),
       h(`button`,{type:`button`,"aria-label":`Dismiss ownership guidance`,className:`owner-followup-dismiss`,
         onClick:()=>setOwnerNotice(null)},`\u00d7`)),

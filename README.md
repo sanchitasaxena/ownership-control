@@ -1,41 +1,50 @@
 # Registry Artifact Ownership Control
 
-Interactive prototype for Terraform Registry Artifact Ownership Control.
+Interactive prototype for artifact-scoped ownership and access in the HCP Terraform Private Registry.
 
-- **Live Site**: [https://sanchitasaxena.github.io/ownership-control/](https://sanchitasaxena.github.io/ownership-control/)
-- **Original Figma Site**: [https://box-id-63586789.figma.site/](https://box-id-63586789.figma.site/)
+- **Live site:** https://sanchitasaxena.github.io/ownership-control/
+- **Original Figma site:** https://box-id-63586789.figma.site/
 
-## Overview
+## RFC-aligned workflows
 
-This repository hosts the interactive mockup and assets for the Registry Artifact Ownership Control workflow in Terraform Registry.
+The RFC covers private modules, private providers, and private stack component configurations. Public namespaces and curated public artifacts are out of scope. This mock demonstrates the end-to-end workflows on **private modules**; provider and stack permissions appear in team settings, but their artifact and publishing pages are not implemented.
 
-## Ownership flows
+- **Library and filtering:** See the owner or **Unowned**, filter by a team or unowned artifacts, and search module names. The default fixture includes previously assigned example artifacts. Choose **Rollout - existing artifacts unowned** to demonstrate the RFC's rollout state without inferring or backfilling owners.
+- **Assignment:** A dedicated **Manage ownership** capability permits single and bulk assignment, reassignment, and clearing. It does not grant management, deletion, or team administration. Selecting a team does not change its permissions.
+- **Clearing:** Selecting Unowned and saving, using Remove owner in the modal/history, or bulk Clear ownership opens a confirmation before any state changes. Cancel preserves ownership. Versions inherit their parent artifact's owner.
+- **Missing capability guidance:** Selecting a team without the applicable manage-owned capability shows non-blocking guidance. Contacts include Owners and teams with **Manage organization access**, never **Manage teams** alone. After assignment, only a viewer authorized to update organization access receives the settings CTA.
+- **Artifact actions:** Team membership, ownership, and configured capabilities determine action visibility. Owned management and deletion are separate; global Registry access continues to work for non-owners and unowned artifacts. Removing a capability does not clear ownership. Ownership administration is independently gated throughout the library, details, and history.
+- **Version actions:** The menu contains **Manage environment tags** and **Delete version [selected version]**, gated by their respective permissions rather than ownership-assignment ability. Tags follow existing tagging permissions, not manage-owned. Tag changes and confirmed version/module deletion update in-memory state. Copy configuration and source links remain outside this menu. All displayed version references follow the selected version.
+- **Publishing:** **Publish - global Registry manager** simulates Platform's existing global authorization and allows an active owner team or Unowned. **Publish - eligible member teams** simulates membership in Core and AppEng and lists only teams with applicable management access. A single eligible team is preselected; multiple teams require selection; no eligible teams blocks publication. **Publish - no eligible team** simulates a publisher belonging only to Interns. The no-code checkbox is enabled only for the global-manager scenario; ownership alone does not grant no-code authorization.
+- **Team settings:** Manage ownership is integrated below Manage private registry, independently of registry-wide access. The matrix separates owned-team and organization-wide scopes and management versus deletion. Full Registry access includes the matrix capabilities but not ownership administration. Disabling full access restores individual selections. Only organization-access administrators can edit permissions; other viewers see a read-only preview.
+- **Team lifecycle:** An authorized team administrator can delete a different, non-Owners team from its settings, after confirmation. Its artifacts become unowned rather than transferring to another team; deleted teams disappear from selectors.
+- **Activity:** Owner changes show team transitions, acting team, and local timestamps. Starting fixtures are labeled as initial state, not fabricated historical assignments. Edit and Remove owner require ownership administration. This activity card illustrates the UX, not a production audit-system integration.
 
-- Use the floating **Prototype workflows** control at the bottom right to open the private library, current module details/owner assignment, module publishing, or team settings. It stays visually hidden until hovered or keyboard-focused (and remains visible while open), so it stays out of screenshots and recordings during normal workflow use; touch devices keep it visible. It closes after choosing a workflow, clicking outside, or pressing Escape. Team settings includes a team selector; switching workflows preserves saved in-memory changes.
-- On the module details workflow, expand the floating control to switch the preview between an owner team and a non-owner team, independently of whether that viewer can assign ownership. Owner mode labels the owner as **Your team**. When assignment is unavailable, the module **Manage owner** and ownership-history **Edit** actions are hidden. These are artifact-page presentation scenarios and do not change saved team permissions.
-- Bulk selection keeps the library's data-column widths, with a dedicated centered checkbox column so headers and row content remain aligned.
-- Assign an owner from a registry artifact's **Manage owner** action, or use bulk selection and **Actions > Assign Owner**.
-- Registry ownership assignment is independent of both team management and full private/public registry access. Turning off full registry access does not clear ownership-assignment permission.
-- Private and public registry team settings use the same hierarchy: registry management, **Manage ownership**, nested artifact permissions, and tagging permissions. Enabling Manage registry shows every artifact type's permissions as checked and included (not individually editable). Disabling it restores prior individual selections. Full access, individual selections, and ownership management persist separately across navigation.
-- Registry settings keep a compact permission matrix: scope rows (**Owned by this team**, **Entire organization**) and action columns (**Publish & manage**, **Delete**) without repeated action descriptions. Ownership management stays integrated with the registry controls rather than in a separate section.
-- The matrix retains visible action and scope descriptions for each artifact type, accessible descriptions on individual permission checkboxes, and helper text for tagging permissions in both registries; ownership remains with the registry controls rather than in a separate section.
-- Selecting a team owner never changes team permissions, during publishing or later assignment.
-- Use **Publish > Add a module** to select an optional team owner before publishing. The published module and its owner appear in the library. With no team selected, the organization owners group remains the default. This iteration focuses on the module experience; provider publishing and provider details are not included.
-- Team names in the private library have no adjacent settings icon. Team settings remains directly accessible through the prototype workflow selector.
-- The owner assignment modal keeps the override warning above the searchable owner selector. Single-artifact and bulk assignment use the same selector; management access is checked across all selected registry/artifact-type scopes without granting permissions.
-- **Remove owner** applies immediately without a separate Save. For a single artifact, it closes the modal and opens the artifact details with **Owner: None**; bulk removal stays in the library.
-- Publishing shows only a publish-success confirmation. Later assignment confirms that team permissions are unchanged.
-- Two publishing scenarios are available in **Prototype workflows**: **any team** (ownership assigner) and **my teams only** (publisher belonging to Core and AppEng). Neither scenario grants permission to edit team settings. Switching scenarios resets the publishing form so an unauthorized team cannot carry over.
-- The searchable owner selector checks management access for private modules, including inherited full-registry and organization-wide permissions. Teams remain selectable without permission labels in the option list. After selecting a team that lacks management access, an alert names an authorized contact; fully permitted teams do not show a warning.
-- Team selection follows the [HDS SuperSelect](https://helios.hashicorp.design/components/form/super-select) single-select pattern, with search, a floating option list, and keyboard navigation (arrows, Enter, Escape). The selected team is included in the selector's accessible name. The bundled React prototype reproduces the pattern rather than importing the Ember-only HDS component. Selecting AppEng demonstrates a warning to contact Platform to grant management permissions; the alert is shown only after selection and hidden while the list is open.
-- Demo permissions start with Core able to manage owned modules, AppEng without management access, and Platform holding full private-registry access and organization-access administration. Contacts are derived from saved team settings; if no authorized team is available, guidance falls back to an organization owner. These are prototype fixtures, not API-derived authorization.
-- Hover over, keyboard-focus, or tap the owner in a module header to open the ownership activity timeline. Event rows show team transitions, actor, and local timestamps, newest first; existing artifacts show their starting owner without inventing historical events. The card stays open while being read. Escape, the close button, or clicking outside dismisses it. **Edit** in the popover closes the timeline and opens the same owner-assignment modal as **Manage > Manage owner**.
-- The activity popover puts **Edit** in its header and uses simple separated event rows with plain team names and compact actor/timestamp metadata, without avatars, badges, or a footer.
-- The version-level **Actions** menu remains available to owner teams even when they cannot assign ownership. It contains the settings-gear **Manage environment tags** action and **Delete version [selected version]**; these are separate from artifact-level copy/source and owner-management actions. Selecting a version updates the delete label to match. The owner pill appears inside its chevron control; the activity timeline records the acting team and timestamp, with Edit and Remove owner actions gated by assignment ability.
-- If an assigned team lacks management access for the artifact, a follow-up alert names teams that can help. A Team settings CTA appears only when the current viewer team can manage team settings.
-- The owner selector menu is positioned above the modal scroll clipping area, and selected-team permission guidance uses the same amber warning treatment as the modal's override notice.
-- Module details provide working Readme, Inputs, Outputs, Dependencies, Submodules, and Examples views. The version download count and provider are identified with icons, the GitHub source opens in a new tab, and **Copy configuration** reports whether the copy succeeded.
+## Preview controls and fixtures
 
-Prototype changes are kept in memory while navigating and reset when the page is reloaded. This is a static, bundled prototype; there is no backend or build step. To preview locally, serve this directory with an HTTP server (for example, `python3 -m http.server 4187`) and open `http://localhost:4187`.
+Hover at the bottom right or keyboard-focus **Prototype workflows** to reveal the control. It hides when idle, remains visible while open, and stays visible on touch devices. Choose a workflow, a viewer team, or the owner/non-owner preview. **Cannot assign ownership** suppresses ownership administration without suppressing otherwise authorized artifact/version actions.
 
-The permissions-discussion redesign is being applied in stages. Publishing scenarios demonstrate the requested any-team versus member-team selection rules; production initial-publishing authorization still requires confirmation. Publishing and post-publish assignment share the permission-aware team selector.
+Viewer identity and the team being edited are separate. Selecting an owner-team preview changes the simulated viewer to that artifact's owner. Non-owner mode uses a different team. Saved team capabilities continue to govern access in either mode.
+
+- **Core:** Can manage and delete its owned modules, administer ownership, and use existing environment-tag permissions.
+- **AppEng:** Initially lacks artifact capabilities; useful for the non-blocking assignment warning.
+- **Infra:** Has Manage teams, but not organization-access administration or artifact capabilities.
+- **Platform / Owners:** Have global private Registry access, ownership administration, and organization-access administration. Owners retains inherent access and its permissions are read-only.
+
+## Running and validating
+
+This is a static bundled React prototype with no backend or build step. Changes persist across navigation in memory and reset on reload. Serve the repository, for example:
+
+```sh
+python3 -m http.server 4187
+```
+
+Open http://localhost:4187. Validate the authorization helpers and JavaScript syntax with:
+
+```sh
+node --test tests/ownership-model.test.mjs
+node --check --input-type=module < assets/index-ownership-v2.js
+git diff --check
+```
+
+The mock does not implement production APIs, token scopes, entitlements, team visibility/organization-boundary enforcement, request limits, operational monitoring, or audit delivery. Publishing settings, no-code provisioning, and other non-ownership service integrations remain disconnected and are not represented as working backend operations.

@@ -1,6 +1,7 @@
 .owner-history { display: inline-flex; }
 .owner-picker { margin-top: 28px; }
 .owner-assignment-modal { max-height: calc(100dvh - 40px); overflow-y: auto; }
+.ownership-clear-overlay { z-index: 110; }
 .owner-superselect { position: relative; }
 .owner-superselect-trigger { display: flex; justify-content: space-between; align-items: center; gap: 12px; width: 100%; min-height: 36px; padding: 8px 12px; border: 1px solid #8c909c; border-radius: 5px; background: #fff; text-align: left; box-shadow: 0 1px 2px #0000000d; }
 .owner-superselect-trigger:focus-visible, .owner-superselect-dropdown input:focus { outline: 2px solid #1060ff; outline-offset: 2px; }
