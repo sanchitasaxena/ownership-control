@@ -68,7 +68,7 @@ test('owner removal names the assignment and teams retaining global management',
     Platform: { privateRegistry: true },
     Owners: { privateRegistry: true },
   });
-  assert.equal(message, 'Core will no longer own aws-rds-starter-module. The module and its versions will become unowned. Platform and Owners can still manage aws-rds-starter-module through organization-wide permissions. Team permissions will not change.');
+  assert.equal(message, 'Removing Core as the owner leaves aws-rds-starter-module and its versions unowned, but Platform and Owners can still manage aws-rds-starter-module.');
   assert.ok(!message.includes('prototype'));
 });
 
@@ -78,7 +78,7 @@ test('bulk removal counts only supplied owned artifacts and excludes deleted man
     Platform: { privateRegistry: true, deleted: true },
     Owners: { privateRegistry: true },
   });
-  assert.match(message, /^Owner assignments will be removed from 2 artifacts\./);
+  assert.match(message, /^Removing owner assignments leaves 2 artifacts and their versions unowned,/);
   assert.match(message, /Owners can still manage these artifacts/);
   assert.ok(!message.includes('Platform'));
 });
@@ -87,6 +87,6 @@ test('removal does not name a team without global management access', () => {
   const message = removalMessage([{ name: 'example', owner: 'Core' }], {
     Core: { options: { [manage]: true } },
   });
-  assert.match(message, /Organization owners and teams with applicable organization-wide permissions/);
+  assert.match(message, /organization owners and teams with applicable organization-wide permissions/);
   assert.ok(!message.includes('Core can still manage'));
 });
