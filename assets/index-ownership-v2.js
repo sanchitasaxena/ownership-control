@@ -509,9 +509,11 @@ function le({owner:e,artifact,assignOwner,overlay:n,setOverlay:r,setScreen:i,set
 ,(0,x.jsxDEV)(`select`,{className:`field mt-2`,children:(0,x.jsxDEV)(`option`,{children:`1.2.3 (latest)`},void 0,!1,{fileName:S,lineNumber:290,columnNumber:147},this)
 },void 0,!1,{fileName:S,lineNumber:290,columnNumber:116},this)
 ]},void 0,!0,{fileName:S,lineNumber:290,columnNumber:60},this)
-,canAssignOwnership&&(0,x.jsxDEV)(`div`,{className:`relative`,children:[(0,x.jsxDEV)(`button`,{type:`button`,className:`btn`,onClick:()=>setActionsOpen(value=>!value),"aria-expanded":actionsOpen,children:[`Actions `,(0,x.jsxDEV)(C,{className:`size-3`,src:`6899e.svg`},void 0,!1,{fileName:S,lineNumber:290,columnNumber:180},this)]},void 0,!0,{fileName:S,lineNumber:290,columnNumber:160},this)
+, (0,x.jsxDEV)(`div`,{className:`relative`,children:[(0,x.jsxDEV)(`button`,{type:`button`,className:`btn`,onClick:()=>setActionsOpen(value=>!value),"aria-expanded":actionsOpen,children:[`Actions `,(0,x.jsxDEV)(C,{className:`size-3`,src:`6899e.svg`},void 0,!1,{fileName:S,lineNumber:290,columnNumber:180},this)]},void 0,!0,{fileName:S,lineNumber:290,columnNumber:160},this)
 ,actionsOpen&&(0,x.jsxDEV)(E,{className:`right-0 top-9 z-20 w-52`,children:[
-  canAssignOwnership&&(0,x.jsxDEV)(D,{onClick:()=>{setActionsOpen(false);r(`owner`)},children:[(0,x.jsxDEV)(C,{src:`4c97e.svg`},void 0,!1,{fileName:S,lineNumber:290,columnNumber:250},this),`Manage owner`]},void 0,!0,{fileName:S,lineNumber:290,columnNumber:230},this)
+  (0,x.jsxDEV)(D,{onClick:()=>{setActionsOpen(false);copyConfiguration()},children:`Copy configuration`},void 0,!1,{fileName:S,lineNumber:290,columnNumber:200},this)
+,  (0,x.jsxDEV)(D,{onClick:()=>{setActionsOpen(false);window.open(`https://github.com/terraform-aws-modules/terraform-aws-rds`,`_blank`,`noopener,noreferrer`)},children:`View source on GitHub`},void 0,!1,{fileName:S,lineNumber:290,columnNumber:280},this)
+,  canAssignOwnership&&(0,x.jsxDEV)(D,{onClick:()=>{setActionsOpen(false);r(`owner`)},children:[(0,x.jsxDEV)(C,{src:`4c97e.svg`},void 0,!1,{fileName:S,lineNumber:290,columnNumber:250},this),`Manage owner`]},void 0,!0,{fileName:S,lineNumber:290,columnNumber:230},this)
 ,  canAssignOwnership&&artifact.owner&&(0,x.jsxDEV)(D,{onClick:()=>{setActionsOpen(false);assignOwner([artifact.id],``)},children:[(0,x.jsxDEV)(C,{src:`8a442.svg`},void 0,!1,{fileName:S,lineNumber:290,columnNumber:350},this),`Remove owner`]},void 0,!0,{fileName:S,lineNumber:290,columnNumber:330},this)
 ]},void 0,!0,{fileName:S,lineNumber:290,columnNumber:210},this)
 ]},void 0,!0,{fileName:S,lineNumber:290,columnNumber:150},this)
