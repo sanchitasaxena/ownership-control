@@ -12,7 +12,7 @@ const context = vm.createContext({
   publishingMemberTeams: ['Core', 'AppEng'],
 });
 vm.runInContext(bundle.slice(start, end), context);
-const { artifactOwnerAccess: access, permissionContactTeams: contacts, eligiblePublishingTeams: eligible } = context;
+const { artifactOwnerAccess: access, permissionContactTeams: contacts, eligiblePublishingTeams: eligible, ownershipRemovalMessage: removalMessage } = context;
 const manage = 'private-Modules-Publish and manage modules for this team';
 const remove = 'private-Modules-Delete modules owned by this team';
 
@@ -58,4 +58,35 @@ test('publishing eligibility requires both membership and management capability'
   settings.Core.deleted = true;
   assert.deepEqual(Array.from(eligible(settings, 'mine')), ['AppEng']);
   assert.equal(eligible(settings, 'any').includes('Core'), false);
+});
+
+test('owner removal names the assignment and teams retaining global management', () => {
+  const artifact = { name: 'aws-rds-starter-module', owner: 'Core', kind: 'module', registry: 'Private' };
+  const message = removalMessage([artifact], {
+    Core: { options: { [manage]: true } },
+    Infra: { team: 'Manage teams' },
+    Platform: { privateRegistry: true },
+    Owners: { privateRegistry: true },
+  });
+  assert.equal(message, 'Core will no longer own aws-rds-starter-module. The module and its versions will become unowned. Platform and Owners can still manage aws-rds-starter-module through organization-wide permissions. Team permissions will not change.');
+  assert.ok(!message.includes('prototype'));
+});
+
+test('bulk removal counts only supplied owned artifacts and excludes deleted managers', () => {
+  const artifacts = ['one', 'two'].map(name => ({ name, owner: 'Core', kind: 'module', registry: 'Private' }));
+  const message = removalMessage(artifacts, {
+    Platform: { privateRegistry: true, deleted: true },
+    Owners: { privateRegistry: true },
+  });
+  assert.match(message, /^Owner assignments will be removed from 2 artifacts\./);
+  assert.match(message, /Owners can still manage these artifacts/);
+  assert.ok(!message.includes('Platform'));
+});
+
+test('removal does not name a team without global management access', () => {
+  const message = removalMessage([{ name: 'example', owner: 'Core' }], {
+    Core: { options: { [manage]: true } },
+  });
+  assert.match(message, /Organization owners and teams with applicable organization-wide permissions/);
+  assert.ok(!message.includes('Core can still manage'));
 });

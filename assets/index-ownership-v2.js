@@ -400,18 +400,18 @@ function ce({owner,close:n,save,artifacts,permissions}){const[e,t]=b.useState(ow
 ]},void 0,!0,{fileName:S,lineNumber:265,columnNumber:7},this)
 },void 0,!1,{fileName:S,lineNumber:264,columnNumber:5},this)
 }
-function OwnershipClearConfirmation({count,onCancel,onConfirm}) {
+function OwnershipClearConfirmation({artifacts,permissions,onCancel,onConfirm}) {
   const h=b.createElement;
   const cancel=b.useRef(null);
   b.useEffect(()=>{cancel.current?.focus();},[]);
   return h(`div`,{className:`overlay ownership-clear-overlay`,onMouseDown:onCancel},
-    h(`section`,{role:`dialog`,"aria-modal":true,"aria-label":`Remove ownership`,className:`modal`,
+    h(`section`,{role:`dialog`,"aria-modal":true,"aria-label":`Remove owner`,className:`modal`,
       onMouseDown:event=>event.stopPropagation(),onKeyDown:event=>{if(event.key===`Escape`){event.stopPropagation();onCancel();}}},
-      h(`div`,{className:`px-6 py-4 border-b border-[#d8d9dc]`},h(`h2`,null,`Remove ownership?`)),
-      h(`div`,{className:`p-6`},`Remove the owner from ${count===1?`this artifact`:`${count} selected artifacts`}? The artifacts and their versions will become unowned. Only organization owners and globally authorized Registry managers will retain management access. Team permissions will not change.`),
+      h(`div`,{className:`px-6 py-4 border-b border-[#d8d9dc]`},h(`h2`,null,artifacts.length===1?`Remove owner?`:`Remove owners?`)),
+      h(`div`,{className:`p-6`},ownershipRemovalMessage(artifacts,permissions)),
       h(`div`,{className:`flex gap-3 px-6 py-4 border-t border-[#d8d9dc]`},
         h(`button`,{ref:cancel,type:`button`,className:`btn`,onClick:onCancel},`Cancel`),
-        h(w,{danger:true,onClick:onConfirm},`Remove ownership`))));
+        h(w,{danger:true,onClick:onConfirm},artifacts.length===1?`Remove owner`:`Remove owners`))));
 }
 function le({owner:e,artifact,assignOwner,overlay:n,setOverlay:r,setScreen:i,setToast,permissions,viewerIsOwner,canAssignOwnership,viewerAccess,updateArtifact,deleteArtifact}){
   const [detailTab,setDetailTab]=b.useState(`Readme`);
@@ -576,7 +576,7 @@ function VersionActionDialog({action,version,tags,onCancel,onSave,onDelete}) {
       h(`div`,{className:`px-6 py-4 border-b border-[#d8d9dc]`},h(`h2`,null,title)),
       h(`div`,{className:`p-6`},action===`tags`
         ?h(`label`,null,`Environment tags for ${version}`,h(`input`,{className:`field mt-2`,value:draft,onChange:event=>setDraft(event.target.value)}),h(`small`,null,`Separate tag names with commas. Existing tag permissions apply independently of ownership.`))
-        :`This removes ${action===`delete-artifact`?`the module and all of its versions`:`version ${version}`} from this prototype. This does not change the owner team's permissions.`),
+        :`Deleting ${action===`delete-artifact`?`this module also deletes all of its versions`:`version ${version} does not delete other versions of this module`}. Team permissions will not change.`),
       h(`div`,{className:`flex gap-3 px-6 py-4 border-t border-[#d8d9dc]`},
         h(`button`,{ref:cancel,type:`button`,className:`btn`,onClick:onCancel},`Cancel`),
         action===`tags`?h(w,{primary:true,onClick:()=>onSave([...new Set(draft.split(`,`).map(tag=>tag.trim()).filter(Boolean))])},`Save tags`)
@@ -784,6 +784,14 @@ function eligiblePublishingTeams(permissions,scenario) {
   if(scenario===`any`)return activeOwnerTeams(permissions);
   const memberships=scenario===`blocked`?[`Interns`]:publishingMemberTeams;
   return memberships.filter(name=>!permissions[name]?.deleted&&artifactOwnerAccess(permissions[name]).manage);
+}
+function ownershipRemovalMessage(artifacts,permissions) {
+  const single=artifacts.length===1;
+  const artifact=artifacts[0];
+  const managers=activeOwnerTeams(permissions).filter(team=>artifacts.every(item=>artifactOwnerAccess(permissions[team],item,false).manage));
+  const names=managers.length>1?`${managers.slice(0,-1).join(`, `)} and ${managers[managers.length-1]}`:managers[0];
+  const subject=single?artifact.name:`these artifacts`;
+  return `${single?`${artifact.owner} will no longer own ${artifact.name}.`:`Owner assignments will be removed from ${artifacts.length} artifacts.`} ${single?`The module and its versions will become unowned.`:`The artifacts and their versions will become unowned.`} ${names?`${names} can still manage ${subject} through organization-wide permissions.`:`Organization owners and teams with applicable organization-wide permissions can still manage ${subject}.`} Team permissions will not change.`;
 }
 function OwnerTeamPicker({value,onChange,scenario,permissions,artifacts=[{kind:`module`,registry:`Private`}]}) {
   const [query,setQuery]=b.useState(``);
@@ -1143,7 +1151,7 @@ function pe() {
     screen===`artifact`&&h(le,{key:activeArtifact.id,overlay,owner:activeArtifact.owner,artifact:activeArtifact,setOverlay,setScreen:navigate,setToast,assignOwner,permissions,viewerIsOwner:activeArtifact.owner===actingTeam,canAssignOwnership:canAdministerOwnership,viewerAccess,updateArtifact,deleteArtifact}),
     screen===`team`&&h(b.Fragment,null,
       !canEditTeamPermissions&&h(`p`,{className:`owner-permission-alert`,role:`status`},`Read-only: only organization owners or teams with Manage organization access can update team permissions. Manage teams alone is insufficient.`),
-      team===`Owners`&&h(`p`,{className:`owner-permission-alert`,role:`status`},`The Owners team retains inherent organization access. Its permissions cannot be changed in this prototype.`),
+      team===`Owners`&&h(`p`,{className:`owner-permission-alert`,role:`status`},`The Owners team has full organization access. Its permissions cannot be changed.`),
       h(`fieldset`,{disabled:!canEditTeamPermissions||team===`Owners`},h(ue,{key:team,team,permissions:permissions[team],setScreen:navigate,setToast,
         savePermissions:settings=>{
           if(!canEditTeamPermissions||team===`Owners`){setToast(`You do not have permission to update this team's access.`);return;}
@@ -1151,12 +1159,12 @@ function pe() {
         }})),
       canDeleteTeams&&team!==`Owners`&&team!==actingTeam&&h(w,{danger:true,onClick:()=>setPendingTeamDelete(team)},`Delete team`)),
     screen===`add-module`&&h(fe,{key:publishingScenario,kind:`module`,setScreen:navigate,publish,publishingScenario,permissions}),
-    pendingClear&&h(OwnershipClearConfirmation,{count:pendingClear.ids.length,onCancel:()=>setPendingClear(null),
+    pendingClear&&h(OwnershipClearConfirmation,{artifacts:artifacts.filter(artifact=>pendingClear.ids.includes(artifact.id)&&artifact.owner),permissions,onCancel:()=>setPendingClear(null),
       onConfirm:()=>{commitOwnership(pendingClear.ids,``,pendingClear.showDetails);setPendingClear(null);}}),
     pendingTeamDelete&&h(`div`,{className:`overlay ownership-clear-overlay`},
       h(`section`,{className:`modal p-6`,role:`dialog`,"aria-modal":true,"aria-label":`Delete team ${pendingTeamDelete}`},
         h(`h2`,null,`Delete team ${pendingTeamDelete}?`),
-        h(`p`,{className:`my-4`},`All artifacts owned by this team will become unowned. Ownership will not be transferred. This deletes the team only in the prototype.`),
+        h(`p`,{className:`my-4`},`Deleting ${pendingTeamDelete} removes the team and its access. Artifacts owned by ${pendingTeamDelete} will become unowned. Ownership will not be transferred to another team.`),
         h(`div`,{className:`flex gap-3`},h(w,{onClick:()=>setPendingTeamDelete(null)},`Cancel`),h(w,{danger:true,onClick:deleteTeam},`Delete team`)))),
     ownerNotice&&h(`div`,{className:`owner-assignment-followup`,role:`status`},
       h(`p`,null,ownerNotice.message),
