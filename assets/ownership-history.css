@@ -13,7 +13,6 @@
 .owner-option-name { display: flex; align-items: center; justify-content: space-between; gap: 12px; font-size: 14px; }
 .owner-option-membership { color: #656a76; font-size: 11px; }
 .owner-option-identity { display: flex; flex-wrap: wrap; align-items: baseline; gap: 8px; min-width: 0; overflow-wrap: anywhere; }
-.owner-option-access { flex-shrink: 0; color: #656a76; font-size: 12px; line-height: 18px; font-weight: 400; }
 .owner-picker-options p { padding: 12px; }
 .owner-permission-alert { display: flex; align-items: flex-start; gap: 10px; margin-top: 16px; padding: 16px; border: 1px solid #ffcf75; border-radius: 5px; background: #fff8e9; color: #3b3d45; font-size: 13px; line-height: 20px; }
 .owner-permission-alert > img { flex-shrink: 0; }
@@ -25,9 +24,19 @@ table.bulk-table th:nth-child(4), table.bulk-table td:nth-child(4) { width: 105p
 table.bulk-table th:nth-child(5), table.bulk-table td:nth-child(5) { width: 100px; }
 table.bulk-table th:nth-child(6), table.bulk-table td:nth-child(6), table.bulk-table th:nth-child(7), table.bulk-table td:nth-child(7) { width: 95px; }
 table.bulk-table th:nth-child(8), table.bulk-table td:nth-child(8) { width: 105px; }
-.prototype-workflows { display: flex; flex-wrap: wrap; align-items: center; gap: 16px; margin-bottom: 24px; padding: 12px 16px; border: 1px solid #d8d9dc; border-radius: 5px; background: #fafafa; font-size: 13px; }
+.prototype-workflows-dock { position: fixed; right: 24px; bottom: 20px; z-index: 90; }
+.prototype-workflows { position: absolute; right: 0; bottom: calc(100% + 8px); display: grid; gap: 12px; width: min(440px, calc(100vw - 32px)); padding: 16px; border: 1px solid #d8d9dc; border-radius: 8px; background: #fff; box-shadow: 0 8px 24px #00000026; font-size: 13px; }
 .prototype-workflows label { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin: 0; }
 .prototype-workflows select { max-width: 100%; padding: 6px 8px; border: 1px solid #8c909c; border-radius: 4px; background: #fff; color: #3b3d45; }
+.workflow-preview-modes { display: grid; gap: 10px; margin: 0; padding: 12px 0 0; border-top: 1px solid #eeeef0; }
+.workflow-preview-modes legend { padding: 0; color: #3b3d45; font-weight: 600; }
+.workflow-preview-modes label { display: grid; grid-template-columns: 1fr minmax(150px, 1fr); align-items: center; gap: 12px; color: #656a76; }
+.workflow-preview-modes select { width: 100%; }
+.owner-viewer-context { padding: 2px 6px; border-radius: 10px; background: #edf3ff; color: #2859a5; font-size: 11px; font-weight: 600; }
+.workflow-dock-trigger { display: inline-flex; align-items: center; gap: 12px; min-height: 36px; padding: 8px 12px; border: 1px solid #d8d9dc; border-radius: 20px; background: #fff; color: #3b3d45; box-shadow: 0 4px 16px #00000026; font-size: 12px; font-weight: 600; }
+.workflow-dock-trigger:hover { border-color: #8c909c; background: #fafafa; }
+.workflow-dock-trigger:focus-visible { outline: 2px solid #1060ff; outline-offset: 2px; }
+.registry-ownership-option { margin-top: 16px !important; padding-top: 12px !important; padding-bottom: 0 !important; border-top: 1px solid #eeeef0; }
 .registry-permissions-heading { margin: 0 0 8px; color: #3b3d45; font-size: 14px; font-weight: 600; }
 .registry-permissions-intro { margin: 0 0 20px; color: #656a76; font-size: 13px; line-height: 20px; }
 .registry-permissions-section { min-width: 0; }
@@ -35,7 +44,6 @@ table.bulk-table th:nth-child(8), table.bulk-table td:nth-child(8) { width: 105p
 .registry-permissions-section .permission-option { display: flex; align-items: flex-start; gap: 10px; margin: 0; padding: 12px 0; }
 .registry-permissions-section .permission-option input { flex: 0 0 auto; margin-top: 4px; }
 .registry-permissions-section .permission-option small { display: block; margin-top: 4px; color: #656a76; line-height: 20px; }
-.registry-ownership-option { padding-bottom: 16px !important; }
 .registry-full-access { margin-top: 0; }
 .registry-artifact-permissions { margin-top: 12px; }
 .registry-artifact-permissions > .registry-permissions-intro { margin-bottom: 12px; }
@@ -71,3 +79,8 @@ table.bulk-table th:nth-child(8), table.bulk-table td:nth-child(8) { width: 105p
 .owner-history-team.previous { color: #656a76; }
 .owner-history-arrow { color: #8c909c; }
 .owner-history-event-meta { display: flex; align-items: center; flex-wrap: wrap; gap: 6px; margin-top: 4px; color: #656a76; font-size: 12px; line-height: 18px; }
+@media (max-width: 600px) {
+  .prototype-workflows-dock { right: 12px; bottom: 12px; }
+  .prototype-workflows { right: -4px; }
+  .workflow-preview-modes label { grid-template-columns: 1fr; gap: 4px; }
+}
