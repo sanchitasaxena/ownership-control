@@ -22,6 +22,7 @@
 .owner-assignment-followup p { flex: 1; margin: 0; }
 .owner-settings-cta { flex-shrink: 0; color: #1060ff; font-weight: 600; text-decoration: underline; }
 .owner-followup-dismiss { align-self: flex-start; color: #656a76; font-size: 18px; line-height: 20px; }
+.version-action-gear { display: inline-flex; width: 16px; height: 16px; align-items: center; justify-content: center; margin-right: 8px; font-size: 16px; line-height: 1; }
 table.bulk-table th:first-child, table.bulk-table td:first-child { width: 44px; padding-left: 12px; padding-right: 12px; text-align: center; }
 table.bulk-table th:nth-child(2), table.bulk-table td:nth-child(2) { width: 230px; }
 table.bulk-table th:nth-child(3), table.bulk-table td:nth-child(3) { width: 145px; }

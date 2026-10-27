@@ -417,6 +417,7 @@ function ce({owner,close:n,save,artifacts,permissions}){const[e,t]=b.useState(ow
 function le({owner:e,artifact,assignOwner,overlay:n,setOverlay:r,setScreen:i,setToast,permissions,viewerIsOwner,canAssignOwnership}){
   const [detailTab,setDetailTab]=b.useState(`Readme`);
   const [actionsOpen,setActionsOpen]=b.useState(false);
+  const [selectedVersion,setSelectedVersion]=b.useState(`1.2.3`);
   const h=b.createElement;
   const detailContent=detailTab===`Readme`
     ?h(b.Fragment,null,
@@ -459,7 +460,7 @@ function le({owner:e,artifact,assignOwner,overlay:n,setOverlay:r,setScreen:i,set
 ,(0,x.jsxDEV)(`span`,{children:`/`},void 0,!1,{fileName:S,lineNumber:282,columnNumber:209},this)
 ,(0,x.jsxDEV)(`b`,{children:`Overview`},void 0,!1,{fileName:S,lineNumber:282,columnNumber:223},this)
 ,(0,x.jsxDEV)(`span`,{children:`/`},void 0,!1,{fileName:S,lineNumber:282,columnNumber:238},this)
-,(0,x.jsxDEV)(`b`,{children:`1.2.3`},void 0,!1,{fileName:S,lineNumber:282,columnNumber:252},this)
+,(0,x.jsxDEV)(`b`,{children:selectedVersion},void 0,!1,{fileName:S,lineNumber:282,columnNumber:252},this)
 ]},void 0,!0,{fileName:S,lineNumber:282,columnNumber:7},this)
 ,(0,x.jsxDEV)(`div`,{className:`relative mb-4 flex items-start justify-between`,children:[(0,x.jsxDEV)(`div`,{children:[(0,x.jsxDEV)(`div`,{className:`flex items-center gap-3`,children:[(0,x.jsxDEV)(`h1`,{children:artifact.name},void 0,!1,{fileName:S,lineNumber:284,columnNumber:55},this)
 ,(0,x.jsxDEV)(`span`,{className:`tag`,children:[(0,x.jsxDEV)(C,{className:`size-3`,src:`2d57d.svg`},void 0,!1,{fileName:S,lineNumber:284,columnNumber:108},this)
@@ -506,15 +507,16 @@ function le({owner:e,artifact,assignOwner,overlay:n,setOverlay:r,setScreen:i,set
 ,(0,x.jsxDEV)(`h2`,{className:`mb-2`,children:`Module details`},void 0,!1,{fileName:S,lineNumber:289,columnNumber:7},this)
 ,(0,x.jsxDEV)(`p`,{className:`mb-4 text-sm text-[#656a76]`,children:`See submodules, examples, the ReadMe and other information for a particular module version.`},void 0,!1,{fileName:S,lineNumber:289,columnNumber:47},this)
 ,(0,x.jsxDEV)(`div`,{className:`mb-7 flex flex-wrap items-end gap-2`,children:[(0,x.jsxDEV)(`label`,{className:`min-w-64 flex-1`,children:[(0,x.jsxDEV)(`b`,{children:`Select version`},void 0,!1,{fileName:S,lineNumber:290,columnNumber:95},this)
-,(0,x.jsxDEV)(`select`,{className:`field mt-2`,children:(0,x.jsxDEV)(`option`,{children:`1.2.3 (latest)`},void 0,!1,{fileName:S,lineNumber:290,columnNumber:147},this)
-},void 0,!1,{fileName:S,lineNumber:290,columnNumber:116},this)
+,(0,x.jsxDEV)(`select`,{className:`field mt-2`,value:selectedVersion,onChange:event=>setSelectedVersion(event.target.value),children:[
+  (0,x.jsxDEV)(`option`,{key:`1.2.3`,value:`1.2.3`,children:`1.2.3 (latest)`},void 0,!1,{fileName:S,lineNumber:290,columnNumber:147},this)
+, (0,x.jsxDEV)(`option`,{key:`1.2.2`,value:`1.2.2`,children:`1.2.2`},void 0,!1,{fileName:S,lineNumber:290,columnNumber:147},this)
+, (0,x.jsxDEV)(`option`,{key:`1.2.1`,value:`1.2.1`,children:`1.2.1`},void 0,!1,{fileName:S,lineNumber:290,columnNumber:147},this)
+]},void 0,!1,{fileName:S,lineNumber:290,columnNumber:116},this)
 ]},void 0,!0,{fileName:S,lineNumber:290,columnNumber:60},this)
 , (0,x.jsxDEV)(`div`,{className:`relative`,children:[(0,x.jsxDEV)(`button`,{type:`button`,className:`btn`,onClick:()=>setActionsOpen(value=>!value),"aria-expanded":actionsOpen,children:[`Actions `,(0,x.jsxDEV)(C,{className:`size-3`,src:`6899e.svg`},void 0,!1,{fileName:S,lineNumber:290,columnNumber:180},this)]},void 0,!0,{fileName:S,lineNumber:290,columnNumber:160},this)
 ,actionsOpen&&(0,x.jsxDEV)(E,{className:`right-0 top-9 z-20 w-52`,children:[
-  (0,x.jsxDEV)(D,{onClick:()=>{setActionsOpen(false);copyConfiguration()},children:`Copy configuration`},void 0,!1,{fileName:S,lineNumber:290,columnNumber:200},this)
-,  (0,x.jsxDEV)(D,{onClick:()=>{setActionsOpen(false);window.open(`https://github.com/terraform-aws-modules/terraform-aws-rds`,`_blank`,`noopener,noreferrer`)},children:`View source on GitHub`},void 0,!1,{fileName:S,lineNumber:290,columnNumber:280},this)
-,  canAssignOwnership&&(0,x.jsxDEV)(D,{onClick:()=>{setActionsOpen(false);r(`owner`)},children:[(0,x.jsxDEV)(C,{src:`4c97e.svg`},void 0,!1,{fileName:S,lineNumber:290,columnNumber:250},this),`Manage owner`]},void 0,!0,{fileName:S,lineNumber:290,columnNumber:230},this)
-,  canAssignOwnership&&artifact.owner&&(0,x.jsxDEV)(D,{onClick:()=>{setActionsOpen(false);assignOwner([artifact.id],``)},children:[(0,x.jsxDEV)(C,{src:`8a442.svg`},void 0,!1,{fileName:S,lineNumber:290,columnNumber:350},this),`Remove owner`]},void 0,!0,{fileName:S,lineNumber:290,columnNumber:330},this)
+  (0,x.jsxDEV)(D,{key:`manage-environment-tags`,onClick:()=>{setActionsOpen(false);setToast(`Manage environment tags for version ${selectedVersion}.`)},children:[(0,x.jsxDEV)(`span`,{"aria-hidden":true,className:`version-action-gear`,children:`⚙`},void 0,!1,{fileName:S,lineNumber:290,columnNumber:220},this),`Manage environment tags`]},void 0,!0,{fileName:S,lineNumber:290,columnNumber:200},this)
+,  (0,x.jsxDEV)(D,{key:`delete-version`,danger:!0,onClick:()=>{setActionsOpen(false);setToast(`Delete version ${selectedVersion}.`)},children:`Delete version ${selectedVersion}`},void 0,!1,{fileName:S,lineNumber:290,columnNumber:280},this)
 ]},void 0,!0,{fileName:S,lineNumber:290,columnNumber:210},this)
 ]},void 0,!0,{fileName:S,lineNumber:290,columnNumber:150},this)
 ,(0,x.jsxDEV)(w,{onClick:()=>setDetailTab(`Submodules`),children:[`Submodules `,(0,x.jsxDEV)(C,{className:`size-3`,src:`6899e.svg`},void 0,!1,{fileName:S,lineNumber:290,columnNumber:214},this)
@@ -553,7 +555,7 @@ function le({owner:e,artifact,assignOwner,overlay:n,setOverlay:r,setScreen:i,set
 ,(0,x.jsxDEV)(`h3`,{hidden:detailTab!==`Readme`,className:`mt-5 font-semibold`,children:`How to use this Module`},void 0,!1,{fileName:S,lineNumber:293,columnNumber:652},this)
 ,(0,x.jsxDEV)(`div`,{role:`tabpanel`,hidden:detailTab===`Readme`,children:detailContent},void 0,!1,{fileName:S,lineNumber:293,columnNumber:700},this)
 ]},void 0,!0,{fileName:S,lineNumber:293,columnNumber:9},this)
-,(0,x.jsxDEV)(`aside`,{className:`rounded border border-[#d8d9dc] p-6`,children:[(0,x.jsxDEV)(`h2`,{children:[`Usage Instructions `,(0,x.jsxDEV)(`small`,{className:`inline text-[#656a76]`,children:`(1.2.3)`},void 0,!1,{fileName:S,lineNumber:294,columnNumber:87},this)
+,(0,x.jsxDEV)(`aside`,{className:`rounded border border-[#d8d9dc] p-6`,children:[(0,x.jsxDEV)(`h2`,{children:[`Usage Instructions `,(0,x.jsxDEV)(`small`,{className:`inline text-[#656a76]`,children:`(${selectedVersion})`},void 0,!1,{fileName:S,lineNumber:294,columnNumber:87},this)
 ]},void 0,!0,{fileName:S,lineNumber:294,columnNumber:64},this)
 ,(0,x.jsxDEV)(`p`,{className:`my-4`,children:`Copy and paste into your Terraform configuration and set values for the input variables.`},void 0,!1,{fileName:S,lineNumber:294,columnNumber:148},this)
 ,(0,x.jsxDEV)(`pre`,{children:`module "aws-rd" {
