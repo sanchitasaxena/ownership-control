@@ -335,7 +335,7 @@ return(0,x.jsxDEV)(x.Fragment,{children:[(0,x.jsxDEV)(oe,{children:[(0,x.jsxDEV)
 ]},void 0,!0,{fileName:S,lineNumber:220,columnNumber:13},this)
 ]},void 0,!0,{fileName:S,lineNumber:214,columnNumber:11},this)
 ,(0,x.jsxDEV)(`div`,{className:`library-table-region overflow-x-auto`,children:(0,x.jsxDEV)(`table`,{className:`bulk-table w-full min-w-[1060px] table-fixed border-collapse text-left text-sm`,children:[(0,x.jsxDEV)(`thead`,{children:(0,x.jsxDEV)(`tr`,{children:[b.createElement(`th`,{className:`w-10`,scope:`col`},
-  canAssignOwnership&&b.createElement(`input`,{type:`checkbox`,"aria-label":`Select all visible modules`,checked:m.length>0&&m.every(item=>r.includes(item.id)),disabled:!m.length,
+  h&&b.createElement(`input`,{type:`checkbox`,"aria-label":`Select all visible modules`,checked:m.length>0&&m.every(item=>r.includes(item.id)),disabled:!m.length,
     ref:element=>{if(element)element.indeterminate=m.some(item=>r.includes(item.id))&&!m.every(item=>r.includes(item.id));},
     onChange:event=>i(event.target.checked?m.map(item=>item.id):[])}))
 ,(0,x.jsxDEV)(`th`,{children:kind===`module`?`Modules`:`Providers`},void 0,!1,{fileName:S,lineNumber:232,columnNumber:60},this)
@@ -348,7 +348,7 @@ return(0,x.jsxDEV)(x.Fragment,{children:[(0,x.jsxDEV)(oe,{children:[(0,x.jsxDEV)
 ,(0,x.jsxDEV)(`th`,{},void 0,!1,{fileName:S,lineNumber:232,columnNumber:183},this)
 ]},void 0,!0,{fileName:S,lineNumber:232,columnNumber:20},this)
 },void 0,!1,{fileName:S,lineNumber:232,columnNumber:13},this)
-,(0,x.jsxDEV)(`tbody`,{children:m.length?m.map(t=>(0,x.jsxDEV)(`tr`,{children:[(0,x.jsxDEV)(`td`,{children:canAssignOwnership&&(0,x.jsxDEV)(`input`,{"aria-label":`Select ${t.name} (${t.id})`,checked:r.includes(t.id),onChange:()=>i(r.includes(t.id)?r.filter(e=>e!==t.id):[...r,t.id]),type:`checkbox`},void 0,!1,{fileName:S,lineNumber:236,columnNumber:32},this)
+,(0,x.jsxDEV)(`tbody`,{children:m.length?m.map(t=>(0,x.jsxDEV)(`tr`,{children:[(0,x.jsxDEV)(`td`,{children:h&&(0,x.jsxDEV)(`input`,{"aria-label":`Select ${t.name} (${t.id})`,checked:r.includes(t.id),onChange:()=>i(r.includes(t.id)?r.filter(e=>e!==t.id):[...r,t.id]),type:`checkbox`},void 0,!1,{fileName:S,lineNumber:236,columnNumber:32},this)
 },void 0,!1,{fileName:S,lineNumber:236,columnNumber:28},this)
 ,(0,x.jsxDEV)(`td`,{children:[(0,x.jsxDEV)(`button`,{className:`inline-flex items-center gap-1 font-semibold hover:underline`,onClick:()=>openArtifact(t),children:[t.name,(0,x.jsxDEV)(C,{src:`66b79.svg`},void 0,!1,{fileName:S,lineNumber:237,columnNumber:152},this)
 ]},void 0,!0,{fileName:S,lineNumber:237,columnNumber:23},this)
@@ -944,12 +944,11 @@ function OwnerHistory({artifact,onEdit,onRemove,canAssignOwnership=true,viewerIs
       h(`span`,{className:`owner-history-header`},
         h(`span`,{className:`owner-history-title`},`Ownership activity`),
         h(`span`,{className:`owner-history-actions`},
-          canAssignOwnership&&h(`button`,{type:`button`,className:`owner-history-edit`,onClick:()=>{close();onEdit();}},`Edit owner`),
-          canAssignOwnership&&artifact.owner&&h(`button`,{type:`button`,className:`owner-history-remove`,onClick:()=>{close();onRemove();}},`Remove owner`),
           h(`button`,{type:`button`,"aria-label":`Close ownership activity`,className:`owner-history-close`,onClick:close},`\u00d7`))),
       h(`span`,{className:`owner-history-current`},
         h(`span`,null,`Current owner`),
-        h(`strong`,null,artifact.owner?h(TeamLink,{team:artifact.owner}):`Unowned`)),
+        h(`strong`,null,artifact.owner?h(TeamLink,{team:artifact.owner}):`Unowned`),
+        canAssignOwnership&&h(`button`,{type:`button`,className:`owner-history-edit`,onClick:()=>{close();onEdit();}},`Edit`)),
       h(`ol`,{className:`owner-history-events`},history.map((entry,index)=>{
         return h(`li`,{key:index,className:`owner-history-event`},
           h(`span`,{className:`owner-history-event-body`},
