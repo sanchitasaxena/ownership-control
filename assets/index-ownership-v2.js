@@ -334,10 +334,10 @@ return(0,x.jsxDEV)(x.Fragment,{children:[(0,x.jsxDEV)(oe,{children:[(0,x.jsxDEV)
 ]},void 0,!0,{fileName:S,lineNumber:226,columnNumber:15},this)
 ]},void 0,!0,{fileName:S,lineNumber:220,columnNumber:13},this)
 ]},void 0,!0,{fileName:S,lineNumber:214,columnNumber:11},this)
-,(0,x.jsxDEV)(`div`,{className:`library-table-region overflow-x-auto`,children:(0,x.jsxDEV)(`table`,{className:`bulk-table w-full min-w-[1060px] table-fixed border-collapse text-left text-sm`,children:[(0,x.jsxDEV)(`thead`,{children:(0,x.jsxDEV)(`tr`,{children:[b.createElement(`th`,{className:`w-10`,scope:`col`},
-  h&&b.createElement(`input`,{type:`checkbox`,"aria-label":`Select all visible modules`,checked:m.length>0&&m.every(item=>r.includes(item.id)),disabled:!m.length,
+,(0,x.jsxDEV)(`div`,{className:`library-table-region overflow-x-auto`,children:(0,x.jsxDEV)(`table`,{className:`bulk-table w-full min-w-[1060px] table-fixed border-collapse text-left text-sm`,children:[(0,x.jsxDEV)(`thead`,{children:(0,x.jsxDEV)(`tr`,{children:[b.createElement(`th`,{className:`artifact-select-cell`,scope:`col`},
+  h?b.createElement(`input`,{type:`checkbox`,"aria-label":`Select all visible modules`,checked:m.length>0&&m.every(item=>r.includes(item.id)),disabled:!m.length,
     ref:element=>{if(element)element.indeterminate=m.some(item=>r.includes(item.id))&&!m.every(item=>r.includes(item.id));},
-    onChange:event=>i(event.target.checked?m.map(item=>item.id):[])}))
+    onChange:event=>i(event.target.checked?m.map(item=>item.id):[])}):b.createElement(`span`,{className:`visually-hidden`},kind===`module`?`Module type`:`Provider type`))
 ,(0,x.jsxDEV)(`th`,{children:kind===`module`?`Modules`:`Providers`},void 0,!1,{fileName:S,lineNumber:232,columnNumber:60},this)
 ,(0,x.jsxDEV)(`th`,{children:`Latest version`},void 0,!1,{fileName:S,lineNumber:232,columnNumber:76},this)
 ,(0,x.jsxDEV)(`th`,{children:`Provider`},void 0,!1,{fileName:S,lineNumber:232,columnNumber:99},this)
@@ -348,8 +348,8 @@ return(0,x.jsxDEV)(x.Fragment,{children:[(0,x.jsxDEV)(oe,{children:[(0,x.jsxDEV)
 ,(0,x.jsxDEV)(`th`,{},void 0,!1,{fileName:S,lineNumber:232,columnNumber:183},this)
 ]},void 0,!0,{fileName:S,lineNumber:232,columnNumber:20},this)
 },void 0,!1,{fileName:S,lineNumber:232,columnNumber:13},this)
-,(0,x.jsxDEV)(`tbody`,{children:m.length?m.map(t=>(0,x.jsxDEV)(`tr`,{children:[(0,x.jsxDEV)(`td`,{children:h&&(0,x.jsxDEV)(`input`,{"aria-label":`Select ${t.name} (${t.id})`,checked:r.includes(t.id),onChange:()=>i(r.includes(t.id)?r.filter(e=>e!==t.id):[...r,t.id]),type:`checkbox`},void 0,!1,{fileName:S,lineNumber:236,columnNumber:32},this)
-},void 0,!1,{fileName:S,lineNumber:236,columnNumber:28},this)
+,(0,x.jsxDEV)(`tbody`,{children:m.length?m.map(t=>(0,x.jsxDEV)(`tr`,{children:[(0,x.jsxDEV)(`td`,{className:`artifact-select-cell`,children:h?(0,x.jsxDEV)(`input`,{"aria-label":`Select ${t.name} (${t.id})`,checked:r.includes(t.id),onChange:()=>i(r.includes(t.id)?r.filter(e=>e!==t.id):[...r,t.id]),type:`checkbox`},void 0,!1,{fileName:S,lineNumber:236,columnNumber:32},this)
+:b.createElement(C,{className:`artifact-type-icon size-4`,src:t.kind===`provider`?`25277.svg`:`bd056.svg`,})},void 0,!1,{fileName:S,lineNumber:236,columnNumber:28},this)
 ,(0,x.jsxDEV)(`td`,{children:[(0,x.jsxDEV)(`button`,{className:`inline-flex items-center gap-1 font-semibold hover:underline`,onClick:()=>openArtifact(t),children:[t.name,(0,x.jsxDEV)(C,{src:`66b79.svg`},void 0,!1,{fileName:S,lineNumber:237,columnNumber:152},this)
 ]},void 0,!0,{fileName:S,lineNumber:237,columnNumber:23},this)
 ,(0,x.jsxDEV)(`small`,{children:t.kind===`provider`?`Private Terraform provider`:t.kind===`module`?`Private Terraform module`:`AWS starter kit module for RDS to...`},void 0,!1,{fileName:S,lineNumber:237,columnNumber:189},this)

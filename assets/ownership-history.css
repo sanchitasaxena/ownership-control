@@ -58,7 +58,13 @@ html { scrollbar-gutter: stable; }
 .menu-item:disabled { color: #8c909c; cursor: not-allowed; }
 .menu-item:disabled:hover { background: transparent; }
 .artifact-version-list { display: grid; gap: 12px; }
-table.bulk-table th:first-child, table.bulk-table td:first-child { width: 44px; padding-left: 12px; padding-right: 12px; text-align: center; }
+table.bulk-table th:first-child, table.bulk-table td:first-child { width: 44px; padding-left: 16px; padding-right: 0; text-align: left; vertical-align: top; }
+table.bulk-table th:first-child { vertical-align: middle; }
+table.bulk-table td.artifact-select-cell { padding-top: 18px; }
+table.bulk-table th:nth-child(2), table.bulk-table td:nth-child(2) { border-left: 0 !important; padding-left: 8px; }
+.artifact-select-cell input[type="checkbox"], .artifact-type-icon { display: block; width: 16px; height: 16px; margin: 0; }
+.artifact-select-cell input[type="checkbox"] { animation: artifact-select-in 140ms ease-out; }
+@keyframes artifact-select-in { from { opacity: 0; transform: scale(.85); } to { opacity: 1; transform: none; } }
 table.bulk-table th:nth-child(2), table.bulk-table td:nth-child(2) { width: 230px; }
 table.bulk-table th:nth-child(3), table.bulk-table td:nth-child(3) { width: 145px; }
 table.bulk-table th:nth-child(4), table.bulk-table td:nth-child(4) { width: 105px; }
@@ -136,6 +142,7 @@ table.bulk-table th:nth-child(8), table.bulk-table td:nth-child(8) { width: 105p
   .prototype-workflows-dock:not(:hover):not(:focus-within):not(.is-open) .workflow-dock-trigger { opacity: 1; }
 }
 @media (prefers-reduced-motion: reduce) {
-  .menu, .owner-history-card, .owner-superselect-dropdown, .overlay, .modal, .toast, .owner-assignment-followup, .registry-loading-table span { animation: none; }
+  .menu, .owner-history-card, .owner-superselect-dropdown, .overlay, .modal, .toast, .owner-assignment-followup, .registry-loading-table span, .artifact-select-cell input[type="checkbox"] { animation: none; }
   a, button, .prototype-workflows-dock .workflow-dock-trigger, .prototype-workflows-dock:not(:hover):not(:focus-within):not(.is-open) .workflow-dock-trigger { transition: none; }
 }
+.visually-hidden { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
