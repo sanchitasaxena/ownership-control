@@ -23,7 +23,7 @@ The RFC covers private modules, private providers, and private stack component c
 
 ## Preview controls and fixtures
 
-Hover at the bottom right or keyboard-focus **Prototype workflows** to reveal the control. It hides when idle, remains visible while open, and stays visible on touch devices. Choose a workflow, a viewer team, or the owner/non-owner preview. **Cannot assign ownership** suppresses ownership administration without suppressing otherwise authorized artifact/version actions.
+Use **Prototype workflows** at the bottom right to start any workflow. The viewer is assumed to have team-management permissions, so **Team settings** opens editable. Choose a workflow, a viewer team, or the owner/non-owner preview. **Cannot assign ownership** suppresses ownership administration without suppressing otherwise authorized artifact/version actions.
 
 Viewer identity and the team being edited are separate. Selecting an owner-team preview changes the simulated viewer to that artifact's owner. Non-owner mode uses a different team. Saved team capabilities drive the owner warnings, but the viewer can always use every artifact action in the mock.
 

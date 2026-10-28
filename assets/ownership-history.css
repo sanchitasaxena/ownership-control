@@ -72,8 +72,6 @@ table.bulk-table th:nth-child(5), table.bulk-table td:nth-child(5) { width: 100p
 table.bulk-table th:nth-child(6), table.bulk-table td:nth-child(6), table.bulk-table th:nth-child(7), table.bulk-table td:nth-child(7) { width: 95px; }
 table.bulk-table th:nth-child(8), table.bulk-table td:nth-child(8) { width: 105px; }
 .prototype-workflows-dock { position: fixed; right: 24px; bottom: 20px; z-index: 90; }
-.prototype-workflows-dock:not(:hover):not(:focus-within):not(.is-open) .workflow-dock-trigger { opacity: 0; transition: opacity 160ms ease; }
-.prototype-workflows-dock .workflow-dock-trigger { transition: opacity 160ms ease; }
 .prototype-workflows { position: absolute; right: 0; bottom: calc(100% + 8px); display: grid; gap: 12px; width: min(440px, calc(100vw - 32px)); padding: 16px; border: 1px solid #d8d9dc; border-radius: 8px; background: #fff; box-shadow: 0 8px 24px #00000026; font-size: 13px; }
 .prototype-workflows label { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin: 0; }
 .prototype-workflows select { max-width: 100%; padding: 6px 8px; border: 1px solid #8c909c; border-radius: 4px; background: #fff; color: #3b3d45; }
@@ -138,12 +136,9 @@ table.bulk-table th:nth-child(8), table.bulk-table td:nth-child(8) { width: 105p
   .workflow-preview-modes label { grid-template-columns: 1fr; gap: 4px; }
   .owner-assignment-followup { right: 12px; bottom: 64px; flex-wrap: wrap; }
 }
-@media (hover: none) {
-  .prototype-workflows-dock:not(:hover):not(:focus-within):not(.is-open) .workflow-dock-trigger { opacity: 1; }
-}
 @media (prefers-reduced-motion: reduce) {
   .menu, .owner-history-card, .owner-superselect-dropdown, .overlay, .modal, .toast, .owner-assignment-followup, .registry-loading-table span, .artifact-select-cell input[type="checkbox"] { animation: none; }
-  a, button, .prototype-workflows-dock .workflow-dock-trigger, .prototype-workflows-dock:not(:hover):not(:focus-within):not(.is-open) .workflow-dock-trigger { transition: none; }
+  a, button { transition: none; }
 }
 .visually-hidden { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
 .menu.menu-opens-up { top: auto; bottom: calc(100% - 20px); }
