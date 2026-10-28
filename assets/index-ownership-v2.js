@@ -1060,7 +1060,7 @@ function PrototypeNavigation({screen,team,navigate,openTeamSettings,publishingSc
       screen===`team`&&h(`label`,null,`Team`,
         h(`select`,{value:team,onChange:event=>{openTeamSettings(event.target.value);setOpen(false);}},
           activeOwnerTeams(permissions).filter(name=>name!==`Owners`).map(name=>h(`option`,{key:name,value:name},name)))),
-      (screen===`artifact`||screen===`library`)&&h(`label`,null,`Viewing as`,
+      screen===`artifact`&&h(`label`,null,`Viewing as`,
         h(`select`,{value:viewerIsOwner?`owner`:`non-owner`,onChange:event=>setViewerIsOwner(event.target.value===`owner`)},
           h(`option`,{value:`owner`},`Owner`),
           h(`option`,{value:`non-owner`},`Non-owner`)))),
@@ -1102,8 +1102,8 @@ function pe() {
   const canAdministerOwnership=canAssignOwnership;
   const canEditTeamPermissions=true;
   const canDeleteTeams=true;
-  // The mock assumes the viewer can perform every artifact action.
-  const viewerAccess={manage:true,remove:true,tags:true,projectTags:true,testSettings:true,noCodeSettings:true};
+  // Owner view can do everything; non-owner view is read-only.
+  const viewerAccess={manage:viewerIsOwner,remove:viewerIsOwner,tags:viewerIsOwner,projectTags:viewerIsOwner,testSettings:viewerIsOwner,noCodeSettings:viewerIsOwner};
   const navigate=next=>{
     if(next===`rollout`){
       setArtifacts(current=>current.map(artifact=>({...artifact,owner:``,ownershipHistory:[{to:`Unowned`,action:`Owner when prototype opened`}]})));
@@ -1119,7 +1119,7 @@ function pe() {
     if(owner&&!activeOwnerTeams(permissions).includes(owner)){setToast(`Select an active team in this organization.`);return;}
     const ownedArtifacts=artifacts.filter(artifact=>ids.includes(artifact.id)&&artifact.owner!==owner);
     const changedIds=new Set(ownedArtifacts.map(artifact=>artifact.id));
-    if(changedIds.has(activeId)||(showDetails&&ids.length===1)){setViewerTeam(actingTeam);setViewerIsOwner(owner===actingTeam);}
+    if(changedIds.has(activeId)||(showDetails&&ids.length===1)){setViewerTeam(actingTeam);}
     const at=new Date().toISOString();
     setArtifacts(current=>current.map(artifact=>changedIds.has(artifact.id)?{
       ...artifact,owner,
@@ -1167,7 +1167,6 @@ function pe() {
   };
   const openArtifact=artifact=>{
     setViewerTeam(actingTeam);
-    setViewerIsOwner(artifact.owner===actingTeam);
     setActiveId(artifact.id);
     navigate(`artifact`);
   };
@@ -1179,7 +1178,6 @@ function pe() {
   };
   const openTeamArtifacts=owner=>{
     setViewerTeam(actingTeam);
-    setViewerIsOwner(activeArtifact?.owner===actingTeam);
     setOwnerFilter(owner);
     setTeamNavigationRequest(value=>value+1);
     setKind(`module`);
@@ -1194,7 +1192,6 @@ function pe() {
   const deleteArtifact=id=>{
     const nextArtifact=artifacts.find(artifact=>artifact.id!==id);
     setViewerTeam(actingTeam);
-    setViewerIsOwner(nextArtifact?.owner===actingTeam);
     setArtifacts(current=>current.filter(artifact=>artifact.id!==id));
     setActiveId(nextArtifact?.id||0);
     setToast(`Module deleted.`);navigate(`library`);
@@ -1214,7 +1211,7 @@ function pe() {
       viewerIsOwner,setViewerIsOwner,canAssignOwnership,setCanAssignOwnership,viewerTeam:actingTeam,setViewerTeam,permissions,ownerTeam:activeArtifact?.owner}),
     screen===`library`&&h(se,{overlay,selected,setOverlay,setScreen:navigate,setSelected,artifacts,kind,setKind,openArtifact,assignOwner,permissions,canAssignOwnership:canAdministerOwnership,actingTeam,ownerFilter,setOwnerFilter,teamNavigationRequest,canAssignTags:viewerAccess.projectTags,
   assignTags:(ids,tags)=>{setArtifacts(current=>current.map(artifact=>ids.includes(artifact.id)?{...artifact,projectTags:[...new Set([...(artifact.projectTags||[]),...tags])]}:artifact));setSelected([]);setToast(`${tags.length===1?`Tag`:`Tags`} added to ${ids.length} ${kind===`provider`?`provider`:`module`}${ids.length===1?``:`s`}.`);}}),
-    screen===`artifact`&&h(le,{key:activeArtifact.id,overlay,owner:activeArtifact.owner,artifact:activeArtifact,setOverlay,setScreen:navigate,setToast,assignOwner,permissions,viewerIsOwner:activeArtifact.owner===actingTeam,canAssignOwnership:canAdministerOwnership,viewerAccess,updateArtifact,deleteArtifact}),
+    screen===`artifact`&&h(le,{key:activeArtifact.id,overlay,owner:activeArtifact.owner,artifact:activeArtifact,setOverlay,setScreen:navigate,setToast,assignOwner,permissions,viewerIsOwner,canAssignOwnership:viewerIsOwner,viewerAccess,updateArtifact,deleteArtifact}),
     screen===`team`&&h(b.Fragment,null,
       !canEditTeamPermissions&&h(`p`,{className:`owner-permission-alert`,role:`status`},`Read-only: only organization owners or teams with Manage organization access can update team permissions. Manage teams alone is insufficient.`),
       team===`Owners`&&h(`p`,{className:`owner-permission-alert`,role:`status`},h(TeamText,{text:`The Owners team has full organization access. Its permissions cannot be changed.`})),

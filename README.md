@@ -23,7 +23,7 @@ The RFC covers private modules, providers, and stack component configurations, p
 
 ## Preview controls and fixtures
 
-Use **Prototype workflows** at the bottom right to choose a workflow. On the library and artifact pages, **Viewing as** switches between Owner and Non-owner. In Team settings, **Team** picks the team to edit. The viewer is assumed to have every permission, so all artifact actions, ownership assignment, and team settings are available.
+Use **Prototype workflows** at the bottom right to choose a workflow. On the artifact page, **Viewing as** switches between Owner (Your team badge, Manage menu, version Actions, and Edit owner) and Non-owner (read-only). In Team settings, **Team** picks the team to edit. The viewer is assumed to have every permission, so all artifact actions, ownership assignment, and team settings are available.
 
 The startup view uses a lightweight loading placeholder while the application loads, without artificial delays. Each row shows a module icon beside its name; when Bulk select is activated, the icon becomes a checkbox in the same slot and returns to the icon when selection is cleared, so the layout does not shift. The bulk Actions menu offers Assign owner and Add tags; added tags are merged with existing project tags; filtering updates the existing table, which resizes to its rows and includes an empty state. Menus, dialogs, and notifications use short entrance transitions, and motion is disabled when reduced motion is requested. Buttons use the same local font as the interface rather than fetching an external font.
 
