@@ -90,3 +90,15 @@ test('removal does not name a team without global management access', () => {
   assert.match(message, /organization owners and teams with applicable organization-wide permissions/);
   assert.ok(!message.includes('Core can still manage'));
 });
+
+test('activity uses one factual sentence for each event type', () => {
+  const message = context.ownershipEventMessage;
+  assert.equal(message({ action: 'Owner when prototype opened', to: 'Core' }), 'Core was the initial owner.');
+  assert.equal(message({ action: 'Owner when prototype opened', to: 'Unowned' }), 'This module was initially unowned.');
+  assert.equal(message({ from: 'Core', to: 'AppEng', actor: 'Platform' }), 'Platform changed the owner from Core to AppEng.');
+  assert.equal(message({ from: 'Unowned', to: 'Core', actor: 'Platform' }), 'Platform assigned Core as the owner.');
+  assert.equal(message({ from: 'Core', to: 'Unowned', actor: 'Platform' }), 'Platform removed Core as the owner.');
+  assert.equal(message({ action: 'Owner team deleted', from: 'Core', to: 'Unowned', actor: 'Platform' }), 'Platform deleted Core, leaving this module unowned.');
+  assert.equal(message({ action: 'Published unowned', to: 'Unowned', actor: 'Platform' }), 'Platform published this module without an owner.');
+  assert.equal(message({ action: 'Owner set at publishing', to: 'Core', actor: 'Core' }), 'Core assigned Core as the owner when publishing this module.');
+});

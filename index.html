@@ -9,15 +9,32 @@
     <meta name="description" content="Streamline your design process with an interactive prototype that showcases seamless workflows, enabling teams to visualize and refine user experiences.">
     <meta name="robots" content="noindex, nofollow">
     <link rel="icon" href="./favicon.svg">
+    <link rel="preload" href="./fonts/SF_UI_Text-Regular.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="preload" href="./fonts/SF_UI_Text-Semibold.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="preload" href="./fonts/SF_UI_Display-Bold.woff2" as="font" type="font/woff2" crossorigin>
     <meta property="og:title" content="Registry Artifact Ownership Control">
     <meta property="og:description" content="Streamline your design process with an interactive prototype that showcases seamless workflows, enabling teams to visualize and refine user experiences.">
-    <script type="module" crossorigin src="./assets/index-ownership-v2.js?v=rfc-microcopy-4"></script>
+    <script type="module" crossorigin src="./assets/index-ownership-v2.js?v=timeline-smooth-ui-2"></script>
     <link rel="stylesheet" crossorigin href="./assets/index-DPfd3hln.css">
-    <link rel="stylesheet" href="./assets/ownership-history.css?v=rfc-alignment-1">
+    <link rel="stylesheet" href="./assets/ownership-history.css?v=timeline-smooth-ui-2">
   </head>
   <body>
     
-    <div id="root"></div>
+    <div id="root">
+      <div class="registry-loading" role="status" aria-busy="true">
+        <span class="registry-loading-label">Loading private library</span>
+        <div class="registry-loading-header" aria-hidden="true"></div>
+        <div aria-hidden="true">
+          <span class="registry-loading-bar"></span>
+          <span class="registry-loading-bar registry-loading-title"></span>
+          <div class="registry-loading-tabs"></div>
+          <div class="registry-loading-table">
+            <span></span><span></span><span></span><span></span><span></span>
+            <span></span><span></span><span></span><span></span><span></span>
+          </div>
+        </div>
+      </div>
+    </div>
     
   </body>
 </html>
