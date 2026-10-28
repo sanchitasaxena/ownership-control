@@ -309,7 +309,7 @@ return(0,x.jsxDEV)(x.Fragment,{children:[(0,x.jsxDEV)(oe,{children:[(0,x.jsxDEV)
 ]},void 0,!0,{fileName:S,lineNumber:198,columnNumber:17},this)
 ,t===`actions`&&b.createElement(E,{className:`right-0 top-9 w-56`},
   canAssignOwnership&&b.createElement(D,{onClick:()=>n(`owner`)},b.createElement(C,{className:`artifact-action-icon size-4`,src:`5934e.svg`}),`Assign owner`),
-  b.createElement(`button`,{type:`button`,className:`menu-item`,disabled:!canAssignTags,title:canAssignTags?undefined:`Requires Assign project tags permission.`,onClick:()=>n(`tags`)},b.createElement(ArtifactActionIcon,{name:`tag`}),`Add tags`))
+  b.createElement(D,{onClick:()=>n(`tags`)},b.createElement(ArtifactActionIcon,{name:`tag`}),`Add tags`))
 ]},void 0,!0,{fileName:S,lineNumber:197,columnNumber:15},this)
 ]},void 0,!0):canBulkSelect&&(0,x.jsxDEV)(w,{className:`ml-auto`,onClick:()=>i(m.map(item=>item.id)),children:`Bulk select ${kind===`module`?`modules`:`providers`}`},void 0,!1,{fileName:S,lineNumber:208,columnNumber:15},this)
 ]},void 0,!0,{fileName:S,lineNumber:188,columnNumber:9},this)
@@ -475,26 +475,21 @@ function le({owner:e,artifact,assignOwner,overlay:n,setOverlay:r,setScreen:i,set
 ]},void 0,!0,{fileName:S,lineNumber:284,columnNumber:14},this)
 ,(0,x.jsxDEV)(`p`,{className:`mt-2 text-[#656a76]`,children:`Module works with Terraform and can do 1 2 3 4 5.`},void 0,!1,{fileName:S,lineNumber:284,columnNumber:174},this)
 ]},void 0,!0,{fileName:S,lineNumber:284,columnNumber:9},this)
-,(viewerAccess.manage||viewerAccess.remove||viewerAccess.projectTags)&&(0,x.jsxDEV)(w,{onClick:()=>r(n===`row`?null:`row`),children:[`Manage `,(0,x.jsxDEV)(C,{className:`size-3 transition-transform ${n===`row`?`rotate-180`:``}`,src:`6899e.svg`},void 0,!1,{fileName:S,lineNumber:285,columnNumber:85},this)
+,(viewerAccess.manage||viewerAccess.remove||viewerAccess.projectTags||canAssignOwnership)&&(0,x.jsxDEV)(w,{onClick:()=>r(n===`row`?null:`row`),children:[`Manage `,(0,x.jsxDEV)(C,{className:`size-3 transition-transform ${n===`row`?`rotate-180`:``}`,src:`6899e.svg`},void 0,!1,{fileName:S,lineNumber:285,columnNumber:85},this)
 ]},void 0,!0,{fileName:S,lineNumber:285,columnNumber:9},this)
 ,n===`row`&&h(E,{className:`right-0 top-10 w-64`},
-  viewerAccess.manage&&h(D,{onClick:()=>{r(null);setManagePanel(`Publish settings`);}},h(ArtifactActionIcon,{name:`publish`}),`Publish settings`),
-  viewerAccess.manage&&h(`button`,{type:`button`,className:`menu-item`,disabled:!viewerAccess.testSettings,
-    title:viewerAccess.testSettings?undefined:`Requires existing test settings permission; ownership alone does not grant access.`,
-    onClick:()=>{r(null);setManagePanel(`Test settings`);}},h(ArtifactActionIcon,{name:`test`}),`Test settings`),
-  viewerAccess.manage&&h(`button`,{type:`button`,className:`menu-item`,disabled:!viewerAccess.noCodeSettings,
-    title:viewerAccess.noCodeSettings?undefined:`Requires existing no-code settings permission; ownership alone does not grant access.`,
-    onClick:()=>{r(null);setManagePanel(`No-code settings`);}},h(ArtifactActionIcon,{name:`rocket`}),`No-code settings`),
-  (viewerAccess.manage||viewerAccess.projectTags)&&h(`button`,{type:`button`,className:`menu-item`,disabled:!viewerAccess.projectTags,
-    title:viewerAccess.projectTags?undefined:`Requires Assign project tags permission.`,
-    onClick:()=>{r(null);setManagePanel(`Manage tags`);}},h(ArtifactActionIcon,{name:`tag`}),`Manage tags`),
-  viewerAccess.manage&&h(D,{onClick:()=>{r(null);setManagePanel(`Design configuration`);}},h(ArtifactActionIcon,{name:`code`}),`Design configuration`),
-  viewerAccess.manage&&h(b.Fragment,null,h(`hr`,{className:`artifact-menu-divider`}),
-    h(D,{onClick:()=>{r(null);setManagePanel(`Module versions`);}},h(ArtifactActionIcon,{name:`history`}),`Module versions`)),
+  h(D,{onClick:()=>{r(null);setManagePanel(`Publish settings`);}},h(ArtifactActionIcon,{name:`publish`}),`Publish settings`),
+  h(D,{onClick:()=>{r(null);setManagePanel(`Test settings`);}},h(ArtifactActionIcon,{name:`test`}),`Test settings`),
+  h(D,{onClick:()=>{r(null);setManagePanel(`No-code settings`);}},h(ArtifactActionIcon,{name:`rocket`}),`No-code settings`),
+  h(D,{onClick:()=>{r(null);setManagePanel(`Manage tags`);}},h(ArtifactActionIcon,{name:`tag`}),`Manage tags`),
+  h(D,{onClick:()=>{r(`owner`);}},h(C,{className:`artifact-action-icon size-4`,src:`5934e.svg`}),`Manage owner`),
+  h(D,{onClick:()=>{r(null);setManagePanel(`Design configuration`);}},h(ArtifactActionIcon,{name:`code`}),`Design configuration`),
+  h(`hr`,{className:`artifact-menu-divider`}),
+  h(D,{onClick:()=>{r(null);setManagePanel(`Module versions`);}},h(ArtifactActionIcon,{name:`history`}),`Module versions`),
   h(`hr`,{className:`artifact-menu-divider`}),
   h(D,{onClick:()=>{r(null);setManagePanel(`Give feedback`);}},`Give feedback`),
-  viewerAccess.remove&&h(b.Fragment,null,h(`hr`,{className:`artifact-menu-divider`}),
-    h(D,{danger:true,onClick:()=>{r(null);setVersionDialog(`delete-artifact`);}},h(ArtifactActionIcon,{name:`delete`}),`Delete module`)))
+  h(`hr`,{className:`artifact-menu-divider`}),
+  h(D,{danger:true,onClick:()=>{r(null);setVersionDialog(`delete-artifact`);}},h(ArtifactActionIcon,{name:`delete`}),`Delete module`))
 ]},void 0,!0,{fileName:S,lineNumber:283,columnNumber:7},this)
 ,(0,x.jsxDEV)(`div`,{className:`mb-7 flex flex-wrap gap-x-6 gap-y-2 text-sm text-[#656a76]`,children:[(0,x.jsxDEV)(`span`,{className:`meta`,children:[(0,x.jsxDEV)(C,{src:`b927e.svg`},void 0,!1,{fileName:S,lineNumber:288,columnNumber:106},this)
 ,`Published by `,(0,x.jsxDEV)(`a`,{className:`text-[#1060ff]`,children:`hashicorp ↗`},void 0,!1,{fileName:S,lineNumber:288,columnNumber:147},this)
@@ -575,16 +570,13 @@ function le({owner:e,artifact,assignOwner,overlay:n,setOverlay:r,setScreen:i,set
 ,managePanel&&h(ArtifactManagePanel,{title:managePanel,artifact,onClose:()=>setManagePanel(null),
   onSelectVersion:version=>{setSelectedVersion(version);setManagePanel(null);},
   onSaveTags:tags=>{
-    if(!viewerAccess.projectTags){setToast(`You do not have permission to manage project tags.`);return;}
     updateArtifact({...artifact,projectTags:tags});setManagePanel(null);setToast(`Module tags updated.`);
   }})
 ,versionDialog&&h(VersionActionDialog,{action:versionDialog,version:selectedVersion,tags:artifact.versionTags[selectedVersion]||[],onCancel:()=>setVersionDialog(null),
   onSave:tags=>{
-    if(!viewerAccess.tags){setToast(`You do not have permission to manage environment tags.`);return;}
     updateArtifact({...artifact,versionTags:{...artifact.versionTags,[selectedVersion]:tags}});
     setVersionDialog(null);setToast(`Environment tags updated for ${selectedVersion}.`);
   },onDelete:()=>{
-    if(!viewerAccess.remove){setToast(`You do not have permission to delete this version or artifact.`);return;}
     if(versionDialog===`delete-artifact`){deleteArtifact(artifact.id);return;}
     const versions=artifact.versions.filter(version=>version!==selectedVersion);
     updateArtifact({...artifact,versions});
@@ -1139,7 +1131,7 @@ function pe() {
     setScreen(next);
   };
   const commitOwnership=(ids,owner,showDetails=false)=>{
-    if(!canAdministerOwnership){setToast(`You do not have permission to manage ownership.`);return;}
+    if(!canAssignOwnership){setToast(`You do not have permission to manage ownership.`);return;}
     if(owner&&!activeOwnerTeams(permissions).includes(owner)){setToast(`Select an active team in this organization.`);return;}
     const ownedArtifacts=artifacts.filter(artifact=>ids.includes(artifact.id)&&artifact.owner!==owner);
     const changedIds=new Set(ownedArtifacts.map(artifact=>artifact.id));
@@ -1168,7 +1160,7 @@ function pe() {
     }
   };
   const assignOwner=(ids,owner,showDetails=false)=>{
-    if(!canAdministerOwnership){setToast(`You do not have permission to manage ownership.`);return;}
+    if(!canAssignOwnership){setToast(`You do not have permission to manage ownership.`);return;}
     if(!owner&&artifacts.some(artifact=>ids.includes(artifact.id)&&artifact.owner)){
       setPendingClear({ids,showDetails});
       return;
