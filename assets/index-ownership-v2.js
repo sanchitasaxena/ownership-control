@@ -896,8 +896,6 @@ function OwnerTeamPicker({value,onChange,scenario,permissions,artifacts=[{kind:`
   const search=b.useRef(null);
   const h=b.createElement;
   const teams=scenario===`assignment`?activeOwnerTeams(permissions):eligiblePublishingTeams(permissions,scenario);
-  const contacts=permissionContactTeams(permissions);
-  const contact=contacts.length?contacts.join(` or `):`an organization owner`;
   const accessFor=team=>[...new Map(artifacts.map(artifact=>{
     const access=artifactOwnerAccess(permissions[team],artifact);
     return [access.scope,access];
@@ -955,7 +953,7 @@ function OwnerTeamPicker({value,onChange,scenario,permissions,artifacts=[{kind:`
         !filtered.length&&h(`p`,{role:`status`},teams.length?`No matching teams. Try another search.`:`No eligible owner teams.`)))) ,
     value&&access.some(entry=>!entry.manage)&&h(`div`,{className:`owner-permission-alert`,role:`alert`},
       h(C,{src:`helios-alert-triangle-16.svg`,className:`size-5 owner-permission-alert-icon`}),
-      h(`p`,null,h(TeamText,{text:`Contact ${contact} to grant ${value} the missing management permissions.`}))));
+      h(`p`,null,h(TeamText,{text:`${value} can't manage ${artifacts.length===1?`this artifact`:`these artifacts`} yet. Update its team permissions after you save.`}))));
 }
 function ownerLabel(artifact) {
   return artifact.owner||`Unowned`;
@@ -1115,11 +1113,8 @@ function pe() {
   const canAdministerOwnership=canAssignOwnership;
   const canEditTeamPermissions=true;
   const canDeleteTeams=true;
-  const viewerAccess=artifactOwnerAccess(permissions[actingTeam],activeArtifact,activeArtifact?.owner===actingTeam);
-  viewerAccess.tags=!!(permissions[actingTeam]?.privateRegistry||permissions[actingTeam]?.options?.[`private-environment-tags`]);
-  viewerAccess.projectTags=!!(permissions[actingTeam]?.privateRegistry||permissions[actingTeam]?.options?.[`private-project-tags`]);
-  viewerAccess.testSettings=!!permissions[actingTeam]?.privateRegistry;
-  viewerAccess.noCodeSettings=!!permissions[actingTeam]?.privateRegistry;
+  // The mock assumes the viewer can perform every artifact action.
+  const viewerAccess={manage:true,remove:true,tags:true,projectTags:true,testSettings:true,noCodeSettings:true};
   const navigate=next=>{
     if(next===`rollout`){
       setArtifacts(current=>current.map(artifact=>({...artifact,owner:``,ownershipHistory:[{to:`Unowned`,action:`Owner when prototype opened`}]})));
@@ -1146,9 +1141,7 @@ function pe() {
     setSelected([]);
     const needsManagementHelp=!!owner&&ownedArtifacts.some(artifact=>!artifactOwnerAccess(permissions[owner],artifact).manage);
     if(needsManagementHelp){
-      const contacts=permissionContactTeams(permissions);
-      const contact=contacts.length?contacts.join(` or `):`an organization owner`;
-      setOwnerNotice({owner,message:`Contact ${contact} to help grant ${owner} permission to manage ${ownedArtifacts.length===1?`this artifact`:`these artifacts`}.`});
+      setOwnerNotice({owner,message:`${owner} can't manage ${ownedArtifacts.length===1?`this artifact`:`these artifacts`} yet.`});
       setToast(null);
     }else{
       setOwnerNotice(null);
@@ -1253,7 +1246,7 @@ function pe() {
     ownerNotice&&h(`div`,{className:`owner-assignment-followup`,role:`status`},
       h(`p`,null,h(TeamText,{text:ownerNotice.message})),
       canEditTeamPermissions&&h(`button`,{type:`button`,className:`owner-settings-cta`,
-        onClick:()=>openTeamSettings(ownerNotice.owner)},`Open ${ownerNotice.owner} team settings`),
+        onClick:()=>openTeamSettings(ownerNotice.owner)},`Update ${ownerNotice.owner} permissions`),
       h(`button`,{type:`button`,"aria-label":`Dismiss ownership guidance`,className:`owner-followup-dismiss`,
         onClick:()=>setOwnerNotice(null)},`\u00d7`)),
     toast&&h(`div`,{className:`toast`,role:`status`},
