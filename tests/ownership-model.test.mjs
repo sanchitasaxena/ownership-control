@@ -68,7 +68,7 @@ test('owner removal names the assignment and teams retaining global management',
     Platform: { privateRegistry: true },
     Owners: { privateRegistry: true },
   });
-  assert.equal(message, 'Removing Core as the owner leaves aws-rds-starter-module and its versions unowned, but Platform and Owners can still manage aws-rds-starter-module.');
+  assert.equal(message, 'Core will no longer own aws-rds-starter-module, but Platform and Owners can still manage it.');
   assert.ok(!message.includes('prototype'));
 });
 
@@ -78,8 +78,8 @@ test('bulk removal counts only supplied owned artifacts and excludes deleted man
     Platform: { privateRegistry: true, deleted: true },
     Owners: { privateRegistry: true },
   });
-  assert.match(message, /^Removing owner assignments leaves 2 artifacts and their versions unowned,/);
-  assert.match(message, /Owners can still manage these artifacts/);
+  assert.match(message, /^2 artifacts will become unowned,/);
+  assert.match(message, /Owners can still manage them/);
   assert.ok(!message.includes('Platform'));
 });
 

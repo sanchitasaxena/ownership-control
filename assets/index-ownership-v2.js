@@ -790,8 +790,7 @@ function ownershipRemovalMessage(artifacts,permissions) {
   const artifact=artifacts[0];
   const managers=activeOwnerTeams(permissions).filter(team=>artifacts.every(item=>artifactOwnerAccess(permissions[team],item,false).manage));
   const names=managers.length>1?`${managers.slice(0,-1).join(`, `)} and ${managers[managers.length-1]}`:managers[0];
-  const subject=single?artifact.name:`these artifacts`;
-  return `${single?`Removing ${artifact.owner} as the owner leaves ${artifact.name} and its versions unowned`:`Removing owner assignments leaves ${artifacts.length} artifacts and their versions unowned`}, but ${names||`organization owners and teams with applicable organization-wide permissions`} can still manage ${subject}.`;
+  return `${single?`${artifact.owner} will no longer own ${artifact.name}`:`${artifacts.length} artifacts will become unowned`}, but ${names||`organization owners and teams with applicable organization-wide permissions`} can still manage ${single?`it`:`them`}.`;
 }
 function OwnerTeamPicker({value,onChange,scenario,permissions,artifacts=[{kind:`module`,registry:`Private`}]}) {
   const [query,setQuery]=b.useState(``);
