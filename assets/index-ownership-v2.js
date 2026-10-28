@@ -375,11 +375,11 @@ return(0,x.jsxDEV)(x.Fragment,{children:[(0,x.jsxDEV)(oe,{children:[(0,x.jsxDEV)
 },void 0,!1,{fileName:S,lineNumber:242,columnNumber:19},this)
 ,(0,x.jsxDEV)(`td`,{children:[t.owner?b.createElement(TeamLink,{team:t.owner}):`Unowned`
 ]},void 0,!0,{fileName:S,lineNumber:243,columnNumber:19},this)
-,(0,x.jsxDEV)(`td`,{className:`relative`,children:[(canAssignOwnership||access(t).manage||access(t).remove)&&(0,x.jsxDEV)(w,{ariaLabel:kind===`module`?`Module actions`:`Provider actions`,className:`!px-2`,onClick:()=>{p(f===t.id?null:t.id),n(null)},children:(0,x.jsxDEV)(C,{className:`size-3`,src:`1abde.svg`},void 0,!1,{fileName:S,lineNumber:244,columnNumber:187},this)
+,(0,x.jsxDEV)(`td`,{className:`relative`,children:[(0,x.jsxDEV)(w,{ariaLabel:kind===`module`?`Module actions`:`Provider actions`,className:`!px-2`,onClick:()=>{p(f===t.id?null:t.id),n(null)},children:(0,x.jsxDEV)(C,{className:`size-3`,src:`1abde.svg`},void 0,!1,{fileName:S,lineNumber:244,columnNumber:187},this)
 },void 0,!1,{fileName:S,lineNumber:244,columnNumber:44},this)
 ,f===t.id&&b.createElement(E,{className:`right-3 w-52 ${m.length>1&&m[m.length-1]===t?`menu-opens-up`:`top-10`}`},
   canAssignOwnership&&b.createElement(D,{onClick:()=>{i([t.id]);p(null);n(`owner`);}},b.createElement(C,{className:`artifact-action-icon size-4`,src:`5934e.svg`}),`Manage owner`),
-  (access(t).manage||access(t).remove)&&b.createElement(D,{onClick:()=>openArtifact(t)},`Open artifact settings`))
+  b.createElement(D,{onClick:()=>openArtifact(t)},`Open artifact settings`))
 ]},void 0,!0,{fileName:S,lineNumber:244,columnNumber:19},this)
 ]},t.id,!0,{fileName:S,lineNumber:235,columnNumber:17},this)
 ):b.createElement(`tr`,null,b.createElement(`td`,{colSpan:9,className:`library-empty-state`},search||c?`No modules match your filters.`:`No modules have been published.`))},void 0,!1,{fileName:S,lineNumber:233,columnNumber:13},this)
@@ -714,7 +714,7 @@ return(0,x.jsxDEV)(x.Fragment,{children:[(0,x.jsxDEV)(oe,{children:[(0,x.jsxDEV)
 ,(0,x.jsxDEV)(`span`,{children:`/`},void 0,!1,{fileName:S,lineNumber:357,columnNumber:86},this)
 ,(0,x.jsxDEV)(`b`,{children:`Teams`},void 0,!1,{fileName:S,lineNumber:357,columnNumber:100},this)
 ]},void 0,!0,{fileName:S,lineNumber:357,columnNumber:7},this)
-,(0,x.jsxDEV)(`h1`,{className:`mb-10`,children:b.createElement(TeamText,{text:`Team: ${team}`})},void 0,!1,{fileName:S,lineNumber:357,columnNumber:121},this)
+,(0,x.jsxDEV)(`h1`,{className:`mb-10`,children:`Team: ${team}`},void 0,!1,{fileName:S,lineNumber:357,columnNumber:121},this)
 ,(0,x.jsxDEV)(`div`,{className:`max-w-[760px] space-y-7`,children:[(0,x.jsxDEV)(`label`,{children:[(0,x.jsxDEV)(`b`,{children:`Team name`},void 0,!1,{fileName:S,lineNumber:357,columnNumber:206},this)
 ,(0,x.jsxDEV)(`input`,{className:`field mt-2`,defaultValue:team},void 0,!1,{fileName:S,lineNumber:357,columnNumber:222},this)
 ]},void 0,!0,{fileName:S,lineNumber:357,columnNumber:199},this)
@@ -1056,25 +1056,14 @@ function PrototypeNavigation({screen,team,navigate,openTeamSettings,publishingSc
           h(`option`,{value:`artifact`},`Module details & owner assignment`),
           h(`option`,{value:`publish-any`},`Publish - global Registry manager`),
           h(`option`,{value:`publish-mine`},`Publish - eligible member teams`),
-          h(`option`,{value:`publish-blocked`},`Publish - no eligible team`),
           h(`option`,{value:`team`},`Team settings`))),
-      h(`label`,null,`Viewer team`,
-        h(`select`,{value:viewerTeam,onChange:event=>{setViewerTeam(event.target.value);setViewerIsOwner(event.target.value===ownerTeam);}},
-          activeOwnerTeams(permissions).map(name=>h(`option`,{key:name,value:name},name)))),
       screen===`team`&&h(`label`,null,`Team`,
         h(`select`,{value:team,onChange:event=>{openTeamSettings(event.target.value);setOpen(false);}},
-          activeOwnerTeams(permissions).map(name=>h(`option`,{key:name,value:name},name)))),
-      (screen===`artifact`||screen===`library`)&&h(`fieldset`,{className:`workflow-preview-modes`},
-        h(`legend`,null,`Artifact page preview`),
-        h(`label`,null,`Viewing as`,
-          h(`select`,{value:viewerIsOwner?`owner`:`non-owner`,onChange:event=>setViewerIsOwner(event.target.value===`owner`)},
-            h(`option`,{value:`non-owner`},`Non-owner team`),
-            h(`option`,{value:`owner`},`Owner team`))),
-        h(`label`,null,`Ownership assignment`,
-          h(`select`,{value:canAssignOwnership?`allowed`:`not-allowed`,onChange:event=>setCanAssignOwnership(event.target.value===`allowed`)},
-            h(`option`,{value:`allowed`},`Can assign ownership`),
-            h(`option`,{value:`not-allowed`},`Cannot assign ownership`))),
-        h(`p`,null,`Owner access also requires the team’s manage-owned or delete-owned permission. Change saved permissions in Team settings.`))),
+          activeOwnerTeams(permissions).filter(name=>name!==`Owners`).map(name=>h(`option`,{key:name,value:name},name)))),
+      (screen===`artifact`||screen===`library`)&&h(`label`,null,`Viewing as`,
+        h(`select`,{value:viewerIsOwner?`owner`:`non-owner`,onChange:event=>setViewerIsOwner(event.target.value===`owner`)},
+          h(`option`,{value:`owner`},`Owner`),
+          h(`option`,{value:`non-owner`},`Non-owner`)))),
     h(`button`,{type:`button`,className:`workflow-dock-trigger`,"aria-expanded":open,
       "aria-controls":open?`prototype-workflows-menu`:undefined,onClick:()=>setOpen(value=>!value)},
       open?`Close workflows`:`Prototype workflows`,
