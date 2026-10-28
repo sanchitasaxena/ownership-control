@@ -7,7 +7,7 @@ Interactive prototype for artifact-scoped ownership and access in the HCP Terraf
 
 ## RFC-aligned workflows
 
-The RFC covers private modules, private providers, and private stack component configurations. Public namespaces and curated public artifacts are out of scope. This mock demonstrates the end-to-end workflows on **private modules**; provider and stack permissions appear in team settings, but their artifact and publishing pages are not implemented.
+The RFC covers private modules, providers, and stack component configurations, plus public namespace modules and providers. This mock demonstrates the end-to-end workflows on **private modules**. Team settings include Private registry and Public registry sections; provider, stack, and public artifact pages are not implemented.
 
 - **Library and filtering:** See the owner or **Unowned**, filter by a team or unowned artifacts, and search module names. Displayed team-name links open the library filtered to that team's artifacts, including names in ownership activity, guidance, confirmations, and settings. Team selection controls still select a team, and explicit team-settings actions still open settings. The default fixture includes previously assigned example artifacts. Choose **Rollout - existing artifacts unowned** to demonstrate the RFC's rollout state without inferring or backfilling owners.
 - **Assignment:** A dedicated **Manage ownership** capability permits single and bulk assignment, reassignment, and clearing. It does not grant management, deletion, or team administration. Selecting a team does not change its permissions. The modal grows to contain the expanded SuperSelect, with scrolling available when constrained by the viewport.
