@@ -1074,7 +1074,7 @@ function PrototypeNavigation({screen,team,navigate,openTeamSettings,publishingSc
             h(`option`,{value:`owner`},`Owner team`))),
         h(`label`,null,`Ownership assignment`,
           h(`select`,{value:canAssignOwnership?`allowed`:`not-allowed`,onChange:event=>setCanAssignOwnership(event.target.value===`allowed`)},
-            h(`option`,{value:`allowed`},`Use team ownership permission`),
+            h(`option`,{value:`allowed`},`Can assign ownership`),
             h(`option`,{value:`not-allowed`},`Cannot assign ownership`))),
         h(`p`,null,`Owner access also requires the team’s manage-owned or delete-owned permission. Change saved permissions in Team settings.`))),
     h(`button`,{type:`button`,className:`workflow-dock-trigger`,"aria-expanded":open,
@@ -1112,9 +1112,9 @@ function pe() {
   const activeArtifact=artifacts.find(artifact=>artifact.id===activeId)||artifacts[0];
   const actingTeam=viewerIsOwner&&activeArtifact?.owner?activeArtifact.owner:viewerTeam===activeArtifact?.owner
     ?activeOwnerTeams(permissions).find(name=>name!==activeArtifact.owner):viewerTeam;
-  const canAdministerOwnership=canAssignOwnership&&!!permissions[actingTeam]?.privateOwnership;
-  const canEditTeamPermissions=permissions[actingTeam]?.team===`Manage organization access`;
-  const canDeleteTeams=[`Manage teams`,`Manage organization access`].includes(permissions[actingTeam]?.team);
+  const canAdministerOwnership=canAssignOwnership;
+  const canEditTeamPermissions=true;
+  const canDeleteTeams=true;
   const viewerAccess=artifactOwnerAccess(permissions[actingTeam],activeArtifact,activeArtifact?.owner===actingTeam);
   viewerAccess.tags=!!(permissions[actingTeam]?.privateRegistry||permissions[actingTeam]?.options?.[`private-environment-tags`]);
   viewerAccess.projectTags=!!(permissions[actingTeam]?.privateRegistry||permissions[actingTeam]?.options?.[`private-project-tags`]);
