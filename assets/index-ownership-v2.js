@@ -1076,7 +1076,7 @@ function pe() {
   const [ownerFilter,setOwnerFilter]=b.useState(()=>new URLSearchParams(location.search).get(`owner`)||``);
   const [teamNavigationRequest,setTeamNavigationRequest]=b.useState(0);
   const [artifacts,setArtifacts]=b.useState(()=>ne.map((artifact,index)=>{
-    const item={...artifact,kind:`module`,registry:`Private`,versions:[`1.2.3`,`1.2.2`,`1.2.1`],versionTags:{},owner:index===0?`Core`:index===2||index===7?``:artifact.owner};
+    const item={...artifact,kind:`module`,registry:`Private`,versions:[`1.2.3`,`1.2.2`,`1.2.1`],versionTags:{},owner:[0,1,3,4].includes(index)?`Core`:index===2||index===7?``:artifact.owner};
     return {...item,ownershipHistory:[{to:ownerLabel(item),action:`Owner when prototype opened`}]};
   }));
   const [activeId,setActiveId]=b.useState(1);
