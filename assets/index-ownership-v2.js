@@ -377,7 +377,7 @@ return(0,x.jsxDEV)(x.Fragment,{children:[(0,x.jsxDEV)(oe,{children:[(0,x.jsxDEV)
 ]},void 0,!0,{fileName:S,lineNumber:243,columnNumber:19},this)
 ,(0,x.jsxDEV)(`td`,{className:`relative`,children:[(canAssignOwnership||access(t).manage||access(t).remove)&&(0,x.jsxDEV)(w,{ariaLabel:kind===`module`?`Module actions`:`Provider actions`,className:`!px-2`,onClick:()=>{p(f===t.id?null:t.id),n(null)},children:(0,x.jsxDEV)(C,{className:`size-3`,src:`1abde.svg`},void 0,!1,{fileName:S,lineNumber:244,columnNumber:187},this)
 },void 0,!1,{fileName:S,lineNumber:244,columnNumber:44},this)
-,f===t.id&&b.createElement(E,{className:`right-3 top-10 w-52`},
+,f===t.id&&b.createElement(E,{className:`right-3 w-52 ${m.length>1&&m[m.length-1]===t?`menu-opens-up`:`top-10`}`},
   canAssignOwnership&&b.createElement(D,{onClick:()=>{i([t.id]);p(null);n(`owner`);}},b.createElement(C,{className:`artifact-action-icon size-4`,src:`5934e.svg`}),`Manage owner`),
   (access(t).manage||access(t).remove)&&b.createElement(D,{onClick:()=>openArtifact(t)},`Open artifact settings`))
 ]},void 0,!0,{fileName:S,lineNumber:244,columnNumber:19},this)

@@ -1,6 +1,6 @@
 .btn { font-family: "SF UI Text:Regular", Arial, sans-serif; }
 html { scrollbar-gutter: stable; }
-.library-table-region { min-height: 440px; overflow-anchor: none; }
+.library-table-region { overflow-anchor: none; }
 .library-table-region table { width: 100%; }
 .library-table-region input[type="checkbox"] { width: 16px; height: 16px; vertical-align: middle; accent-color: #1060ff; }
 .library-table-region .library-empty-state { height: 240px; padding: 48px; vertical-align: middle; text-align: center; color: #656a76; }
@@ -146,3 +146,4 @@ table.bulk-table th:nth-child(8), table.bulk-table td:nth-child(8) { width: 105p
   a, button, .prototype-workflows-dock .workflow-dock-trigger, .prototype-workflows-dock:not(:hover):not(:focus-within):not(.is-open) .workflow-dock-trigger { transition: none; }
 }
 .visually-hidden { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
+.menu.menu-opens-up { top: auto; bottom: calc(100% - 20px); }

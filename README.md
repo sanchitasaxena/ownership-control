@@ -27,7 +27,7 @@ Hover at the bottom right or keyboard-focus **Prototype workflows** to reveal th
 
 Viewer identity and the team being edited are separate. Selecting an owner-team preview changes the simulated viewer to that artifact's owner. Non-owner mode uses a different team. Saved team capabilities continue to govern access in either mode.
 
-The startup view uses a lightweight loading placeholder while the application loads, without artificial delays. Each row shows a module icon beside its name; when Bulk select is activated, the icon becomes a checkbox in the same slot and returns to the icon when selection is cleared, so the layout does not shift; filtering updates the existing table and includes an empty state. Menus, dialogs, and notifications use short entrance transitions, and motion is disabled when reduced motion is requested. Buttons use the same local font as the interface rather than fetching an external font.
+The startup view uses a lightweight loading placeholder while the application loads, without artificial delays. Each row shows a module icon beside its name; when Bulk select is activated, the icon becomes a checkbox in the same slot and returns to the icon when selection is cleared, so the layout does not shift; filtering updates the existing table, which resizes to its rows and includes an empty state. Menus, dialogs, and notifications use short entrance transitions, and motion is disabled when reduced motion is requested. Buttons use the same local font as the interface rather than fetching an external font.
 
 - **Core:** Can manage and delete its owned modules, administer ownership, and use existing environment-tag permissions.
 - **AppEng:** Initially lacks artifact capabilities; useful for the non-blocking assignment warning.
