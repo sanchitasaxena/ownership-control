@@ -308,7 +308,7 @@ return(0,x.jsxDEV)(x.Fragment,{children:[(0,x.jsxDEV)(oe,{children:[(0,x.jsxDEV)
 ,(0,x.jsxDEV)(`div`,{className:`relative`,children:[(0,x.jsxDEV)(w,{onClick:()=>n(t===`actions`?null:`actions`),children:[`Actions `,(0,x.jsxDEV)(C,{className:`size-3 transition-transform ${t===`actions`?`rotate-180`:``}`,src:`6899e.svg`},void 0,!1,{fileName:S,lineNumber:198,columnNumber:102},this)
 ]},void 0,!0,{fileName:S,lineNumber:198,columnNumber:17},this)
 ,t===`actions`&&canAssignOwnership&&b.createElement(E,{className:`right-0 top-9 w-56`},
-  b.createElement(D,{onClick:()=>n(`owner`)},`Assign Owner`),
+  b.createElement(D,{onClick:()=>n(`owner`)},b.createElement(C,{className:`artifact-action-icon size-4`,src:`5934e.svg`}),`Assign owner`),
   b.createElement(D,{onClick:()=>assignOwner(r,``)},`Clear ownership`))
 ]},void 0,!0,{fileName:S,lineNumber:197,columnNumber:15},this)
 ]},void 0,!0):canAssignOwnership&&(0,x.jsxDEV)(w,{className:`ml-auto`,onClick:()=>i(m.map(item=>item.id)),children:`Bulk select ${kind===`module`?`modules`:`providers`}`},void 0,!1,{fileName:S,lineNumber:208,columnNumber:15},this)
@@ -378,7 +378,7 @@ return(0,x.jsxDEV)(x.Fragment,{children:[(0,x.jsxDEV)(oe,{children:[(0,x.jsxDEV)
 ,(0,x.jsxDEV)(`td`,{className:`relative`,children:[(canAssignOwnership||access(t).manage||access(t).remove)&&(0,x.jsxDEV)(w,{ariaLabel:kind===`module`?`Module actions`:`Provider actions`,className:`!px-2`,onClick:()=>{p(f===t.id?null:t.id),n(null)},children:(0,x.jsxDEV)(C,{className:`size-3`,src:`1abde.svg`},void 0,!1,{fileName:S,lineNumber:244,columnNumber:187},this)
 },void 0,!1,{fileName:S,lineNumber:244,columnNumber:44},this)
 ,f===t.id&&b.createElement(E,{className:`right-3 top-10 w-52`},
-  canAssignOwnership&&b.createElement(D,{onClick:()=>{i([t.id]);p(null);n(`owner`);}},`Manage owner`),
+  canAssignOwnership&&b.createElement(D,{onClick:()=>{i([t.id]);p(null);n(`owner`);}},b.createElement(C,{className:`artifact-action-icon size-4`,src:`5934e.svg`}),`Manage owner`),
   (access(t).manage||access(t).remove)&&b.createElement(D,{onClick:()=>openArtifact(t)},`Open artifact settings`))
 ]},void 0,!0,{fileName:S,lineNumber:244,columnNumber:19},this)
 ]},t.id,!0,{fileName:S,lineNumber:235,columnNumber:17},this)
