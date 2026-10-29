@@ -798,7 +798,7 @@ function de(){return(0,x.jsxDEV)(`div`,{className:`mb-14 mt-7 grid grid-cols-3 b
 }
 function fe({kind:e,setScreen:t,publish,publishingScenario,permissions}){
 const eligible=eligiblePublishingTeams(permissions,publishingScenario);
-let[r,i]=(0,b.useState)(publishingScenario!==`any`&&eligible.length===1?eligible[0]:``),s=e===`module`;
+let[r,i]=(0,b.useState)(``),s=e===`module`;
 const canPublish=canPublishWithOwner(permissions,publishingScenario,r);
 const[name,setName]=b.useState(s?`rds-aurora`:`aws-rds-aurora-coolcorp`),[target,setTarget]=b.useState(`aws`),[noCode,setNoCode]=b.useState(!1);return(0,x.jsxDEV)(x.Fragment,{children:[(0,x.jsxDEV)(oe,{children:[(0,x.jsxDEV)(`button`,{children:`CoolCorp`},void 0,!1,{fileName:S,lineNumber:399,columnNumber:15},this)
 ,(0,x.jsxDEV)(`span`,{children:`/`},void 0,!1,{fileName:S,lineNumber:399,columnNumber:40},this)
@@ -850,14 +850,14 @@ const[name,setName]=b.useState(s?`rds-aurora`:`aws-rds-aurora-coolcorp`),[target
 ,(0,x.jsxDEV)(`span`,{className:`meta p-4`,children:[(0,x.jsxDEV)(re,{src:`30790.svg`},void 0,!1,{fileName:S,lineNumber:405,columnNumber:484},this)
 ,`Tag (prefix: sg/)`]},void 0,!0,{fileName:S,lineNumber:405,columnNumber:457},this)
 ]},void 0,!0,{fileName:S,lineNumber:405,columnNumber:110},this)
-,b.createElement(`p`,{className:`mt-3`},b.createElement(`b`,null,`Owner: `),r||(publishingScenario===`any`?`Unowned`:`Choose a team`))
-]},void 0,!0):(0,x.jsxDEV)(`div`,{className:`space-y-2 rounded border border-[#d8d9dc] p-5 text-[#656a76]`,children:[[`Name`,name||`aws-rds-aurora`],[`VCS Provider`,`Github`],[`Repository`,`hashi/aws-rds-aurora`],[`Owner`,r||(publishingScenario===`any`?`Unowned`:`Choose a team`)]].map(([e,t])=>(0,x.jsxDEV)(`div`,{className:`grid grid-cols-[125px_1fr] gap-6`,children:[(0,x.jsxDEV)(`b`,{className:`text-right`,children:e},void 0,!1,{fileName:S,lineNumber:405,columnNumber:870},this)
+,b.createElement(`p`,{className:`mt-3`},b.createElement(`b`,null,`Owner: `),r||`No owner`)
+]},void 0,!0):(0,x.jsxDEV)(`div`,{className:`space-y-2 rounded border border-[#d8d9dc] p-5 text-[#656a76]`,children:[[`Name`,name||`aws-rds-aurora`],[`VCS Provider`,`Github`],[`Repository`,`hashi/aws-rds-aurora`],[`Owner`,r||`No owner`]].map(([e,t])=>(0,x.jsxDEV)(`div`,{className:`grid grid-cols-[125px_1fr] gap-6`,children:[(0,x.jsxDEV)(`b`,{className:`text-right`,children:e},void 0,!1,{fileName:S,lineNumber:405,columnNumber:870},this)
 ,(0,x.jsxDEV)(`span`,{children:t},void 0,!1,{fileName:S,lineNumber:405,columnNumber:905},this)
 ]},e,!0,{fileName:S,lineNumber:405,columnNumber:810},this)
 )},void 0,!1,{fileName:S,lineNumber:405,columnNumber:544},this)
 ,(0,x.jsxDEV)(`div`,{className:`mt-8 flex items-center`,children:[(0,x.jsxDEV)(`button`,{className:`text-[#1060ff]`,onClick:()=>t(`library`),children:`‹ \xA0 Previous`},void 0,!1,{fileName:S,lineNumber:406,columnNumber:49},this)
 ,(0,x.jsxDEV)(`div`,{className:`ml-auto flex gap-4`,children:[(0,x.jsxDEV)(w,{onClick:()=>t(`library`),children:`Cancel`},void 0,!1,{fileName:S,lineNumber:406,columnNumber:183},this)
-,!canPublish&&b.createElement(`p`,{role:`alert`,className:`owner-permission-alert`},eligible.length?`Choose which eligible team will own and maintain this artifact.`:`No eligible publishing team. Ask an administrator for Publish and manage permission.`)
+,!canPublish&&b.createElement(`p`,{role:`alert`,className:`owner-permission-alert`},eligible.length?`Choose an eligible owner team or No owner.`:`Publishing permission is required. Ask an administrator for Publish and manage permission.`)
 ,(0,x.jsxDEV)(w,{primary:!0,disabled:!canPublish||(s&&(!name.trim()||!target.trim())),onClick:()=>publish({kind:e,name:name.trim()||`aws-rds-aurora`,owner:r,provider:s?target.trim():`provider`,registry:`Private`,downloads:0,noCode:s&&noCode,hasStatus:!1}),children:`Publish`},void 0,!1,{fileName:S,lineNumber:406,columnNumber:243},this)
 ]},void 0,!0,{fileName:S,lineNumber:406,columnNumber:147},this)
 ]},void 0,!0,{fileName:S,lineNumber:406,columnNumber:9},this)
@@ -901,7 +901,7 @@ function viewerArtifactAccess(permissions,memberships,artifact) {
 }
 function canPublishWithOwner(permissions,scenario,owner) {
   const eligible=eligiblePublishingTeams(permissions,scenario);
-  return scenario===`any`?(!owner||eligible.includes(owner)):!!owner&&eligible.includes(owner);
+  return scenario===`any`?(!owner||eligible.includes(owner)):eligible.length>0&&(!owner||eligible.includes(owner));
 }
 function rankOwnerTeams(teams,permissions,artifacts,evidence=[]) {
   return teams.map(team=>{
@@ -991,17 +991,17 @@ function OwnerTeamPicker({value,onChange,scenario,permissions,artifacts=[{kind:`
     onKeyDown:event=>{
       if(event.key===`Escape`&&open){event.preventDefault();event.stopPropagation();setOpen(false);trigger.current?.focus();}
     }},
-    h(`legend`,{id,className:`registry-permissions-heading`},isAssignment||scenario===`any`?`Owner team`:`Owner team (required)`),
+    h(`legend`,{id,className:`registry-permissions-heading`},`Owner team`),
     !isAssignment&&h(`p`,{className:`registry-permissions-intro`},scenario===`mine`
-      ?teams.length===1?`Your only eligible publishing team is assigned automatically. Publishing does not change existing visibility or consumption rules.`:`Choose which of your eligible teams will own and maintain this artifact. Publishing does not create a team-private library.`
+      ?`Publishing does not change existing visibility or consumption rules.`
       :scenario===`blocked`?`You do not belong to a team with publishing permission. Contact an administrator to request access.`
-      :scenario===`any`?`Global-administrator preview: choose an owner or leave this artifact Unowned. Publishing Unowned as a global administrator remains an RFC decision.`
+      :scenario===`any`?`Publishing does not change existing visibility or consumption rules.`
       :``),
     showEvidence&&h(`p`,{className:`registry-permissions-intro`},`Sample data. Usage suggests a relationship, not ownership.`),
     h(`button`,{ref:trigger,type:`button`,className:`owner-select-trigger`,"aria-haspopup":`listbox`,"aria-labelledby":`${id} ${id}-value`,"aria-expanded":open,"aria-controls":open?`${id}-list`:undefined,
       onClick:()=>{setQuery(``);setOpen(!open);},
       onKeyDown:event=>{if(event.key===`ArrowDown`){event.preventDefault();setQuery(``);setOpen(true);}}},
-      h(`span`,{id:`${id}-value`},value===null?`Select a team`:value||(isAssignment||scenario===`any`?`No owner`:`Select a team`)),
+      h(`span`,{id:`${id}-value`},value===null?`Select a team`:value||`No owner`),
       h(`span`,{"aria-hidden":true},open?`▴`:`▾`)),
     open&&h(`div`,{id:`${id}-options`,className:`owner-select-dropdown`},
     h(`input`,{ref:search,className:`field` ,type:`search`,"aria-label":`Search owner teams`,placeholder:`Search teams`,value:query,onChange:event=>setQuery(event.target.value),
@@ -1015,7 +1015,7 @@ function OwnerTeamPicker({value,onChange,scenario,permissions,artifacts=[{kind:`
         const next=event.key===`Home`?0:event.key===`End`?options.length-1:event.key===`ArrowDown`?Math.min(index+1,options.length-1):Math.max(index-1,0);
         options[next]?.focus();
       }},
-      (isAssignment||scenario===`any`)&&h(`button`,{type:`button`,role:`option`,tabIndex:-1,"aria-selected":value===``,className:`owner-team-option`,onClick:()=>choose(``)},
+      h(`button`,{type:`button`,role:`option`,tabIndex:-1,"aria-selected":value===``,className:`owner-team-option`,onClick:()=>choose(``)},
         h(`span`,null,`No owner`),h(`span`,{className:`owner-option-check`,"aria-hidden":true},value===``?`✓`:``)),
       filtered.map(({team,ready,workspaces,related})=>h(`button`,{key:team,type:`button`,role:`option`,tabIndex:-1,"aria-selected":value===team,className:`owner-team-option`,onClick:()=>choose(team)},
         h(`span`,null,h(`b`,null,team),
@@ -1249,7 +1249,7 @@ function pe() {
   const publish=artifact=>{
     if(artifact.noCode&&effectivePublishingScenario!==`any`){setToast(`No-code provisioning requires its existing authorization, not ownership alone.`);return;}
     if(!canPublishWithOwner(permissions,effectivePublishingScenario,artifact.owner)){
-      setToast(`Publication denied. Choose an eligible member team to own and maintain this artifact.`);
+      setToast(`Publication denied. Publishing permission is required; choose an eligible owner team or No owner.`);
       return;
     }
     const published={...artifact,versions:[`1.2.3`],versionTags:{},id:Math.max(0,...artifacts.map(item=>item.id))+1,

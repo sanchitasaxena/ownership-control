@@ -159,13 +159,15 @@ test('tagging-only permissions are scoped to artifact type and registry', () => 
   assert.equal(access({ options: { 'private-Modules-project-tags': true } }, module, false).tags, false);
 });
 
-test('team-scoped publishing requires an eligible member team as owner', () => {
+test('publishing permits no owner but still requires publishing access', () => {
   const settings = { Core: { options: { [manage]: true } } };
-  assert.equal(context.canPublishWithOwner(settings, 'mine', ''), false);
+  assert.equal(context.canPublishWithOwner(settings, 'mine', ''), true);
   assert.equal(context.canPublishWithOwner(settings, 'mine', 'Core'), true);
   assert.equal(context.canPublishWithOwner(settings, 'mine', 'AppEng'), false);
   assert.equal(context.canPublishWithOwner({}, 'mine', ''), false);
   assert.equal(context.canPublishWithOwner(settings, 'blocked', ''), false);
+  assert.equal(context.canPublishWithOwner(settings, 'any', ''), true);
+  assert.equal(context.canPublishWithOwner(settings, 'any', 'Missing'), false);
 });
 
 test('relationship evidence ranks ahead of permissions and counts distinct consuming workspaces', () => {
