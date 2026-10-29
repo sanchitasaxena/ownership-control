@@ -280,7 +280,7 @@ b.useEffect(()=>{
   return()=>{document.removeEventListener(`pointerdown`,outside);document.removeEventListener(`keydown`,escape);};
 },[onClose]);
 return b.createElement(`div`,{ref:menu,className:`menu ${t}`},e);
-}function D({children:e,danger:t=!1,onClick:n}){return(0,x.jsxDEV)(`button`,{className:`menu-item ${t?`text-[#c11111]`:``}`,onClick:n,type:`button`,children:e},void 0,!1,{fileName:S,lineNumber:139,columnNumber:10},this)
+}function D({children:e,danger:t=!1,onClick:n}){return(0,x.jsxDEV)(`button`,{className:`menu-item ${t?`menu-item-danger text-[#c11111]`:``}`,onClick:n,type:`button`,children:e},void 0,!1,{fileName:S,lineNumber:139,columnNumber:10},this)
 }function se({setScreen:e,overlay:t,setOverlay:n,selected:r,setSelected:i,artifacts,kind,setKind,openArtifact,assignOwner,permissions,canAssignOwnership,memberships,ownerFilter:c,setOwnerFilter:l,teamNavigationRequest,canAssignTags,assignTags}){
 let[u,d]=(0,b.useState)(c),[f,p]=(0,b.useState)(null),[search,setSearch]=b.useState(``),[ownerSearch,setOwnerSearch]=b.useState(``);
 b.useLayoutEffect(()=>{setSearch(``);setOwnerSearch(``);p(null);},[teamNavigationRequest]);
@@ -342,7 +342,8 @@ return(0,x.jsxDEV)(x.Fragment,{children:[(0,x.jsxDEV)(oe,{children:[(0,x.jsxDEV)
 ,(0,x.jsxDEV)(`input`,{className:`w-full outline-none text-[#0c0c0e]`,value:ownerSearch,onChange:event=>setOwnerSearch(event.target.value),placeholder:`Search within parameter`},void 0,!1,{fileName:S,lineNumber:221,columnNumber:112},this)
 ]},void 0,!0,{fileName:S,lineNumber:221,columnNumber:15},this)
 ,(0,x.jsxDEV)(`button`,{className:`mb-3 text-[#1060ff]`,onClick:()=>d(``),children:`Clear selection`},void 0,!1,{fileName:S,lineNumber:222,columnNumber:15},this)
-,b.createElement(`button`,{type:`button`,className:`owner-team-link`,onClick:()=>d(publishingMemberTeams.filter(team=>!permissions[team]?.deleted).join(`,`))},`My teams`)
+,b.createElement(`div`,{className:`owner-my-teams-row`},
+  b.createElement(`button`,{type:`button`,className:`owner-team-link`,onClick:()=>d(publishingMemberTeams.filter(team=>!permissions[team]?.deleted).join(`,`))},`My teams`))
 ,[`Unowned`,...new Set(artifacts.map(item=>item.owner).filter(Boolean))].filter(name=>name.toLowerCase().includes(ownerSearch.toLowerCase())).map(e=>(0,x.jsxDEV)(`label`,{className:`flex cursor-pointer gap-2 py-2`,children:[(0,x.jsxDEV)(`input`,{checked:draftFilters.includes(e),name:`owner-filter`,onChange:()=>d((draftFilters.includes(e)?draftFilters.filter(team=>team!==e):[...draftFilters,e]).join(`,`)),type:`checkbox`},void 0,!1,{fileName:S,lineNumber:224,columnNumber:78},this)
 ,e]},e,!0,{fileName:S,lineNumber:224,columnNumber:17},this)
 ),(0,x.jsxDEV)(`div`,{className:`mt-2 flex gap-2 border-t border-[#d8d9dc] pt-3`,children:[(0,x.jsxDEV)(w,{primary:!0,onClick:()=>{l(u),n(null)},children:`Apply filters`},void 0,!1,{fileName:S,lineNumber:226,columnNumber:79},this)
@@ -547,7 +548,7 @@ function le({owner:e,artifact,assignOwner,overlay:n,setOverlay:r,setScreen:i,set
 ,selectedVersion&&(viewerAccess.tags||viewerAccess.remove)&&(0,x.jsxDEV)(`div`,{className:`relative`,children:[(0,x.jsxDEV)(`button`,{type:`button`,className:`btn`,onClick:()=>setActionsOpen(value=>!value),"aria-expanded":actionsOpen,children:[`Actions `,(0,x.jsxDEV)(C,{className:`size-3`,src:`6899e.svg`},void 0,!1,{fileName:S,lineNumber:290,columnNumber:180},this)]},void 0,!0,{fileName:S,lineNumber:290,columnNumber:160},this)
 ,actionsOpen&&h(E,{onClose:()=>setActionsOpen(false),className:`right-0 top-9 z-20 w-64`},
   viewerAccess.tags&&h(D,{onClick:()=>{setActionsOpen(false);setVersionDialog(`tags`);}},h(ArtifactActionIcon,{name:`settings`}),`Manage environment tags`),
-  viewerAccess.remove&&h(D,{danger:true,onClick:()=>{setActionsOpen(false);setVersionDialog(`delete`);}},`Delete version ${selectedVersion}`))
+  viewerAccess.remove&&h(D,{danger:true,onClick:()=>{setActionsOpen(false);setVersionDialog(`delete`);}},h(ArtifactActionIcon,{name:`delete`}),`Delete version ${selectedVersion}`))
 ]},void 0,!0,{fileName:S,lineNumber:290,columnNumber:150},this)
 ,(0,x.jsxDEV)(w,{onClick:()=>setDetailTab(`Submodules`),children:[`Submodules `,(0,x.jsxDEV)(C,{className:`size-3`,src:`6899e.svg`},void 0,!1,{fileName:S,lineNumber:290,columnNumber:214},this)
 ]},void 0,!0,{fileName:S,lineNumber:290,columnNumber:195},this)

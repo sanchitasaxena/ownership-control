@@ -55,6 +55,7 @@ html { scrollbar-gutter: stable; }
 .owner-followup-dismiss { align-self: flex-start; color: #656a76; font-size: 18px; line-height: 20px; }
 .version-action-gear { display: inline-flex; width: 16px; height: 16px; align-items: center; justify-content: center; margin-right: 8px; font-size: 16px; line-height: 1; }
 .artifact-action-icon { flex-shrink: 0; }
+.menu-item-danger, .menu-item-danger .artifact-action-icon { color: #c11111; }
 .artifact-menu-divider { margin: 6px 0; border: 0; border-top: 1px solid #d8d9dc; }
 .menu-item:disabled { color: #8c909c; cursor: not-allowed; }
 .menu-item:disabled:hover { background: transparent; }
@@ -111,6 +112,8 @@ table.bulk-table th:nth-child(8), table.bulk-table td:nth-child(8) { width: 105p
 .owner-history-trigger { display: inline-flex; align-items: center; gap: 6px; font-weight: 600; text-decoration: underline dotted; text-underline-offset: 4px; }
 .owner-history-chevron { color: #656a76; text-decoration: none; }
 .owner-team-link { color: #1060ff; text-decoration: underline; text-underline-offset: 3px; }
+.owner-my-teams-row { margin-bottom: 8px; padding: 8px 0; border-top: 1px solid #d8d9dc; border-bottom: 1px solid #d8d9dc; }
+.owner-my-teams-row > button { display: block; width: 100%; text-align: left; }
 .owner-team-link:focus-visible, .owner-history-chevron:focus-visible { outline: 2px solid #1060ff; outline-offset: 3px; }
 .owner-history-card { position: fixed; z-index: 60; display: block; overflow-y: auto; border: 1px solid #d8d9dc; border-radius: 8px; background: #fff; color: #3b3d45; box-shadow: 0 8px 32px #3b3d4526; font-size: 13px; line-height: 20px; text-align: left; white-space: normal; overflow-wrap: anywhere; }
 .owner-history-header { display: flex; justify-content: space-between; align-items: center; gap: 16px; padding: 16px 20px; }

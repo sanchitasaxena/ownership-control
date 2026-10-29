@@ -31,6 +31,8 @@ Team Registry settings use two plain groups: Registry administration (full acces
 
 The owner selector lists **No owner** first, followed by teams. When no team is assigned, the collapsed field shows **No owner**; mixed-owner bulk edits retain **Select a team** until an explicit choice is made. Clearing existing ownership still requires confirmation.
 
+In the owner filter, **My teams** has its own separated row above individual team choices.
+
 Dropdown menus and ownership tooltips dismiss on outside click; menus also dismiss on Escape. Toasts dismiss on outside click while their own links remain usable.
 
 Saving ownership shows the owner team and module count with any missing-management handoff guidance in the dismissible toast. The Private Library and artifact details show only subtle grey Permissions needed text beneath the owner, with no persistent handoff banner. The text links authorized administrators to team settings or provides permission contacts on hover for other users.
