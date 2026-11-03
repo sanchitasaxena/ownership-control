@@ -12,7 +12,7 @@ const context = vm.createContext({
   publishingMemberTeams: ['Core', 'AppEng'],
 });
 vm.runInContext(bundle.slice(start, end), context);
-const { artifactOwnerAccess: access, permissionContactTeams: contacts, eligiblePublishingTeams: eligible, ownershipRemovalMessage: removalMessage } = context;
+const { artifactOwnerAccess: access, permissionContactTeams: contacts, contactTeamNames, eligiblePublishingTeams: eligible, ownershipRemovalMessage: removalMessage } = context;
 const manage = 'private-Modules-Publish and manage modules for this team';
 const remove = 'private-Modules-Delete modules owned by this team';
 
@@ -47,6 +47,8 @@ test('private capabilities do not apply to public artifacts or other types', () 
 test('permission contacts exclude Manage Teams and deleted teams', () => {
   assert.deepEqual(Array.from(contacts({ Infra: { team: 'Manage teams' }, Platform: { team: 'Manage organization access' } })), ['Platform', 'Owners']);
   assert.deepEqual(Array.from(contacts({ Platform: { team: 'Manage organization access', deleted: true } })), ['Owners']);
+  assert.equal(contactTeamNames(['Platform', 'Owners']), 'Platform and Owners');
+  assert.equal(contactTeamNames([]), 'an authorized team administrator');
 });
 
 test('unowned guidance names only active assignment administrators in the artifact registry', () => {
@@ -120,12 +122,15 @@ test('activity uses one factual sentence for each event type', () => {
   assert.equal(message({ action: 'Owner set at publishing', to: 'Core', actor: 'Core' }), 'Core assigned Core as the owner when publishing this module.');
 });
 
-test('management bundles tagging but keeps deletion and owner delegation separate', () => {
+test('owner management keeps tagging, deletion and owner delegation separate', () => {
   const owned = access({ options: { [manage]: true } });
-  assert.equal(owned.tags, true);
-  assert.equal(owned.projectTags, true);
+  assert.equal(owned.tags, false);
+  assert.equal(owned.projectTags, false);
   assert.equal(owned.remove, false);
   assert.equal(owned.assignOwnership, false);
+  const globallyManaged = access({ privateRegistry: true });
+  assert.equal(globallyManaged.tags, true);
+  assert.equal(globallyManaged.projectTags, true);
   assert.equal(access({ privateRegistry: true }, undefined, false).assignOwnership, false);
   assert.equal(access({ privateOwnership: true }, undefined, false).assignOwnership, true);
   assert.equal(access({ publicOwnership: true }, { registry: 'Public', kind: 'module' }).assignOwnership, true);
@@ -161,6 +166,7 @@ test('tagging-only permissions are scoped to artifact type and registry', () => 
 
 test('publishing requires an eligible owner and defaults only a single eligible team', () => {
   const settings = { Core: { options: { [manage]: true } } };
+  const globalSettings = { ...settings, Platform: { privateRegistry: true } };
   assert.equal(context.defaultPublishingOwner(['Core']), 'Core');
   assert.equal(context.defaultPublishingOwner(['Core', 'AppEng']), '');
   assert.equal(context.defaultPublishingOwner([]), '');
@@ -170,8 +176,10 @@ test('publishing requires an eligible owner and defaults only a single eligible 
   assert.equal(context.canPublishWithOwner({}, 'mine', ''), false);
   assert.equal(context.canPublishWithOwner(settings, 'blocked', ''), false);
   assert.equal(context.canPublishWithOwner(settings, 'any', ''), false);
-  assert.equal(context.canPublishWithOwner(settings, 'any', 'Core'), true);
-  assert.equal(context.canPublishWithOwner(settings, 'any', 'Missing'), false);
+  assert.equal(context.canPublishWithOwner(settings, 'any', 'Core'), false);
+  assert.equal(context.canPublishWithOwner(globalSettings, 'any', ''), true);
+  assert.equal(context.canPublishWithOwner(globalSettings, 'any', 'Core'), true);
+  assert.equal(context.canPublishWithOwner(globalSettings, 'any', 'Missing'), false);
 });
 
 test('relationship evidence ranks ahead of permissions and counts distinct consuming workspaces', () => {
