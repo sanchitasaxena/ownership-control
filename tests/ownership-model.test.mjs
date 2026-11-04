@@ -78,36 +78,9 @@ test('publishing eligibility requires both membership and management capability'
   assert.equal(eligible(settings, 'any').includes('Core'), false);
 });
 
-test('owner removal names the assignment and teams retaining global management', () => {
-  const artifact = { name: 'aws-rds-starter-module', owner: 'Core', kind: 'module', registry: 'Private' };
-  const message = removalMessage([artifact], {
-    Core: { options: { [manage]: true } },
-    Infra: { team: 'Manage teams' },
-    Platform: { privateRegistry: true },
-    Owners: { privateRegistry: true },
-  });
-  assert.match(message, /^Core will no longer own aws-rds-starter-module, but Platform and Owners can still manage it\./);
-  assert.match(message, /Team-scoped access no longer applies/);
-  assert.ok(!message.includes('prototype'));
-});
-
-test('bulk removal counts only supplied owned artifacts and excludes deleted managers', () => {
-  const artifacts = ['one', 'two'].map(name => ({ name, owner: 'Core', kind: 'module', registry: 'Private' }));
-  const message = removalMessage(artifacts, {
-    Platform: { privateRegistry: true, deleted: true },
-    Owners: { privateRegistry: true },
-  });
-  assert.match(message, /^2 artifacts will become unowned,/);
-  assert.match(message, /Owners can still manage them/);
-  assert.ok(!message.includes('Platform'));
-});
-
-test('removal does not name a team without global management access', () => {
-  const message = removalMessage([{ name: 'example', owner: 'Core' }], {
-    Core: { options: { [manage]: true } },
-  });
-  assert.match(message, /organization owners and teams with applicable organization-wide permissions/);
-  assert.ok(!message.includes('Core can still manage'));
+test('owner removal warning is concise for one or multiple artifacts', () => {
+  assert.equal(removalMessage([{ name: 'example', owner: 'Core' }]), 'This artifact will be unowned.');
+  assert.equal(removalMessage([{ name: 'one' }, { name: 'two' }]), 'These 2 artifacts will be unowned.');
 });
 
 test('owner management keeps tagging, deletion and owner delegation separate', () => {
@@ -124,6 +97,14 @@ test('owner management keeps tagging, deletion and owner delegation separate', (
   assert.equal(access({ publicOwnership: true }, { registry: 'Public', kind: 'module' }).assignOwnership, true);
   assert.equal(access({ publicOwnership: true }).assignOwnership, false);
   assert.equal(access({ publicRegistry: true }, { registry: 'Public', kind: 'module' }).assignOwnership, false);
+});
+
+test('version environment-tag management is available to artifact managers', () => {
+  const owned = access({ options: { [manage]: true } }, { kind: 'module', registry: 'Private' }, true);
+  assert.equal(owned.manage, true);
+  assert.equal(owned.tags, false);
+  assert.match(bundle, /viewerAccess\.manage\|\|viewerAccess\.tags\|\|viewerAccess\.remove/);
+  assert.match(bundle, /\(viewerAccess\.manage\|\|viewerAccess\.tags\)&&h\(D,\{onClick:\(\)=>\{setActionsOpen\(false\);setVersionDialog\(`tags`\);\}\}/);
 });
 
 test('permissions combine across memberships without treating every membership as ownership', () => {
@@ -168,6 +149,25 @@ test('registry-wide tagging permissions apply across artifact types in that regi
   }
   assert.equal(access({ deleted: true, ...settings }, { kind: 'module', registry: 'Private' }).tags, false);
   assert.equal(access({ options: { 'private-environment-tags': true } }, { kind: 'module', registry: 'Private' }).projectTags, false);
+});
+
+test('team settings show the Registry tagging permissions and artifact coverage', () => {
+  assert.ok(!bundle.includes('Tagging permissions'));
+  assert.ok(!bundle.includes('Grant either or both.'));
+  assert.ok(!bundle.includes('Manage-owned permissions grant the applicable artifact actions.'));
+  assert.ok(bundle.indexOf('Registry administration') < bundle.indexOf('Assign reserved and registry environment tags to artifact versions'));
+  assert.ok(bundle.indexOf('Assign project tags to registry artifacts') < bundle.indexOf('Artifact level'));
+  assert.ok(bundle.includes('Assign reserved and registry environment tags to artifact versions'));
+  assert.ok(bundle.includes('Allow members to assign registry environment tags to module, provider and stack component configuration versions.'));
+  assert.ok(bundle.includes('Assign project tags to registry artifacts'));
+  assert.ok(bundle.includes('Allow members to assign project tags to modules, providers and stack component configurations.'));
+});
+
+test('owner removal is warned and confirmed in the assignment dialog', () => {
+  assert.ok(bundle.includes('requiresClearConfirmation=value===``&&ownedArtifacts.length>0'));
+  assert.ok(bundle.includes('Confirm owner removal.'));
+  assert.ok(bundle.includes('disabled:value===null||(requiresClearConfirmation&&!confirmClear)'));
+  assert.ok(!bundle.includes('OwnershipClearConfirmation'));
 });
 
 test('publishing requires an eligible owner and defaults only a single eligible team', () => {

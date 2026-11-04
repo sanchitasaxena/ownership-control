@@ -408,8 +408,12 @@ return(0,x.jsxDEV)(x.Fragment,{children:[(0,x.jsxDEV)(oe,{children:[(0,x.jsxDEV)
 ]},void 0,!0)}
 function ce({owner,close,save,artifacts,permissions}) {
   const [value,setValue]=b.useState(new Set(artifacts.map(artifact=>artifact.owner)).size>1?null:owner);
+  const [confirmClear,setConfirmClear]=b.useState(false);
   const dialog=b.useRef(null);
   const h=b.createElement;
+  const ownedArtifacts=artifacts.filter(artifact=>artifact.owner);
+  const requiresClearConfirmation=value===``&&ownedArtifacts.length>0;
+  const changeValue=next=>{setValue(next);setConfirmClear(false);};
   b.useEffect(()=>{
     const previous=document.activeElement;
     dialog.current.querySelector(`.owner-select-trigger`)?.focus();
@@ -434,25 +438,18 @@ function ce({owner,close,save,artifacts,permissions}) {
           :`Choose one owner team for ${artifacts.length} selected modules.`),
         artifacts.length===1&&h(`p`,{className:`owner-assignment-artifacts`},
           h(C,{className:`size-4`,src:`bd056.svg`}),artifacts[0].name),
-        h(OwnerTeamPicker,{value,onChange:setValue,scenario:`assignment`,permissions,artifacts}),
+        h(OwnerTeamPicker,{value,onChange:changeValue,scenario:`assignment`,permissions,artifacts}),
+        requiresClearConfirmation&&h(`div`,{className:`owner-permission-alert`,role:`alert`},
+          h(`div`,null,
+            h(`p`,null,ownershipRemovalMessage(ownedArtifacts)),
+            h(`label`,{className:`permission-option mt-3`},
+              h(`input`,{type:`checkbox`,checked:confirmClear,onChange:event=>setConfirmClear(event.target.checked)}),
+              h(`span`,null,h(`b`,null,`Confirm owner removal.`))))),
         value&&artifacts.some(artifact=>ownerNeedsPermissions(permissions,{...artifact,owner:value}))&&h(`div`,{className:`owner-assignment-permission-note`,role:`status`},
           h(`p`,null,`This team can own the module but does not have the applicable manage-owned permission. Contact ${contactTeamNames(permissionContactTeams(permissions))} to grant it. You can still assign this team.`))),
       h(`div`,{className:`flex gap-3 px-6 py-4 border-t border-[#d8d9dc]`},
-        h(w,{primary:true,disabled:value===null,onClick:()=>save(value)},`Save owner`),
+        h(w,{primary:true,disabled:value===null||(requiresClearConfirmation&&!confirmClear),onClick:()=>save(value)},`Save owner`),
         h(w,{onClick:close},`Cancel`))));
-}
-function OwnershipClearConfirmation({artifacts,permissions,onCancel,onConfirm}) {
-  const h=b.createElement;
-  const cancel=b.useRef(null);
-  b.useEffect(()=>{cancel.current?.focus();},[]);
-  return h(`div`,{className:`overlay ownership-clear-overlay`,onMouseDown:onCancel},
-    h(`section`,{role:`dialog`,"aria-modal":true,"aria-label":`Remove owner`,className:`modal`,
-      onMouseDown:event=>event.stopPropagation(),onKeyDown:event=>{if(event.key===`Escape`){event.stopPropagation();onCancel();}}},
-      h(`div`,{className:`px-6 py-4 border-b border-[#d8d9dc]`},h(`h2`,null,artifacts.length===1?`Remove owner?`:`Remove owners?`)),
-      h(`div`,{className:`p-6`},h(TeamText,{text:ownershipRemovalMessage(artifacts,permissions)})),
-      h(`div`,{className:`flex gap-3 px-6 py-4 border-t border-[#d8d9dc]`},
-        h(`button`,{ref:cancel,type:`button`,className:`btn`,onClick:onCancel},`Cancel`),
-        h(w,{danger:true,onClick:onConfirm},artifacts.length===1?`Remove owner`:`Remove owners`))));
 }
 function le({owner:e,artifact,assignOwner,overlay:n,setOverlay:r,setScreen:i,setToast,permissions,viewerIsOwner,canAssignOwnership,viewerAccess,updateArtifact,deleteArtifact}){
   const [detailTab,setDetailTab]=b.useState(`Readme`);
@@ -547,9 +544,9 @@ function le({owner:e,artifact,assignOwner,overlay:n,setOverlay:r,setScreen:i,set
 ,h(`select`,{className:`field mt-2`,value:selectedVersion,disabled:!artifact.versions.length,onChange:event=>{setSelectedVersion(event.target.value);setActionsOpen(false);}},
   artifact.versions.length?artifact.versions.map((version,index)=>h(`option`,{key:version,value:version},`${version}${index===0?` (latest)`:``}`)):h(`option`,{value:``},`No published versions`))
 ]},void 0,!0,{fileName:S,lineNumber:290,columnNumber:60},this)
-,selectedVersion&&(viewerAccess.tags||viewerAccess.remove)&&(0,x.jsxDEV)(`div`,{className:`relative`,children:[(0,x.jsxDEV)(`button`,{type:`button`,className:`btn`,onClick:()=>setActionsOpen(value=>!value),"aria-expanded":actionsOpen,children:[`Actions `,(0,x.jsxDEV)(C,{className:`size-3`,src:`6899e.svg`},void 0,!1,{fileName:S,lineNumber:290,columnNumber:180},this)]},void 0,!0,{fileName:S,lineNumber:290,columnNumber:160},this)
+,selectedVersion&&(viewerAccess.manage||viewerAccess.tags||viewerAccess.remove)&&(0,x.jsxDEV)(`div`,{className:`relative`,children:[(0,x.jsxDEV)(`button`,{type:`button`,className:`btn`,onClick:()=>setActionsOpen(value=>!value),"aria-expanded":actionsOpen,children:[`Actions `,(0,x.jsxDEV)(C,{className:`size-3`,src:`6899e.svg`},void 0,!1,{fileName:S,lineNumber:290,columnNumber:180},this)]},void 0,!0,{fileName:S,lineNumber:290,columnNumber:160},this)
 ,actionsOpen&&h(E,{onClose:()=>setActionsOpen(false),className:`right-0 top-9 z-20 w-64`},
-  viewerAccess.tags&&h(D,{onClick:()=>{setActionsOpen(false);setVersionDialog(`tags`);}},h(ArtifactActionIcon,{name:`settings`}),`Manage environment tags`),
+  (viewerAccess.manage||viewerAccess.tags)&&h(D,{onClick:()=>{setActionsOpen(false);setVersionDialog(`tags`);}},h(ArtifactActionIcon,{name:`settings`}),`Manage environment tags`),
   viewerAccess.remove&&h(D,{danger:true,onClick:()=>{setActionsOpen(false);setVersionDialog(`delete`);}},h(ArtifactActionIcon,{name:`delete`}),`Delete version ${selectedVersion}`))
 ]},void 0,!0,{fileName:S,lineNumber:290,columnNumber:150},this)
 ,(0,x.jsxDEV)(w,{onClick:()=>setDetailTab(`Submodules`),children:[`Submodules `,(0,x.jsxDEV)(C,{className:`size-3`,src:`6899e.svg`},void 0,!1,{fileName:S,lineNumber:290,columnNumber:214},this)
@@ -706,7 +703,6 @@ const registrySection=(registry,fullAccess,setFullAccess,ownership,setOwnership,
     create(`legend`,{className:`mb-3 font-semibold`},`${registry===`private`?`Private`:`Public`} registry permissions`),
     create(`div`,{className:`registry-full-access`},
       create(`h3`,{className:`registry-settings-heading`},`Registry administration`),
-      create(`p`,{className:`registry-permissions-intro`},`Grant either or both.`),
       create(`label`,{className:`permission-option`},
         create(`input`,{type:`checkbox`,checked:fullAccess,onChange:event=>setFullAccess(event.target.checked)}),
         create(`span`,null,create(`b`,null,`Manage ${registry} registry`),
@@ -717,17 +713,10 @@ const registrySection=(registry,fullAccess,setFullAccess,ownership,setOwnership,
         create(`input`,{type:`checkbox`,checked:ownership,onChange:event=>setOwnership(event.target.checked)}),
         create(`span`,null,create(`b`,null,`Manage ${registry} registry ownership`),
           create(`small`,null,`Assign, reassign, or clear owners. This does not grant artifact management or deletion access.`))),
-      create(`div`,{className:`registry-tagging`},
-        create(`h3`,{className:`registry-permissions-heading`},`Tagging permissions`),
-        tagOption(`${registry}-environment-tags`,`Assign reserved and registry environment tags`,`Apply tags to artifact versions.`),
-        tagOption(`${registry}-project-tags`,`Assign project tags`,`Apply tags to registry artifacts.`)),
+      tagOption(`${registry}-environment-tags`,`Assign reserved and registry environment tags to artifact versions`,`Allow members to assign registry environment tags to module, provider and stack component configuration versions.`),
+      tagOption(`${registry}-project-tags`,`Assign project tags to registry artifacts`,`Allow members to assign project tags to modules, providers and stack component configurations.`)),
       create(`div`,{className:`registry-artifact-permissions`},
         create(`h3`,{className:`registry-settings-heading`},`Artifact level`),
-        create(`p`,{className:`registry-permissions-intro`},
-          registry===`private`
-            ?`Manage-owned permissions grant the applicable artifact actions. Delete-owned permissions separately control deletion; tags, no-code provisioning, and module tests keep their existing authorization. `
-            :`Manage and delete permissions are configured separately by artifact type. `,
-          fullAccess?`Global Registry access continues to apply across the organization.`:`Choose which actions this team can perform and on which artifacts.`),
         create(`div`,{className:`registry-artifact-options`},
           create(`div`,{className:`registry-permission-tabs`},types.map(type=>create(`button`,{
             key:type,type:`button`,className:`permission-tab ${tab===type?`active`:``}`,onClick:()=>setTab(type)},type))),
@@ -748,7 +737,7 @@ const registrySection=(registry,fullAccess,setFullAccess,ownership,setOwnership,
                     create(`input`,{type:`checkbox`,"aria-label":`${registry} ${tab}: ${index<2?`Publish and manage`:`Delete`} - ${scope}`,
                       "aria-description":registry===`public`?helper.replace(`organization’s registry`,`public registry`).replace(`owned by this team`,`assigned to this team`):helper,
                       checked:fullAccess||!!ee[key],disabled:fullAccess,onChange:()=>ie(key)}));
-                }))))))));
+                })))))));
 };
 return(0,x.jsxDEV)(x.Fragment,{children:[(0,x.jsxDEV)(oe,{children:[(0,x.jsxDEV)(`button`,{children:`my-organization`},void 0,!1,{fileName:S,lineNumber:357,columnNumber:15},this)
 ,(0,x.jsxDEV)(`span`,{children:`/`},void 0,!1,{fileName:S,lineNumber:357,columnNumber:47},this)
@@ -952,12 +941,10 @@ function eligiblePublishingTeams(permissions,scenario) {
   const memberships=scenario===`blocked`?[`Interns`]:publishingMemberTeams;
   return memberships.filter(name=>!permissions[name]?.deleted&&artifactOwnerAccess(permissions[name]).manage);
 }
-function ownershipRemovalMessage(artifacts,permissions) {
-  const single=artifacts.length===1;
-  const artifact=artifacts[0];
-  const managers=activeOwnerTeams(permissions).filter(team=>artifacts.every(item=>artifactOwnerAccess(permissions[team],item,false).manage));
-  const names=managers.length>1?`${managers.slice(0,-1).join(`, `)} and ${managers[managers.length-1]}`:managers[0];
-  return `${single?`${artifact.owner} will no longer own ${artifact.name}`:`${artifacts.length} artifacts will become unowned`}, but ${names||`organization owners and teams with applicable organization-wide permissions`} can still manage ${single?`it`:`them`}. Team-scoped access no longer applies; organization-wide permissions and existing visibility remain unchanged.`;
+function ownershipRemovalMessage(artifacts) {
+  return artifacts.length===1
+    ?`This artifact will be unowned.`
+    :`These ${artifacts.length} artifacts will be unowned.`;
 }
 function OwnerTeamPicker({value,onChange,scenario,permissions,artifacts=[{kind:`module`,registry:`Private`}]}) {
   const [query,setQuery]=b.useState(``);
@@ -1187,7 +1174,6 @@ function pe() {
     return()=>document.removeEventListener(`pointerdown`,dismiss);
   },[toast]);
   const [ownershipToastIds,setOwnershipToastIds]=b.useState([]);
-  const [pendingClear,setPendingClear]=b.useState(null);
   const [pendingTeamDelete,setPendingTeamDelete]=b.useState(null);
   const effectivePublishingScenario=publishingScenario===`any`&&!permissions.Platform?.privateRegistry?`blocked`:publishingScenario;
   const activeArtifact=artifacts.find(artifact=>artifact.id===activeId)||artifacts[0];
@@ -1200,7 +1186,6 @@ function pe() {
   const canEditTeamPermissions=memberships.some(name=>permissions[name]?.team===`Manage organization access`);
   const canDeleteTeams=memberships.some(name=>[`Manage teams`,`Manage organization access`].includes(permissions[name]?.team));
   const navigate=next=>{
-    setPendingClear(null);
     if(next===`suggestions`){
       if(!activeArtifact){setToast(`Publish an artifact before opening this exploration.`);return;}
       setScreen(`artifact`);setOverlay(`suggestions`);return;
@@ -1238,10 +1223,6 @@ function pe() {
   };
   const assignOwner=(ids,owner,showDetails=false)=>{
     if(!canAssignOwnership){setToast(`You do not have permission to manage ownership.`);return;}
-    if(!owner&&artifacts.some(artifact=>ids.includes(artifact.id)&&artifact.owner)){
-      setPendingClear({ids,showDetails});
-      return;
-    }
     commitOwnership(ids,owner,showDetails);
   };
   const publish=artifact=>{
@@ -1272,7 +1253,6 @@ function pe() {
     setTeamNavigationRequest(value=>value+1);
     setKind(`module`);
     setSelected([]);
-    setPendingClear(null);
     setPendingTeamDelete(null);
     setToast(null);
     navigate(`library`);
@@ -1294,7 +1274,7 @@ function pe() {
   const h=b.createElement;
   return h(TeamNavigationContext.Provider,{value:{canEdit:canEditTeamPermissions,openSettings:openTeamSettings}},h(ae,{screen,setScreen:navigate},
     h(PrototypeNavigation,{screen,team,navigate,openTeamSettings,publishingScenario,setPublishingScenario,
-      viewerRole,setViewerRole:role=>{setViewerRole(role);setOverlay(null);setSelected([]);setPendingClear(null);},permissions}),
+      viewerRole,setViewerRole:role=>{setViewerRole(role);setOverlay(null);setSelected([]);},permissions}),
     screen===`library`&&h(se,{key:viewerRole,overlay,selected,setOverlay,setScreen:navigate,setSelected,artifacts,kind,setKind,openArtifact,assignOwner,permissions,canAssignOwnership:canAdministerOwnership,memberships,ownerFilter,setOwnerFilter,teamNavigationRequest,canAssignTags:artifacts.some(item=>viewerArtifactAccess(permissions,memberships,item).projectTags),
   assignTags:(ids,tags)=>{
     if(artifacts.some(item=>ids.includes(item.id)&&!viewerArtifactAccess(permissions,memberships,item).projectTags)){setToast(`You do not have tagging access to every selected artifact.`);return;}
@@ -1311,8 +1291,6 @@ function pe() {
         }})),
       canDeleteTeams&&team!==`Owners`&&team!==actingTeam&&h(w,{danger:true,onClick:()=>setPendingTeamDelete(team)},`Delete team`)),
     screen===`add-module`&&h(fe,{key:effectivePublishingScenario,kind:`module`,setScreen:navigate,publish,publishingScenario:effectivePublishingScenario,permissions}),
-    pendingClear&&h(OwnershipClearConfirmation,{artifacts:artifacts.filter(artifact=>pendingClear.ids.includes(artifact.id)&&artifact.owner),permissions,onCancel:()=>setPendingClear(null),
-      onConfirm:()=>{commitOwnership(pendingClear.ids,``,pendingClear.showDetails);setPendingClear(null);}}),
     pendingTeamDelete&&h(`div`,{className:`overlay ownership-clear-overlay`},
       h(`section`,{className:`modal p-6`,role:`dialog`,"aria-modal":true,"aria-label":`Delete team ${pendingTeamDelete}`},
         h(`h2`,null,h(TeamText,{text:`Delete team ${pendingTeamDelete}?`})),
