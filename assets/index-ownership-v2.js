@@ -699,6 +699,9 @@ function ue({setScreen:e,setToast:t,team,permissions={},savePermissions}){let[n,
 ;
 const registrySection=(registry,fullAccess,setFullAccess,ownership,setOwnership,tab,setTab,types)=>{
   const create=b.createElement;
+  const tagOption=(key,label,helper)=>create(`label`,{key,className:`permission-option`},
+    create(`input`,{type:`checkbox`,checked:fullAccess||!!ee[key],disabled:fullAccess,onChange:()=>ie(key)}),
+    create(`span`,null,create(`b`,null,label),create(`small`,null,helper)));
   return create(`fieldset`,{key:registry,className:`registry-permissions-section`},
     create(`legend`,{className:`mb-3 font-semibold`},`${registry===`private`?`Private`:`Public`} registry permissions`),
     create(`div`,{className:`registry-full-access`},
@@ -714,6 +717,10 @@ const registrySection=(registry,fullAccess,setFullAccess,ownership,setOwnership,
         create(`input`,{type:`checkbox`,checked:ownership,onChange:event=>setOwnership(event.target.checked)}),
         create(`span`,null,create(`b`,null,`Manage ${registry} registry ownership`),
           create(`small`,null,`Assign, reassign, or clear owners. This does not grant artifact management or deletion access.`))),
+      create(`div`,{className:`registry-tagging`},
+        create(`h3`,{className:`registry-permissions-heading`},`Tagging permissions`),
+        tagOption(`${registry}-environment-tags`,`Assign reserved and registry environment tags`,`Apply tags to artifact versions.`),
+        tagOption(`${registry}-project-tags`,`Assign project tags`,`Apply tags to registry artifacts.`)),
       create(`div`,{className:`registry-artifact-permissions`},
         create(`h3`,{className:`registry-settings-heading`},`Artifact level`),
         create(`p`,{className:`registry-permissions-intro`},
@@ -890,8 +897,8 @@ function artifactOwnerAccess(settings={},artifact={kind:`module`,registry:`Priva
     scope:`${registry} ${plural}`,
     manage,
     remove:!settings.deleted&&!!(full||options[`${registry}-${type}-Delete any ${plural} in the organization`]||(isMember&&options[`${registry}-${type}-Delete ${plural} owned by this team`])),
-    tags:!settings.deleted&&!!(full||options[`${registry}-${type}-environment-tags`]),
-    projectTags:!settings.deleted&&!!(full||options[`${registry}-${type}-project-tags`]),
+    tags:!settings.deleted&&!!(full||options[`${registry}-${type}-environment-tags`]||options[`${registry}-environment-tags`]),
+    projectTags:!settings.deleted&&!!(full||options[`${registry}-${type}-project-tags`]||options[`${registry}-project-tags`]),
     assignOwnership:!settings.deleted&&!!settings[`${registry}Ownership`]
   };
 }

@@ -152,6 +152,24 @@ test('tagging-only permissions are scoped to artifact type and registry', () => 
   assert.equal(access({ options: { 'private-Modules-project-tags': true } }, module, false).tags, false);
 });
 
+test('registry-wide tagging permissions apply across artifact types in that registry', () => {
+  const settings = { options: { 'private-environment-tags': true, 'private-project-tags': true } };
+  for (const artifact of [
+    { kind: 'module', registry: 'Private' },
+    { kind: 'provider', registry: 'Private' },
+    { kind: 'stack', registry: 'Private' },
+  ]) {
+    assert.equal(access(settings, artifact, false).tags, true);
+    assert.equal(access(settings, artifact, false).projectTags, true);
+  }
+  for (const artifact of [{ kind: 'module', registry: 'Public' }, { kind: 'provider', registry: 'Public' }]) {
+    assert.equal(access(settings, artifact, false).tags, false);
+    assert.equal(access(settings, artifact, false).projectTags, false);
+  }
+  assert.equal(access({ deleted: true, ...settings }, { kind: 'module', registry: 'Private' }).tags, false);
+  assert.equal(access({ options: { 'private-environment-tags': true } }, { kind: 'module', registry: 'Private' }).projectTags, false);
+});
+
 test('publishing requires an eligible owner and defaults only a single eligible team', () => {
   const settings = { Core: { options: { [manage]: true } } };
   const globalSettings = { ...settings, Platform: { privateRegistry: true } };
