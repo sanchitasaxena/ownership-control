@@ -11,8 +11,8 @@ This static prototype illustrates the current WIP RFC for private Registry artif
 
 The RFC scope is private modules, private providers, and private stack component configurations. This mock demonstrates private modules only; provider and stack workflows are not implemented. Curated public artifacts and public namespaces are out of scope.
 
-- **Library and filtering:** Artifacts show their owner or **Unowned**. Filter by owner or Unowned; selecting an owner team opens the artifacts that team owns. Search and **My teams** are also available in this prototype. The fixture includes assigned examples; choose **Rollout - existing artifacts unowned** to demonstrate that ownership is not inferred or backfilled.
-- **Artifact owner:** Artifact details display the owner. Users with ownership-administration access can assign, reassign, or clear the owner from the **Manage** menu.
+- **Library and filtering:** Artifacts show their owner or **Unowned**. Unowned labels include a hint to contact **Platform**, the sole ownership-administration team in these examples; the prototype sends no request or notification. Filter by owner or Unowned; selecting an owner team opens the artifacts that team owns. Search and **My teams** are also available in this prototype. The fixture includes assigned examples; choose **Rollout - existing artifacts unowned** to demonstrate that ownership is not inferred or backfilled.
+- **Artifact owner:** Artifact details display the owner or **Unowned** with the contact hint. Users with ownership-administration access can assign, reassign, or clear the owner from the **Manage** menu.
 - **Assignment:** The **Manage private registry ownership** capability allows assignment, reassignment, and clearing without requiring Manage Teams or full Registry management. Choose from teams in the organization. If the selected team lacks the applicable manage-owned capability, the picker shows a non-blocking handoff message and names permission-contact teams; assignment remains available and does not change team permissions.
 - **Clearing and bulk changes:** Clearing ownership requires confirmation and leaves the artifact Unowned; the confirmation names teams that retain management through global Registry access. Bulk select can assign one owner to selected modules or clear their owners. Changes are local prototype state, not backend requests.
 - **Artifact access:** Owner-team members see actions allowed by their team’s manage-owned and delete-owned capabilities. Deletion is separate from management. Organization owners and teams with applicable global Registry permissions retain existing access, including access to unowned artifacts. Tags, no-code provisioning, and module tests keep their existing authorization.
@@ -32,15 +32,16 @@ Dropdown menus and ownership tooltips dismiss on outside click; menus also dismi
 
 The artifact owner is displayed on its details page. Users with ownership-administration access can manage ownership from the artifact’s **Manage** menu. Assignment warns when the selected team lacks manage-owned access and identifies permission contacts; the user can still save the assignment.
 
-Use **Prototype workflows** at the bottom right to choose a workflow. **Viewing as** switches between Platform Registry administrator, Core + AppEng member, Infra ownership administrator only, and Interns consumer. In Team settings, **Team** picks the team to inspect; switching teams keeps the panel open for continued mouse or keyboard selection. Start as Platform to edit permissions. Assignment is synchronous local memory; network loading, partial failures, and durable jobs are not simulated.
+Use **Prototype workflows** at the bottom right to choose a workflow. **Viewing as** switches between Platform Registry administrator, Core + AppEng member, Infra without ownership-administration permission, and Interns consumer. In Team settings, **Team** picks the team to inspect; switching teams keeps the panel open for continued mouse or keyboard selection. Start as Platform to edit permissions. Assignment is synchronous local memory; network loading, partial failures, and durable jobs are not simulated.
 
 The startup view uses a lightweight loading placeholder while the application loads, without artificial delays. Each row shows a module icon beside its name; when Bulk select is activated, the icon becomes a checkbox in the same slot and returns to the icon when selection is cleared, so the layout does not shift. The bulk Actions menu offers Assign owner and Add tags; added tags are merged with existing project tags; filtering updates the existing table, which resizes to its rows and includes an empty state. Menus, dialogs, and notifications use short entrance transitions, and motion is disabled when reduced motion is requested. Buttons use the same local font as the interface rather than fetching an external font.
 
 - **Core:** Can manage its owned modules. Tagging, deletion, and ownership administration are separate grants.
 - **AppEng:** Can manage its owned modules, but cannot administer ownership or delete. Core + AppEng membership demonstrates selection between eligible publishing teams.
-- **Infra:** Can assign owners without full Registry management, deletion, or team administration. Assign an artifact to a team without manage-owned access to see the permission handoff message.
+- **Infra:** Has no ownership-administration or artifact-management permission in the initial fixture.
 - **Interns:** No initial publishing or administrative grants; ownership alone does not grant management.
-- **Platform / Owners:** Have global private Registry access and separate ownership administration, plus organization-access administration. Owners permissions are read-only.
+- **Platform:** Is the sole team with ownership-administration permission in these examples and has organization-access administration.
+- **Owners:** Retains global Registry access and organization-access administration; the fixture does not grant it ownership-administration permission.
 
 ## Running and validating
 

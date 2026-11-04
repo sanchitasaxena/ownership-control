@@ -55,14 +55,14 @@ test('unowned guidance names only active assignment administrators in the artifa
   const permissions = {
     Core: { privateRegistry: true },
     AppEng: { team: 'Manage organization access' },
-    Infra: { privateOwnership: true },
-    Platform: { privateOwnership: true, deleted: true },
-    Owners: { privateOwnership: true, publicOwnership: true },
+    Infra: {},
+    Platform: { privateOwnership: true },
+    Owners: { privateOwnership: true, deleted: true },
   };
   assert.equal(context.ownershipRequestMessage(permissions, { kind: 'module', registry: 'Private' }),
-    'Want your team to own this module? Contact Infra and Owners to request assignment.');
-  assert.equal(context.ownershipRequestMessage(permissions, { kind: 'provider', registry: 'Public' }),
-    'Want your team to own this provider? Contact Owners to request assignment.');
+    'Want your team to own this module? Contact Platform to request assignment.');
+  assert.equal(context.ownershipRequestMessage({ Platform: { publicOwnership: true } }, { kind: 'provider', registry: 'Public' }),
+    'Want your team to own this provider? Contact Platform to request assignment.');
   assert.equal(context.ownershipRequestMessage({}, { kind: 'module', registry: 'Private' }),
     'Want your team to own this module? Contact an organization administrator to request assignment.');
 });

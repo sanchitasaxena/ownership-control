@@ -390,7 +390,7 @@ return(0,x.jsxDEV)(x.Fragment,{children:[(0,x.jsxDEV)(oe,{children:[(0,x.jsxDEV)
 ,(0,x.jsxDEV)(`td`,{children:t.noCode&&(0,x.jsxDEV)(`span`,{className:`inline-flex items-center gap-2`,children:[(0,x.jsxDEV)(C,{src:`eb83f.svg`},void 0,!1,{fileName:S,lineNumber:242,columnNumber:87},this)
 ,`Enabled`]},void 0,!0,{fileName:S,lineNumber:242,columnNumber:38},this)
 },void 0,!1,{fileName:S,lineNumber:242,columnNumber:19},this)
-,(0,x.jsxDEV)(`td`,{children:[b.createElement(OwnerIdentity,{artifact:t,onOwnerClick:team=>{l(team);i([]);n(null);}})
+,(0,x.jsxDEV)(`td`,{children:[b.createElement(OwnerIdentity,{artifact:t,permissions,onOwnerClick:team=>{l(team);i([]);n(null);}})
 ]},void 0,!0,{fileName:S,lineNumber:243,columnNumber:19},this)
 ,(0,x.jsxDEV)(`td`,{className:`relative`,children:[(0,x.jsxDEV)(w,{ariaLabel:kind===`module`?`Module actions`:`Provider actions`,className:`!px-2`,onClick:()=>{p(f===t.id?null:t.id),n(null)},children:(0,x.jsxDEV)(C,{className:`size-3`,src:`1abde.svg`},void 0,!1,{fileName:S,lineNumber:244,columnNumber:187},this)
 },void 0,!1,{fileName:S,lineNumber:244,columnNumber:44},this)
@@ -538,7 +538,7 @@ function le({owner:e,artifact,assignOwner,overlay:n,setOverlay:r,setScreen:i,set
 ,(0,x.jsxDEV)(`span`,{className:`meta`,children:[(0,x.jsxDEV)(C,{src:`19d0d.svg`},void 0,!1,{fileName:S,lineNumber:288,columnNumber:435},this)
 ,`Downloads 122`]},void 0,!0,{fileName:S,lineNumber:288,columnNumber:412},this)
 ,(0,x.jsxDEV)(`span`,{className:`meta`,children:[(0,x.jsxDEV)(C,{src:`5934e.svg`},void 0,!1,{fileName:S,lineNumber:288,columnNumber:506},this)
-,`Owner `,b.createElement(OwnerIdentity,{artifact,viewerIsOwner})
+,`Owner `,b.createElement(OwnerIdentity,{artifact,permissions,viewerIsOwner})
 ]},void 0,!0,{fileName:S,lineNumber:288,columnNumber:483},this)
 ]},void 0,!0,{fileName:S,lineNumber:288,columnNumber:7},this)
 ,(0,x.jsxDEV)(`h2`,{className:`mb-2`,children:`Module details`},void 0,!1,{fileName:S,lineNumber:289,columnNumber:7},this)
@@ -1078,8 +1078,9 @@ function OwnershipRequestLabel({artifact,permissions}) {
       onKeyDown:event=>{if(event.key===`Escape`&&position){event.stopPropagation();setPosition(null);}}},`?`),
     position&&h(`span`,{id,role:`tooltip`,className:`unowned-tooltip`,style:position},ownershipRequestMessage(permissions,artifact)));
 }
-function OwnerIdentity({artifact,viewerIsOwner=false,onOwnerClick}) {
+function OwnerIdentity({artifact,viewerIsOwner=false,onOwnerClick,permissions}) {
   const h=b.createElement;
+  if(!artifact.owner)return h(OwnershipRequestLabel,{artifact,permissions});
   return h(`span`,{className:`owner-identity`},
     artifact.owner&&onOwnerClick
       ?h(`button`,{type:`button`,className:`owner-team-link`,onClick:()=>onOwnerClick(artifact.owner),"aria-label":`View artifacts owned by ${artifact.owner}`},artifact.owner)
@@ -1141,7 +1142,7 @@ function PrototypeNavigation({screen,team,navigate,openTeamSettings,publishingSc
         h(`select`,{value:viewerRole,onChange:event=>{setViewerRole(event.target.value);setPublishingScenario(event.target.value===`manager`?`any`:event.target.value===`owner`?`mine`:`blocked`);setOpen(false);}},
           h(`option`,{value:`manager`},`Platform - Registry administrator`),
           h(`option`,{value:`owner`},`Core + AppEng member (delete separate)`),
-          h(`option`,{value:`delegate`},`Infra - ownership administrator only`),
+          h(`option`,{value:`delegate`},`Infra - no ownership-administration permission`),
           h(`option`,{value:`non-owner`},`Interns - consumer`))),
       h(`small`,null,`Design proposal. Suggestions have a separate concept mock. Changes reset on reload.`)),
     h(`button`,{type:`button`,className:`workflow-dock-trigger`,"aria-expanded":open,
@@ -1168,8 +1169,8 @@ function pe() {
     Core:{options:{[`private-Modules-Publish and manage modules for this team`]:true}},
     AppEng:{options:{[`private-Modules-Publish and manage modules for this team`]:true}},
     Platform:{team:`Manage organization access`,privateRegistry:true,privateOwnership:true,publicOwnership:true},
-    Owners:{team:`Manage organization access`,privateRegistry:true,privateOwnership:true,publicOwnership:true},
-    Infra:{privateOwnership:true}
+    Owners:{team:`Manage organization access`,privateRegistry:true,publicOwnership:true},
+    Infra:{}
   });
   const [toast,setToast]=b.useState(null);
   b.useEffect(()=>{
