@@ -220,6 +220,18 @@ test('prototype role switcher exposes only administrator, owner, and consumer', 
   assert.ok(!bundle.includes('Publish - no eligible teams'));
 });
 
+test('prototype workflows include the target team without a separate team selector', () => {
+  const start = bundle.indexOf('function PrototypeNavigation(');
+  const navigation = bundle.slice(start, bundle.indexOf('function pe()', start));
+  assert.ok(navigation.includes('`Team settings - ${name}`'));
+  assert.ok(navigation.includes('value:`team:${name}`'));
+  assert.ok(navigation.includes('openTeamSettings(next.slice(5))'));
+  assert.ok(!navigation.includes('onChange:event=>openTeamSettings(event.target.value)'));
+  assert.ok(navigation.includes('Registry administrator - Platform'));
+  assert.ok(navigation.includes('Owner team member - Core + AppEng'));
+  assert.ok(navigation.includes('Consumer - Interns'));
+});
+
 test('owner removal is warned and confirmed in the assignment dialog', () => {
   assert.ok(bundle.includes('requiresClearConfirmation=value===``&&ownedArtifacts.length>0'));
   assert.ok(bundle.includes('Confirm owner removal.'));

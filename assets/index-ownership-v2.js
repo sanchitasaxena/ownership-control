@@ -1115,19 +1115,17 @@ function PrototypeNavigation({screen,team,navigate,openTeamSettings,publishingSc
   const chooseWorkflow=event=>{
     const next=event.target.value;
     setOpen(false);
-    if(next===`team`)openTeamSettings(team);
+    if(next.startsWith(`team:`))openTeamSettings(next.slice(5));
     else navigate(next);
   };
   return h(`div`,{ref:dock,className:`prototype-workflows-dock ${open?`is-open`:``}`},
     open&&h(`nav`,{id:`prototype-workflows-menu`,"aria-label":`Prototype workflows`,className:`prototype-workflows`},
       h(`label`,null,`Workflow`,
-        h(`select`,{value:screen===`add-module`?`library`:screen,onChange:chooseWorkflow},
+        h(`select`,{value:screen===`team`?`team:${team}`:screen===`add-module`?`library`:screen,onChange:chooseWorkflow},
           h(`option`,{value:`library`},`Private library`),
           h(`option`,{value:`artifact`},`Module details & owner assignment`),
-          viewerRole===`admin`&&h(`option`,{value:`team`},`Team settings`))),
-      screen===`team`&&h(`label`,null,`Team`,
-        h(`select`,{value:team,onChange:event=>openTeamSettings(event.target.value)},
-          activeOwnerTeams(permissions).filter(name=>name!==`Owners`).map(name=>h(`option`,{key:name,value:name},name)))),
+          viewerRole===`admin`&&activeOwnerTeams(permissions).filter(name=>name!==`Owners`).map(name=>
+            h(`option`,{key:name,value:`team:${name}`},`Team settings - ${name}`)))),
       h(`label`,null,`Viewing as`,
         h(`select`,{value:viewerRole,onChange:event=>{
           const role=event.target.value;
@@ -1136,9 +1134,9 @@ function PrototypeNavigation({screen,team,navigate,openTeamSettings,publishingSc
           if(role!==`admin`&&screen===`team`)navigate(`library`);
           setOpen(false);
         }},
-          h(`option`,{value:`admin`},`Registry administrator`),
-          h(`option`,{value:`owner`},`Owner team member`),
-          h(`option`,{value:`consumer`},`Consumer`))),
+          h(`option`,{value:`admin`},`Registry administrator - Platform`),
+          h(`option`,{value:`owner`},`Owner team member - Core + AppEng`),
+          h(`option`,{value:`consumer`},`Consumer - Interns`))),
       h(`small`,null,`Design proposal. Suggestions have a separate concept mock. Changes reset on reload.`)),
     h(`button`,{type:`button`,className:`workflow-dock-trigger`,"aria-expanded":open,
       "aria-controls":open?`prototype-workflows-menu`:undefined,onClick:()=>setOpen(value=>!value)},
