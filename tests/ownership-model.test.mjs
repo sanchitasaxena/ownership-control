@@ -4,6 +4,7 @@ import test from 'node:test';
 import vm from 'node:vm';
 
 const bundle = readFileSync(new URL('../assets/index-ownership-v2.js', import.meta.url), 'utf8');
+const styles = readFileSync(new URL('../assets/ownership-history.css', import.meta.url), 'utf8');
 const start = bundle.indexOf('function artifactOwnerAccess(');
 const end = bundle.indexOf('function OwnerTeamPicker(', start);
 assert.ok(start !== -1 && end > start, 'The bundled ownership helpers must be available');
@@ -29,6 +30,29 @@ test('manage-owned, delete-owned and ownership administration are independent', 
   assert.equal(access({ options: { [remove]: true } }).manage, false);
   assert.equal(access({ privateOwnership: true }).manage, false);
   assert.equal(access({ privateOwnership: true }).remove, false);
+});
+
+test('Publish, Update-owned, Consume and Delete-owned permissions stay composable', () => {
+  const publish = access({ options: { 'private-Modules-publish': true } });
+  assert.equal(publish.publish, true);
+  assert.equal(publish.manage, false);
+  assert.equal(publish.remove, false);
+  const artifact = { kind: 'module', registry: 'Private', owner: 'Core' };
+  const management = access({ options: { 'private-Modules-update-owned': true } }, artifact, true);
+  assert.equal(management.publish, false);
+  assert.equal(management.manage, true);
+  const readOnly = access({ options: { 'private-Modules-consume': true } });
+  assert.equal(readOnly.consume, true);
+  assert.equal(readOnly.manage, false);
+  assert.equal(readOnly.publish, false);
+  const deletion = access({ options: { 'private-Modules-delete-owned': true } }, artifact, true);
+  assert.equal(deletion.remove, true);
+  assert.equal(deletion.manage, false);
+  assert.equal(deletion.publish, false);
+  assert.equal(deletion.deleteVersion, true);
+  const legacyDeletion = access({ options: { [remove]: true } });
+  assert.equal(legacyDeletion.deleteVersion, true);
+  assert.equal(legacyDeletion.remove, true);
 });
 
 test('global access is preserved for non-owners and unowned artifacts', () => {
@@ -67,7 +91,7 @@ test('unowned guidance names only active assignment administrators in the artifa
     'Want your team to own this module? Contact an organization administrator to request assignment.');
 });
 
-test('publishing eligibility requires both membership and management capability', () => {
+test('publishing eligibility requires membership and Publish permission', () => {
   const settings = { Core: { options: { [manage]: true } }, Platform: { privateRegistry: true } };
   assert.deepEqual(Array.from(eligible(settings, 'mine')), ['Core']);
   assert.deepEqual(Array.from(eligible(settings, 'blocked')), []);
@@ -83,10 +107,10 @@ test('owner removal warning is concise for one or multiple artifacts', () => {
   assert.equal(removalMessage([{ name: 'one' }, { name: 'two' }]), 'These 2 artifacts will be unowned.');
 });
 
-test('owner management keeps tagging, deletion and owner delegation separate', () => {
-  const owned = access({ options: { [manage]: true } });
-  assert.equal(owned.tags, false);
-  assert.equal(owned.projectTags, false);
+test('Manage includes artifact updates and tags but remains separate from Delete and ownership administration', () => {
+  const owned = access({ options: { [manage]: true } }, { kind: 'module', registry: 'Private', owner: 'Core' });
+  assert.equal(owned.tags, true);
+  assert.equal(owned.projectTags, true);
   assert.equal(owned.remove, false);
   assert.equal(owned.assignOwnership, false);
   const globallyManaged = access({ privateRegistry: true });
@@ -99,10 +123,18 @@ test('owner management keeps tagging, deletion and owner delegation separate', (
   assert.equal(access({ publicRegistry: true }, { registry: 'Public', kind: 'module' }).assignOwnership, false);
 });
 
+test('owner-team Update is scoped to owned artifacts while Registry admin can manage all', () => {
+  const ownerPermissions = { options: { 'private-Modules-update-owned': true } };
+  const artifact = { kind: 'module', registry: 'Private', owner: 'Core' };
+  assert.equal(access(ownerPermissions, artifact, true).manage, true);
+  assert.equal(access(ownerPermissions, { ...artifact, owner: 'AppEng' }, false).manage, false);
+  assert.equal(access({ privateRegistry: true }, { ...artifact, owner: 'AppEng' }, false).manage, true);
+});
+
 test('version environment-tag management is available to artifact managers', () => {
-  const owned = access({ options: { [manage]: true } }, { kind: 'module', registry: 'Private' }, true);
+  const owned = access({ options: { [manage]: true } }, { kind: 'module', registry: 'Private', owner: 'Core' }, true);
   assert.equal(owned.manage, true);
-  assert.equal(owned.tags, false);
+  assert.equal(owned.tags, true);
   assert.match(bundle, /viewerAccess\.manage\|\|viewerAccess\.tags\|\|viewerAccess\.remove/);
   assert.match(bundle, /\(viewerAccess\.manage\|\|viewerAccess\.tags\)&&h\(D,\{onClick:\(\)=>\{setActionsOpen\(false\);setVersionDialog\(`tags`\);\}\}/);
 });
@@ -151,16 +183,41 @@ test('registry-wide tagging permissions apply across artifact types in that regi
   assert.equal(access({ options: { 'private-environment-tags': true } }, { kind: 'module', registry: 'Private' }).projectTags, false);
 });
 
-test('team settings show the Registry tagging permissions and artifact coverage', () => {
-  assert.ok(!bundle.includes('Tagging permissions'));
-  assert.ok(!bundle.includes('Grant either or both.'));
-  assert.ok(!bundle.includes('Manage-owned permissions grant the applicable artifact actions.'));
-  assert.ok(bundle.indexOf('Registry administration') < bundle.indexOf('Assign reserved and registry environment tags to artifact versions'));
-  assert.ok(bundle.indexOf('Assign project tags to registry artifacts') < bundle.indexOf('Artifact level'));
+test('team settings use consistent checkbox-first permission options', () => {
   assert.ok(bundle.includes('Assign reserved and registry environment tags to artifact versions'));
-  assert.ok(bundle.includes('Allow members to assign registry environment tags to module, provider and stack component configuration versions.'));
   assert.ok(bundle.includes('Assign project tags to registry artifacts'));
-  assert.ok(bundle.includes('Allow members to assign project tags to modules, providers and stack component configurations.'));
+  assert.ok(bundle.includes('`${registry}-environment-tags`'));
+  assert.ok(bundle.includes('`${registry}-project-tags`'));
+  assert.ok(!bundle.includes('[`Manage`,['));
+  assert.ok(bundle.includes('Manage owned'));
+  assert.ok(!bundle.includes('[`Read`,['));
+  assert.ok(!bundle.includes('[`Delete`,['));
+  assert.ok(!bundle.includes('Update owned'));
+  assert.ok(bundle.includes('Publish new'));
+  assert.ok(bundle.includes('Browse and consume'));
+  assert.ok(bundle.includes('read ${artifactType} details and consume ${artifactType}'));
+  assert.ok(bundle.includes('Delete owned'));
+  assert.ok(bundle.includes('Permissions are scoped by artifact type.'));
+  assert.ok(!bundle.includes('registry-permission-table'));
+  assert.ok(bundle.includes('permissionOption(`${registry}-${tab}-${action}`,label,helper)'));
+  assert.match(bundle, /const permissionOption=.*className:`permission-option`},\s*create\(`input`,[\s\S]*?create\(`span`,null,create\(`b`,null,label\),create\(`small`,null,helper\)\)/);
+  assert.match(styles, /\.registry-permission-options \.permission-option \{ padding: 8px 0; \}/);
+  assert.ok(!bundle.includes('Grant to team'));
+  assert.ok(!bundle.includes('create(`th`,{scope:`col`},`Permission`)'));
+  assert.ok(!bundle.includes('registry-permission-group-row'));
+  assert.ok(!bundle.includes('registry-permission-group {'));
+  assert.ok(!bundle.includes('registry-permission-groups'));
+  assert.ok(bundle.includes('const visibleArtifacts=artifacts.filter'));
+  assert.ok(bundle.includes('screen===`artifact`&&viewerAccess.consume'));
+});
+
+test('prototype role switcher exposes only administrator, owner, and consumer', () => {
+  assert.ok(bundle.includes('Registry administrator'));
+  assert.ok(bundle.includes('Owner team member'));
+  assert.ok(bundle.includes('Consumer'));
+  assert.ok(!bundle.includes('Infra - no ownership-administration permission'));
+  assert.ok(!bundle.includes('Interns - consumer'));
+  assert.ok(!bundle.includes('Publish - no eligible teams'));
 });
 
 test('owner removal is warned and confirmed in the assignment dialog', () => {
@@ -168,6 +225,21 @@ test('owner removal is warned and confirmed in the assignment dialog', () => {
   assert.ok(bundle.includes('Confirm owner removal.'));
   assert.ok(bundle.includes('disabled:value===null||(requiresClearConfirmation&&!confirmClear)'));
   assert.ok(!bundle.includes('OwnershipClearConfirmation'));
+});
+
+test('missing permissions route directly to team settings instead of contact-admin prompts', () => {
+  assert.ok(bundle.includes('Go to team settings to add permissions'));
+  assert.ok(bundle.includes('openTeamSettings(permissionTeam)'));
+  assert.ok(bundle.includes('navigation.openSettings(value)'));
+  assert.ok(bundle.includes('navigation.openSettings(teams[0])'));
+  assert.ok(!bundle.includes('Publishing permission is required. Ask an administrator'));
+  assert.ok(!bundle.includes('Contact ${contactNames} to grant Publish and Update permission'));
+});
+
+test('private library owner names are labels, not team-navigation links', () => {
+  assert.ok(!bundle.includes('View artifacts owned by ${artifact.owner}'));
+  assert.ok(!bundle.includes('onOwnerClick:team=>'));
+  assert.ok(bundle.includes('b.createElement(OwnerIdentity,{artifact:t,permissions})'));
 });
 
 test('publishing requires an eligible owner and defaults only a single eligible team', () => {
@@ -205,13 +277,14 @@ test('relationship evidence ranks ahead of permissions and counts distinct consu
   assert.equal(ranked[0].ready, false);
 });
 
-test('assignment requires a separate management grant to complete handoff', () => {
+test('owner assignment needs separate Publish and Update grants', () => {
   const permissions = { AppEng: {} };
   const artifact = { id: 1, kind: 'module', registry: 'Private', owner: '' };
   assert.equal(context.viewerArtifactAccess(permissions, ['AppEng'], artifact).manage, false);
   const assigned = { ...artifact, owner: 'AppEng' };
   const assignedAccess = context.viewerArtifactAccess(permissions, ['AppEng'], assigned);
   assert.equal(assignedAccess.manage, false);
+  assert.equal(assignedAccess.publish, false);
   assert.equal(assignedAccess.tags, false);
   assert.equal(assignedAccess.remove, false);
   assert.equal(assignedAccess.assignOwnership, false);
@@ -221,6 +294,12 @@ test('assignment requires a separate management grant to complete handoff', () =
   assert.deepEqual(permissions.AppEng, {});
   assert.equal(context.ownerNeedsPermissions(permissions, assigned), true);
   permissions.AppEng = { options: { [manage]: true } };
+  assert.equal(context.ownerNeedsPermissions(permissions, assigned), false);
+  assert.equal(context.viewerArtifactAccess(permissions, ['AppEng'], assigned).manage, true);
+  permissions.AppEng = { options: { 'private-Modules-publish': true } };
+  assert.equal(context.ownerNeedsPermissions(permissions, assigned), true);
+  assert.equal(context.viewerArtifactAccess(permissions, ['AppEng'], assigned).manage, false);
+  permissions.AppEng.options['private-Modules-update-owned'] = true;
   assert.equal(context.ownerNeedsPermissions(permissions, assigned), false);
   assert.equal(context.viewerArtifactAccess(permissions, ['AppEng'], assigned).manage, true);
   assert.equal(context.ownerNeedsPermissions(permissions, artifact), false);

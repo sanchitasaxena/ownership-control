@@ -54,6 +54,7 @@ input[type="checkbox"] { box-sizing: border-box; width: 16px; height: 16px; min-
 .owner-assignment-permission-note { margin-top: 16px; padding: 12px; border: 1px solid #d8d9dc; border-radius: 5px; background: #f7f8fa; color: #3b3d45; font-size: 13px; line-height: 20px; }
 .owner-assignment-permission-note p { margin: 0; }
 .owner-settings-cta { flex-shrink: 0; color: #1060ff; font-weight: 600; text-decoration: underline; }
+.owner-settings-cta:focus-visible { outline: 2px solid #1060ff; outline-offset: 2px; }
 .owner-followup-dismiss { align-self: flex-start; color: #656a76; font-size: 18px; line-height: 20px; }
 .version-action-gear { display: inline-flex; width: 16px; height: 16px; align-items: center; justify-content: center; margin-right: 8px; font-size: 16px; line-height: 1; }
 .artifact-action-icon { flex-shrink: 0; }
@@ -99,16 +100,10 @@ table.bulk-table th:nth-child(8), table.bulk-table td:nth-child(8) { width: 105p
 .registry-full-access { margin-top: 0; }
 .registry-artifact-permissions { margin-top: 12px; }
 .registry-permission-tabs { display: flex; flex-wrap: wrap; border-bottom: 1px solid #d8d9dc; }
-.registry-permission-matrix { margin: 12px 0 20px; font-size: 13px; }
-.registry-matrix-row { display: grid; grid-template-columns: minmax(150px, 1.5fr) repeat(2, minmax(120px, 1fr)); align-items: start; gap: 16px; min-height: 44px; padding-top: 12px; border-bottom: 1px solid #eeeef0; }
+.registry-permission-options { margin: 8px 0 12px; }
+.registry-permission-options .permission-option { padding: 8px 0; }
 .registry-artifact-options { overflow-x: auto; }
-.registry-permission-matrix { min-width: 420px; }
-.registry-matrix-row > * { text-align: left; }
-.registry-matrix-header { color: #656a76; font-size: 12px; }
-.registry-matrix-header > :not(:first-child) { color: #3b3d45; font-weight: 600; }
-.registry-matrix-description { display: block; margin: 4px 0 8px; color: #656a76; font-size: 12px; line-height: 18px; font-weight: 400; }
 .registry-permission-note { margin: -8px 0 20px; color: #656a76; font-size: 12px; line-height: 18px; }
-.registry-matrix-row input[type="checkbox"] { vertical-align: middle; }
 .owner-team-link { color: #1060ff; text-decoration: underline; text-underline-offset: 3px; }
 .owner-my-teams-row { margin-bottom: 8px; padding: 8px 0; border-top: 1px solid #d8d9dc; border-bottom: 1px solid #d8d9dc; }
 .owner-my-teams-row > button { display: block; width: 100%; text-align: left; }
