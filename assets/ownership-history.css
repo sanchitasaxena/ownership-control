@@ -103,6 +103,8 @@ table.bulk-table th:nth-child(8), table.bulk-table td:nth-child(8) { width: 105p
 .registry-permission-options { margin: 8px 0 12px; }
 .registry-permission-options .permission-option { padding: 8px 0; }
 .registry-artifact-options { overflow-x: auto; }
+.module-settings-summary { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+.module-settings-summary > * { min-width: 0; overflow-wrap: anywhere; }
 .registry-permission-note { margin: -8px 0 20px; color: #656a76; font-size: 12px; line-height: 18px; }
 .owner-team-link { color: #1060ff; text-decoration: underline; text-underline-offset: 3px; }
 .owner-my-teams-row { margin-bottom: 8px; padding: 8px 0; border-top: 1px solid #d8d9dc; border-bottom: 1px solid #d8d9dc; }

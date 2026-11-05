@@ -789,7 +789,7 @@ function de(){return(0,x.jsxDEV)(`div`,{className:`mb-14 mt-7 grid grid-cols-3 b
 ,`Configure settings`]},void 0,!0,{fileName:S,lineNumber:390,columnNumber:309},this)
 ]},void 0,!0,{fileName:S,lineNumber:390,columnNumber:10},this)
 }
-function fe({kind:e,setScreen:t,publish,publishingScenario,permissions,permissionTeam,openTeamSettings}){
+function fe({kind:e,setScreen:t,publish,publishingScenario,permissions,permissionTeam,openTeamSettings,canEditTeamPermissions}){
 const eligible=eligiblePublishingTeams(permissions,publishingScenario);
 let[r,i]=(0,b.useState)(defaultPublishingOwner(eligible)),s=e===`module`;
 const canPublish=canPublishWithOwner(permissions,publishingScenario,r);
@@ -826,6 +826,10 @@ const[name,setName]=b.useState(s?`rds-aurora`:`aws-rds-aurora-coolcorp`),[target
 ,(0,x.jsxDEV)(`input`,{className:`field mt-2`,value:name,onChange:event=>setName(event.target.value)},void 0,!1,{fileName:S,lineNumber:402,columnNumber:737},this)
 ]},void 0,!0,{fileName:S,lineNumber:402,columnNumber:541},this)
 ,b.createElement(OwnerTeamPicker,{value:r,onChange:i,scenario:publishingScenario,permissions})
+,publishingScenario===`any`&&canEditTeamPermissions&&ownerNeedsPermissions(permissions,{kind:e,registry:`Private`,owner:r})&&b.createElement(`div`,{className:`owner-permission-alert`,role:`alert`},
+  b.createElement(`img`,{src:`./assets/helios-alert-triangle-16.svg`,alt:``,width:16,height:16}),
+  b.createElement(`p`,null,`Before ${r} can publish and manage this ${s?`module`:`provider`}, `,
+    b.createElement(`button`,{type:`button`,className:`owner-settings-cta`,onClick:()=>openTeamSettings(r)},`add its missing permissions in team settings`),`.`))
 ,s&&(0,x.jsxDEV)(`div`,{className:`my-7`,children:[(0,x.jsxDEV)(`h2`,{children:`No-code provisioning`},void 0,!1,{fileName:S,lineNumber:404,columnNumber:42},this)
 ,(0,x.jsxDEV)(`label`,{className:`mt-5 flex gap-4`,children:[(0,x.jsxDEV)(`input`,{type:`checkbox`,disabled:publishingScenario!==`any`,checked:noCode,onChange:event=>setNoCode(event.target.checked)},void 0,!1,{fileName:S,lineNumber:404,columnNumber:106},this)
 ,(0,x.jsxDEV)(`span`,{children:[(0,x.jsxDEV)(`b`,{children:`Add Module to no-code provision allowlist`},void 0,!1,{fileName:S,lineNumber:404,columnNumber:137},this)
@@ -835,16 +839,17 @@ const[name,setName]=b.useState(s?`rds-aurora`:`aws-rds-aurora-coolcorp`),[target
 ]},void 0,!0,{fileName:S,lineNumber:404,columnNumber:20},this)
 ,(0,x.jsxDEV)(`hr`,{className:`my-8 border-[#d8d9dc]`},void 0,!1,{fileName:S,lineNumber:405,columnNumber:9},this)
 ,s?(0,x.jsxDEV)(x.Fragment,{children:[(0,x.jsxDEV)(`h2`,{className:`mb-5`,children:`Confirm module settings`},void 0,!1,{fileName:S,lineNumber:405,columnNumber:61},this)
-,(0,x.jsxDEV)(`div`,{className:`grid grid-cols-3 overflow-hidden rounded border border-[#d8d9dc]`,children:[(0,x.jsxDEV)(`b`,{className:`bg-[#f1f2f3] p-4`,children:`Provider/Repository`},void 0,!1,{fileName:S,lineNumber:405,columnNumber:192},this)
+,(0,x.jsxDEV)(`div`,{className:`module-settings-summary grid grid-cols-4 overflow-hidden rounded border border-[#d8d9dc]`,children:[(0,x.jsxDEV)(`b`,{className:`bg-[#f1f2f3] p-4`,children:`Provider/Repository`},void 0,!1,{fileName:S,lineNumber:405,columnNumber:192},this)
 ,(0,x.jsxDEV)(`b`,{className:`bg-[#f1f2f3] p-4`,children:`Source directory`},void 0,!1,{fileName:S,lineNumber:405,columnNumber:247},this)
 ,(0,x.jsxDEV)(`b`,{className:`bg-[#f1f2f3] p-4`,children:`Publishing`},void 0,!1,{fileName:S,lineNumber:405,columnNumber:299},this)
+,b.createElement(`b`,{className:`bg-[#f1f2f3] p-4`},`Owner`)
 ,(0,x.jsxDEV)(`span`,{className:`meta p-4`,children:[(0,x.jsxDEV)(re,{src:`a8532.svg`},void 0,!1,{fileName:S,lineNumber:405,columnNumber:372},this)
 ,`tsu/repository`]},void 0,!0,{fileName:S,lineNumber:405,columnNumber:345},this)
 ,(0,x.jsxDEV)(`span`,{className:`p-4`,children:`src/modules`},void 0,!1,{fileName:S,lineNumber:405,columnNumber:417},this)
 ,(0,x.jsxDEV)(`span`,{className:`meta p-4`,children:[(0,x.jsxDEV)(re,{src:`30790.svg`},void 0,!1,{fileName:S,lineNumber:405,columnNumber:484},this)
 ,`Tag (prefix: sg/)`]},void 0,!0,{fileName:S,lineNumber:405,columnNumber:457},this)
+,b.createElement(`span`,{className:`p-4`},r||`No owner`)
 ]},void 0,!0,{fileName:S,lineNumber:405,columnNumber:110},this)
-,b.createElement(`p`,{className:`mt-3`},b.createElement(`b`,null,`Owner: `),r||`No owner`)
 ]},void 0,!0):(0,x.jsxDEV)(`div`,{className:`space-y-2 rounded border border-[#d8d9dc] p-5 text-[#656a76]`,children:[[`Name`,name||`aws-rds-aurora`],[`VCS Provider`,`Github`],[`Repository`,`hashi/aws-rds-aurora`],[`Owner`,r||`No owner`]].map(([e,t])=>(0,x.jsxDEV)(`div`,{className:`grid grid-cols-[125px_1fr] gap-6`,children:[(0,x.jsxDEV)(`b`,{className:`text-right`,children:e},void 0,!1,{fileName:S,lineNumber:405,columnNumber:870},this)
 ,(0,x.jsxDEV)(`span`,{children:t},void 0,!1,{fileName:S,lineNumber:405,columnNumber:905},this)
 ]},e,!0,{fileName:S,lineNumber:405,columnNumber:810},this)
@@ -919,7 +924,7 @@ function defaultPublishingOwner(eligible) {
 }
 function rankOwnerTeams(teams,permissions,artifacts,evidence=[]) {
   return teams.map(team=>{
-    const ready=artifacts.every(artifact=>artifactOwnerAccess(permissions[team],artifact,true).manage);
+    const ready=artifacts.every(artifact=>!ownerNeedsPermissions(permissions,{...artifact,owner:team}));
     const related=evidence.filter(item=>item.team===team&&artifacts.some(artifact=>artifact.id===item.artifactId));
     const workspaces=new Set(related.map(item=>item.workspace)).size;
     return {team,ready,workspaces,related};
@@ -1025,7 +1030,7 @@ function OwnerTeamPicker({value,onChange,scenario,permissions,artifacts=[{kind:`
         h(`span`,null,`No owner`),h(`span`,{className:`owner-option-check`,"aria-hidden":true},value===``?`✓`:``)),
       filtered.map(({team,ready,workspaces,related})=>h(`button`,{key:team,type:`button`,role:`option`,tabIndex:-1,"aria-selected":value===team,className:`owner-team-option`,onClick:()=>choose(team)},
         h(`span`,null,h(`b`,null,team),
-          !artifacts.every(artifact=>artifactOwnerAccess(permissions[team],artifact,true).manage)&&h(`small`,{className:`owner-permission-needed`},`Permissions needed`),
+          !ready&&h(`small`,{className:`owner-permission-needed`},`Permissions needed`),
           showEvidence&&ready&&h(`small`,null,`Existing management access`),
           workspaces>0&&h(`small`,null,`${workspaces} consuming workspace${workspaces===1?``:`s`} · Versions ${[...new Set(related.map(item=>item.version))].join(`, `)}${artifacts.length>1?` · ${new Set(related.map(item=>item.artifactId)).size} of ${artifacts.length} artifacts`:``}`)),
         h(`span`,{className:`owner-option-check`,"aria-hidden":true},value===team?`✓`:``))),
@@ -1292,7 +1297,7 @@ function pe() {
           setPermissions(current=>({...current,[team]:settings}));
         }})),
       canDeleteTeams&&team!==`Owners`&&team!==actingTeam&&h(w,{danger:true,onClick:()=>setPendingTeamDelete(team)},`Delete team`)),
-    screen===`add-module`&&h(fe,{key:effectivePublishingScenario,kind:`module`,setScreen:navigate,publish,publishingScenario:effectivePublishingScenario,permissions,permissionTeam:actingTeam,openTeamSettings}),
+    screen===`add-module`&&h(fe,{key:effectivePublishingScenario,kind:`module`,setScreen:navigate,publish,publishingScenario:effectivePublishingScenario,permissions,permissionTeam:actingTeam,openTeamSettings,canEditTeamPermissions}),
     pendingTeamDelete&&h(`div`,{className:`overlay ownership-clear-overlay`},
       h(`section`,{className:`modal p-6`,role:`dialog`,"aria-modal":true,"aria-label":`Delete team ${pendingTeamDelete}`},
         h(`h2`,null,h(TeamText,{text:`Delete team ${pendingTeamDelete}?`})),

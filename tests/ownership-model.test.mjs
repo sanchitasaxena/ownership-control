@@ -102,9 +102,48 @@ test('publishing eligibility requires membership and Publish permission', () => 
   assert.equal(eligible(settings, 'any').includes('Core'), false);
 });
 
+test('non-admin publishing excludes non-member teams even when those teams can publish', () => {
+  const permissions = {
+    Core: { options: { 'private-Modules-publish': true } },
+    AppEng: {},
+    Infra: { privateRegistry: true },
+    Platform: { privateRegistry: true },
+  };
+  assert.deepEqual(Array.from(eligible(permissions, 'mine')), ['Core']);
+  assert.equal(context.canPublishWithOwner(permissions, 'mine', 'Infra'), false);
+  assert.equal(context.canPublishWithOwner(permissions, 'mine', ''), false);
+});
+
+test('publishing alerts grant administrators after selecting an owner missing permissions', () => {
+  const start = bundle.indexOf('function fe({kind:');
+  const publishing = bundle.slice(start, bundle.indexOf('function ', start + 12));
+  assert.ok(publishing.includes('publishingScenario===`any`&&canEditTeamPermissions&&ownerNeedsPermissions'));
+  assert.ok(publishing.includes('role:`alert`'));
+  assert.ok(publishing.includes('onClick:()=>openTeamSettings(r)'));
+  assert.ok(publishing.includes('`Before ${r} can publish and manage this ${s?`module`:`provider`}, `'));
+  assert.ok(publishing.includes('`add its missing permissions in team settings`'));
+  assert.ok(publishing.includes('src:`./assets/helios-alert-triangle-16.svg`'));
+  assert.equal(context.ownerNeedsPermissions({ Infra: {} }, { kind: 'module', registry: 'Private', owner: 'Infra' }), true);
+  assert.equal(context.ownerNeedsPermissions({ Core: { options: {
+    'private-Modules-publish': true, 'private-Modules-update-owned': true,
+  } } }, { kind: 'module', registry: 'Private', owner: 'Core' }), false);
+  assert.equal(context.ownerNeedsPermissions({}, { kind: 'module', registry: 'Private', owner: '' }), false);
+  const ranked = context.rankOwnerTeams(['Core'], { Core: { options: {
+    'private-Modules-publish': true, 'private-Modules-update-owned': true,
+  } } }, [{ kind: 'module', registry: 'Private' }]);
+  assert.equal(ranked[0].ready, true);
+});
+
 test('owner removal warning is concise for one or multiple artifacts', () => {
   assert.equal(removalMessage([{ name: 'example', owner: 'Core' }]), 'This artifact will be unowned.');
   assert.equal(removalMessage([{ name: 'one' }, { name: 'two' }]), 'These 2 artifacts will be unowned.');
+});
+
+test('module publishing confirmation includes Owner as the final column', () => {
+  assert.ok(bundle.includes('module-settings-summary grid grid-cols-4'));
+  assert.ok(bundle.includes('b.createElement(`b`,{className:`bg-[#f1f2f3] p-4`},`Owner`)'));
+  assert.ok(bundle.includes('b.createElement(`span`,{className:`p-4`},r||`No owner`)'));
+  assert.ok(!bundle.includes('b.createElement(`b`,null,`Owner: `)'));
 });
 
 test('Manage includes artifact updates and tags but remains separate from Delete and ownership administration', () => {

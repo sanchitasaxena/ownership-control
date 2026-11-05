@@ -20,6 +20,10 @@ The RFC scope is private modules, private providers, and private stack component
 - **Team settings:** Under Registry administration, **Manage registry ownership** is separate from artifact permissions. Registry-wide **Assign reserved and registry environment tags to artifact versions** and **Assign project tags to registry artifacts** grants are also available. For each artifact type, compact checkbox-first options list **Publish new**, **Manage owned**, **Browse and consume** (including read access), and **Delete owned** as separate grants without category headers or row dividers, using the same label and helper layout as the tag grants. Publish is a registry-level grant; Manage and Delete are limited to artifacts owned by the team. Full Registry access allows the administrator to manage and delete any artifact. Removing a permission does not remove ownership; changing ownership does not implicitly grant artifact permissions.
 - **Lifecycle:** Deleting an owner team clears its ownership relationships rather than transferring its artifacts. Existing audit requirements are described in the RFC; this in-memory mock does not implement audit delivery.
 
+When publishing, a grant administrator who selects an owner team missing Publish new or Manage owned sees an inline alert with a direct action to open that team's settings. This does not automatically grant permissions or block the Registry administrator from publishing. Non-admin publishers can select only their own teams with Publish permission.
+
+The Confirm module settings summary includes Owner as its final column, showing the selected team or No owner.
+
 This is a design prototype, not a production authorization system. Permission and contact-team data are fixtures; no Registry APIs, network errors, token scopes, or durable changes are simulated.
 
 ## Preview controls and fixtures
