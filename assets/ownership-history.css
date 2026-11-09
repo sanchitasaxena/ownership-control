@@ -102,6 +102,7 @@ table.bulk-table th:nth-child(8), table.bulk-table td:nth-child(8) { width: 105p
 .registry-permission-tabs { display: flex; flex-wrap: wrap; border-bottom: 1px solid #d8d9dc; }
 .registry-permission-options { margin: 8px 0 12px; }
 .registry-permission-options .permission-option { padding: 8px 0; }
+.registry-permission-options .permission-option-nested { margin-left: 24px; padding-left: 12px; }
 .registry-artifact-options { overflow-x: auto; }
 .module-settings-summary { grid-template-columns: repeat(4, minmax(0, 1fr)); }
 .module-settings-summary > * { min-width: 0; overflow-wrap: anywhere; }

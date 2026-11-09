@@ -699,7 +699,7 @@ function ue({setScreen:e,setToast:t,team,permissions={},savePermissions}){let[n,
 ;
 const registrySection=(registry,fullAccess,setFullAccess,ownership,setOwnership,tab,setTab,types)=>{
   const create=b.createElement;
-  const permissionOption=(key,label,helper)=>create(`label`,{key,className:`permission-option`},
+  const permissionOption=(key,label,helper,nested=false)=>create(`label`,{key,className:`permission-option${nested?` permission-option-nested`:``}`},
     create(`input`,{type:`checkbox`,checked:fullAccess||!!ee[key],disabled:fullAccess,onChange:()=>ie(key)}),
     create(`span`,null,create(`b`,null,label),create(`small`,null,helper)));
   const registryAdministration=create(`div`,{className:`registry-full-access`},
@@ -717,8 +717,10 @@ const registrySection=(registry,fullAccess,setFullAccess,ownership,setOwnership,
       permissionOption(`${registry}-environment-tags`,`Assign reserved and registry environment tags to artifact versions`,`Allow members to assign registry environment tags to module, provider and stack component configuration versions.`),
       permissionOption(`${registry}-project-tags`,`Assign project tags to registry artifacts`,`Allow members to assign project tags to modules, providers and stack component configurations.`));
   const permissionOptions=create(`div`,{className:`registry-permission-options`},
-    registryPermissionGroups(registry,tab).map(([action,label,helper])=>
-      permissionOption(`${registry}-${tab}-${action}`,label,helper)));
+    registryPermissionGroups(registry,tab).map(([action,label,helper])=>{
+      const nestedPublish=registry===`private`&&action===`publish`&&!fullAccess&&!ee[`${registry}-${tab}-update-owned`];
+      return permissionOption(`${registry}-${tab}-${action}`,label,helper,nestedPublish);
+    }));
   const artifactPermissions=create(`div`,{className:`registry-artifact-permissions`},
     create(`h3`,{className:`registry-settings-heading`},`Artifact permissions`),
     create(`p`,{className:`registry-permission-note`},`Permissions are scoped by artifact type. Manage and Delete apply only to artifacts this team owns; Registry admins can manage all artifacts.`),
@@ -867,9 +869,8 @@ const TeamNavigationContext=b.createContext(null);
 function registryPermissionGroups(registry,type) {
   const artifactType=type===`Stack Component Configurations`?`stack component configurations`:type.toLowerCase();
   return [
-    [`publish`,`Publish new ${artifactType}`,`Allow members to publish new ${artifactType} to the ${registry} registry.`],
     [`update-owned`,`Manage owned ${artifactType}`,`Allow members to manage artifacts owned by this team, including versions and settings.`],
-    [`consume`,`Browse and consume ${artifactType}`,`Allow members to read ${artifactType} details and consume ${artifactType} in the ${registry} registry.`],
+    [`publish`,`Publish new ${artifactType}`,`Allow members to publish new ${artifactType} to the ${registry} registry.`],
     [`delete-owned`,`Delete owned ${artifactType}`,`Allow members to delete artifacts owned by this team.`]
   ];
 }
@@ -1164,12 +1165,12 @@ function pe() {
   const [viewerRole,setViewerRole]=b.useState(`admin`);
   const [team,setTeam]=b.useState(`Core`);
   const [permissions,setPermissions]=b.useState({
-    Core:{options:{[`private-Modules-publish`]:true,[`private-Modules-update-owned`]:true,[`private-Modules-consume`]:true}},
-    AppEng:{options:{[`private-Modules-publish`]:true,[`private-Modules-update-owned`]:true,[`private-Modules-consume`]:true}},
+    Core:{options:{[`private-Modules-publish`]:true,[`private-Modules-update-owned`]:true}},
+    AppEng:{options:{[`private-Modules-publish`]:true,[`private-Modules-update-owned`]:true}},
     Platform:{team:`Manage organization access`,privateRegistry:true,privateOwnership:true,publicOwnership:true},
     Owners:{team:`Manage organization access`,privateRegistry:true,publicOwnership:true},
     Infra:{},
-    Interns:{options:{[`private-Modules-consume`]:true}}
+    Interns:{}
   });
   const [toast,setToast]=b.useState(null);
   b.useEffect(()=>{
