@@ -718,20 +718,38 @@ const registrySection=(registry,fullAccess,setFullAccess,ownership,setOwnership,
           create(`small`,null,registry===`private`
             ?`Publish, manage, read, and delete any private artifact.`
             :`Publish, manage, read, and delete any public namespace artifact.`))),
-      registry===`private`&&create(`label`,{className:`permission-option`},
-        create(`input`,{type:`checkbox`,checked:ownership,onChange:event=>setOwnership(event.target.checked)}),
+      create(`label`,{className:`permission-option`},
+        create(`input`,{type:`checkbox`,checked:ownership,onChange:event=>{
+          const enabled=event.target.checked;
+          setOwnership(enabled);
+          if(enabled)setFullAccess(true);
+        }}),
         create(`span`,null,create(`b`,null,`Manage ${registry} registry ownership`),
-          create(`small`,null,`Assign, reassign, or clear artifact owners. This is separate from artifact access.`))),
+          create(`small`,null,`Assign, reassign, or clear artifact owners. Selecting this also grants all permissions for this registry.`))),
       permissionOption(`${registry}-environment-tags`,`Assign reserved and registry environment tags to artifact versions`,`Allow members to assign registry environment tags to module, provider and stack component configuration versions.`),
       permissionOption(`${registry}-project-tags`,`Assign project tags to registry artifacts`,`Allow members to assign project tags to modules, providers and stack component configurations.`));
   const permissionOptions=create(`div`,{className:`registry-permission-options`},
     registryPermissionGroups(registry,tab).map(([action,label,helper])=>{
       const nestedPublish=action===`publish`;
-      return permissionOption(`${registry}-${tab}-${action}`,label,helper,nestedPublish);
+      const key=`${registry}-${tab}-${action}`;
+      const isArtifactAccess=action===`publish`||action===`update-owned`;
+      const isPairEnabled=!!ee[`${registry}-${tab}-publish`]||!!ee[`${registry}-${tab}-update-owned`];
+      if(!isArtifactAccess)return permissionOption(key,label,helper,nestedPublish);
+      return create(`label`,{key,className:`permission-option${nestedPublish?` permission-option-nested`:``}`},
+        create(`input`,{
+          type:`checkbox`,
+          checked:fullAccess||isPairEnabled,
+          disabled:fullAccess||(action===`publish`&&isPairEnabled),
+          onChange:event=>{
+            const enabled=event.target.checked;
+            te(current=>({...current,[`${registry}-${tab}-publish`]:enabled,[`${registry}-${tab}-update-owned`]:enabled}));
+          }
+        }),
+        create(`span`,null,create(`b`,null,label),create(`small`,null,helper)));
     }));
   const artifactPermissions=create(`div`,{className:`registry-artifact-permissions`},
     create(`h3`,{className:`registry-settings-heading`},`Artifact permissions`),
-    create(`p`,{className:`registry-permission-note`},`Permissions are scoped by artifact type. Manage and Delete apply only to artifacts this team owns; Registry admins can manage all artifacts.`),
+    create(`p`,{className:`registry-permission-note`},`Permissions are scoped by artifact type. Manage and Delete apply only to artifacts this team owns; Registry admins can manage all artifacts. Publishing and managing owned artifacts are granted together; Publish stays selected while Manage owned is selected.`),
     create(`div`,{className:`registry-artifact-options`},
       create(`div`,{className:`registry-permission-tabs`},types.map(type=>create(`button`,{
         key:type,type:`button`,className:`permission-tab ${tab===type?`active`:``}`,onClick:()=>setTab(type)},type))),
@@ -1178,6 +1196,13 @@ function pe() {
   const [permissions,setPermissions]=b.useState({
     Core:{options:{[`private-Modules-publish`]:true,[`private-Modules-update-owned`]:true}},
     AppEng:{options:{[`private-Modules-publish`]:true,[`private-Modules-update-owned`]:true}},
+    PlatEng:{options:{
+      [`private-Modules-publish`]:true,[`private-Modules-update-owned`]:true,
+      [`private-Providers-publish`]:true,[`private-Providers-update-owned`]:true,
+      [`private-Stack Component Configurations-publish`]:true,[`private-Stack Component Configurations-update-owned`]:true,
+      [`public-Modules-publish`]:true,[`public-Modules-update-owned`]:true,
+      [`public-Providers-publish`]:true,[`public-Providers-update-owned`]:true
+    }},
     Platform:{team:`Manage organization access`,privateRegistry:true,privateOwnership:true,publicOwnership:true},
     Owners:{team:`Manage organization access`,privateRegistry:true,publicOwnership:true},
     Infra:{},
