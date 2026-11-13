@@ -120,8 +120,9 @@ test('publishing alerts grant administrators after selecting an owner missing pe
   assert.ok(publishing.includes('publishingScenario===`any`&&canEditTeamPermissions&&ownerNeedsPermissions'));
   assert.ok(publishing.includes('role:`alert`'));
   assert.ok(publishing.includes('onClick:()=>openTeamSettings(r)'));
-  assert.ok(publishing.includes('`Before ${r} can publish and manage this ${s?`module`:`provider`}, `'));
-  assert.ok(publishing.includes('`add its missing permissions in team settings`'));
+  assert.ok(publishing.includes('` so ${r} can publish and manage this ${s?`module`:`provider`}.`'));
+  assert.ok(publishing.includes('`Add team permissions`'));
+  assert.match(styles, /\.publishing-permission-alert \.owner-settings-cta \{[^}]*display: inline;[^}]*color: #1060ff;[^}]*text-decoration: none/);
   assert.ok(publishing.includes('src:`./assets/helios-alert-triangle-16.svg`'));
   assert.equal(context.ownerNeedsPermissions({ Infra: {} }, { kind: 'module', registry: 'Private', owner: 'Infra' }), true);
   assert.equal(context.ownerNeedsPermissions({ Core: { options: {
@@ -139,11 +140,33 @@ test('owner removal warning is concise for one or multiple artifacts', () => {
   assert.equal(removalMessage([{ name: 'one' }, { name: 'two' }]), 'These 2 artifacts will be unowned.');
 });
 
+test('owner picker styling follows HDS typography and accessible control states', () => {
+  assert.match(styles, /font-family: "HashiCorp Sans"/);
+  assert.match(styles, /\.owner-select-trigger \{[^}]*min-height: 40px/);
+  assert.match(styles, /\.owner-select-trigger:focus-visible/);
+  assert.match(styles, /\.owner-team-option\[aria-selected="true"\]/);
+  assert.match(styles, /\.owner-team-option:focus-visible/);
+  assert.match(styles, /prefers-reduced-motion: reduce/);
+  assert.doesNotMatch(styles, /owner-superselect/);
+});
+
 test('module publishing confirmation includes Owner as the final column', () => {
   assert.ok(bundle.includes('module-settings-summary grid grid-cols-4'));
   assert.ok(bundle.includes('b.createElement(`b`,{className:`bg-[#f1f2f3] p-4`},`Owner`)'));
   assert.ok(bundle.includes('b.createElement(`span`,{className:`p-4`},r||`No owner`)'));
   assert.ok(!bundle.includes('b.createElement(`b`,null,`Owner: `)'));
+});
+
+test('library artifact menus share Manage actions but never offer Delete', () => {
+  const start = bundle.indexOf('function ArtifactManageActions(');
+  const actions = bundle.slice(start, bundle.indexOf('function ArtifactActionIcon(', start));
+  for (const label of ['Publish settings', 'Test settings', 'No-code settings', 'Manage tags', 'Manage owner', 'Design configuration', 'Module versions', 'Give feedback']) {
+    assert.ok(actions.includes(label));
+  }
+  assert.ok(!actions.includes('Delete'));
+  assert.ok(!bundle.includes('Open artifact settings'));
+  assert.ok(bundle.includes('openArtifact(t,panel)'));
+  assert.ok(bundle.includes('b.useState(initialManagePanel)'));
 });
 
 test('Manage includes artifact updates and tags but remains separate from Delete and ownership administration', () => {
@@ -227,7 +250,7 @@ test('team settings use consistent checkbox-first permission options', () => {
   assert.ok(bundle.includes('Assign project tags to registry artifacts'));
   assert.ok(bundle.includes('`${registry}-environment-tags`'));
   assert.ok(bundle.includes('`${registry}-project-tags`'));
-  assert.ok(bundle.includes('const nestedPublish=registry===`private`&&action===`publish`&&!fullAccess&&!ee[`${registry}-${tab}-update-owned`]'));
+  assert.ok(bundle.includes('const nestedPublish=action===`publish`'));
   assert.ok(!bundle.includes('[`Manage`,['));
   assert.ok(bundle.includes('Manage owned'));
   assert.ok(!bundle.includes('[`Read`,['));
@@ -240,7 +263,7 @@ test('team settings use consistent checkbox-first permission options', () => {
   assert.ok(bundle.includes('Permissions are scoped by artifact type.'));
   assert.ok(!bundle.includes('registry-permission-table'));
   assert.ok(bundle.includes('permissionOption(`${registry}-${tab}-${action}`,label,helper,nestedPublish)'));
-  assert.match(bundle, /const permissionOption=.*className:`permission-option\$\{nested\?` permission-option-nested`:`\}`},\s*create\(`input`,[\s\S]*?create\(`span`,null,create\(`b`,null,label\),create\(`small`,null,helper\)\)/);
+  assert.match(bundle, /const permissionOption=.*className:`permission-option\$\{nested\?` permission-option-nested`:``\}`},\s*create\(`input`,[\s\S]*?create\(`span`,null,create\(`b`,null,label\),create\(`small`,null,helper\)\)/);
   assert.match(styles, /\.registry-permission-options \.permission-option \{ padding: 8px 0; \}/);
   assert.match(styles, /\.registry-permission-options \.permission-option-nested \{ margin-left: 24px;/);
   assert.doesNotMatch(styles, /\.registry-permission-options \.permission-option-nested \{[^}]*border/);

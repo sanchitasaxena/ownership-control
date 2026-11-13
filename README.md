@@ -24,11 +24,15 @@ When publishing, a grant administrator who selects an owner team missing Publish
 
 The Confirm module settings summary includes Owner as its final column, showing the selected team or No owner.
 
+Library artifact dropdowns expose the same permitted Manage actions as artifact details, opening the corresponding panel directly. Delete is available only from artifact details, not the library dropdown.
+
 This is a design prototype, not a production authorization system. Permission and contact-team data are fixtures; no Registry APIs, network errors, token scopes, or durable changes are simulated.
 
 ## Preview controls and fixtures
 
 In assignment and bulk-edit flows, the owner selector lists **No owner** first, followed by teams. When no team is assigned, the collapsed field shows **No owner**; mixed-owner bulk edits retain **Select a team** until an explicit choice is made. Global Registry managers can choose an owner or publish as **Unowned**; owner-scoped publishers must choose an eligible owner team. Clearing existing ownership shows a warning and requires the inline confirmation checkbox.
+
+The owner-team selector uses a local, searchable listbox with HDS-aligned typography, sizing, focus, selection, and motion states. It is a visual prototype control, not an imported HDS component.
 
 In the owner filter, **My teams** has its own separated row above individual team choices. It selects the current viewer's active memberships; the selected teams are applied with **Apply filters**. Owner names in the library are non-interactive labels.
 
