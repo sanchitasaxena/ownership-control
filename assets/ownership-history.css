@@ -1,7 +1,4 @@
-@font-face { font-family: "HashiCorp Sans"; src: url("../fonts/HashiCorp_Sans-Regular.woff2") format("woff2"); font-style: normal; font-weight: 400; font-display: swap; }
-@font-face { font-family: "HashiCorp Sans"; src: url("../fonts/HashiCorp_Sans-Semibold.woff2") format("woff2"); font-style: normal; font-weight: 600; font-display: swap; }
-body, button, input, select, textarea, h1, h2 { font-family: "HashiCorp Sans", Arial, sans-serif; }
-.btn { font-family: "HashiCorp Sans", Arial, sans-serif; }
+.btn { font-family: "SF UI Text:Regular", Arial, sans-serif; }
 html { scrollbar-gutter: stable; }
 input[type="checkbox"] { box-sizing: border-box; width: 16px; height: 16px; min-width: 16px; min-height: 16px; flex: 0 0 16px; accent-color: #1060ff; }
 .library-table-region { overflow-anchor: none; }
